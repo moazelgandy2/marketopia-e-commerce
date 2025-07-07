@@ -10,14 +10,12 @@ import { TopCategories } from "@/components/top-categories";
 export default function HomePage() {
   return (
     <div className="w-full min-h-screen relative">
-      <Header />
       <CategoryNav />
       <HeroBanner />
       <SmartphoneDeals />
       <TopCategories />
       <ElectronicsBrands />
       {/* <DailyEssentials /> */}
-      <Footer />
     </div>
   );
 }

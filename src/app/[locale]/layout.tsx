@@ -4,6 +4,8 @@ import { routing } from "@/i18n/routing";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Header } from "@/components/elements/header";
+import { Footer } from "@/components/footer";
 
 export default async function LocaleLayout({
   children,
@@ -23,7 +25,12 @@ export default async function LocaleLayout({
         <ReactQueryProvider>
           <ReactQueryDevtools initialIsOpen={false} />
 
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider>
+            <Header />
+
+            {children}
+            <Footer />
+          </NextIntlClientProvider>
         </ReactQueryProvider>
       </body>
     </html>

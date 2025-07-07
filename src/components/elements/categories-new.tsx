@@ -144,10 +144,7 @@ export function CategoryNav() {
         icon: getCategoryIcon(cat.name),
       }));
     }
-    return featuredCategories.map((cat) => ({
-      ...cat,
-      icon: getCategoryIcon(cat.name),
-    }));
+    return featuredCategories;
   };
 
   if (isLoading || isLoadingParent) {
@@ -222,7 +219,7 @@ export function CategoryNav() {
                               key={category.name}
                               href={category.href}
                               title={category.name}
-                              icon={category.icon}
+                              icon={category.icon as any}
                               image={category.image}
                               description={category.description}
                             />
@@ -281,15 +278,6 @@ export function CategoryNav() {
               <Menu className="h-6 w-6" />
             )}
           </button>
-
-          {/* View All Link */}
-          <Link
-            href="/categories"
-            className="hidden md:flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors bg-gray-50 hover:bg-blue-50 px-4 py-2 rounded-lg"
-          >
-            <Eye className="h-4 w-4" />
-            <span>View All</span>
-          </Link>
         </div>
 
         {/* Mobile Menu */}

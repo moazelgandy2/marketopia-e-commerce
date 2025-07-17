@@ -1,25 +1,39 @@
 "use client";
 
 import { SessionType } from "@/types/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const useAuth = () => {
-  try {
-    const [session, setSession] = useState<SessionType | null>(null);
-    const fetchSession = async () => {
-      const res = await fetch("/ar/api/auth/session");
+  const [session, setSession] = useState<SessionType | null>(null);
+
+  const fetchSession = async () => {
+    try {
+      const res = await fetch("/ar/api/auth/session", {
+        credentials: "include",
+      });
       if (!res.ok) {
-        console.error("Failed to fetch session:", res.statusText);
-        return null;
+        setSession(null);
+        return;
       }
       const data: SessionType | null = await res.json();
       setSession(data);
-      return data;
-    };
+    } catch (error) {
+      console.error("Session fetch error:", error);
+      setSession(null);
+    }
+  };
+
+  useEffect(() => {
     fetchSession();
-    return session;
-  } catch (error) {
-    console.error("Error fetching session:", error);
-    return null;
-  }
+
+    const interval = setInterval(() => {
+      fetchSession();
+    }, 10_000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return session;
 };

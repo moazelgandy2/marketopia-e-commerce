@@ -11,7 +11,7 @@ import { useState } from "react";
 import { SearchInput } from "../search-input";
 
 export const Header = () => {
-  const session = useAuth();
+  const { session } = useAuth();
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   return (

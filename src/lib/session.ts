@@ -55,7 +55,6 @@ export const getSession = async (): Promise<SessionType | null> => {
     }
 
     const session: SessionType = JSON.parse(sessionCookie.value);
-    console.log("Session retrieved successfully:", session.user.name);
     return session;
   } catch (error) {
     console.error("Error retrieving session:", error);

@@ -1,12 +1,12 @@
 "use client";
 
-import { SessionType } from "@/types/auth";
-import { useState, useEffect } from "react";
+import { SessionType } from "@/types";
+import { useState, useEffect, useCallback } from "react";
 
 export const useAuth = () => {
   const [session, setSession] = useState<SessionType | null>(null);
 
-  const fetchSession = async () => {
+  const fetchSession = useCallback(async () => {
     try {
       const res = await fetch("/ar/api/auth/session", {
         credentials: "include",
@@ -21,7 +21,7 @@ export const useAuth = () => {
       console.error("Session fetch error:", error);
       setSession(null);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchSession();
@@ -33,7 +33,7 @@ export const useAuth = () => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [fetchSession]);
 
-  return session;
+  return { session, refetch: fetchSession };
 };

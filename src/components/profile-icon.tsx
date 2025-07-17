@@ -29,7 +29,7 @@ const roleIcons: Record<UserRoleType, React.ReactNode> = {
 };
 
 export function ProfileIcon() {
-  const session = useAuth();
+  const { session } = useAuth();
 
   if (!session)
     return (

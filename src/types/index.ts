@@ -3,4 +3,7 @@ export * from "./banners";
 export * from "./best-selling";
 export * from "./brands";
 export * from "./auth";
+export * from "./product";
 export * from "./order";
+export * from "./address";
+export * from "./wishlist";

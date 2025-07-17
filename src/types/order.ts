@@ -86,7 +86,7 @@ export type ProductType = {
   status: boolean;
   category_id: number;
   brand_id: number;
-  image: string | null;
+  image: string;
   rate: number;
 
   created_at: string;

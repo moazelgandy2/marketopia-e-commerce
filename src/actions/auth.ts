@@ -46,7 +46,10 @@ export async function registerAction(values: RegisterType) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        ...values,
+        password_confirmation: values.confirmPassword,
+      }),
     });
     console.log(
       "Register request sent to:",

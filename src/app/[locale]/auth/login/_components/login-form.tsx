@@ -19,11 +19,14 @@ import { useState } from "react";
 import { useLocale } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import { logoutAction } from "@/actions/auth";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   // const session = useAuth();
+  const router = useRouter();
+
   const locale = useLocale();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -62,6 +65,7 @@ export function LoginForm() {
       console.error("Error during form submission:", error);
     } finally {
       setIsLoading(false);
+      router.refresh();
     }
   }
 

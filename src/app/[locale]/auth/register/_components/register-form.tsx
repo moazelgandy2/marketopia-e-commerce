@@ -19,11 +19,14 @@ import { useLocale } from "next-intl";
 
 import { logoutAction } from "@/actions/auth";
 import { RegisterFormValues, registerSchema } from "@/validation/auth";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   // const session = useAuth();
+  const router = useRouter();
+
   const locale = useLocale();
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -41,7 +44,7 @@ export function RegisterForm() {
       setIsLoading(true);
       setLoginError(null);
 
-      const res = await fetch(`/${locale}/api/auth/login`, {
+      const res = await fetch(`/${locale}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,6 +68,7 @@ export function RegisterForm() {
       console.error("Error during form submission:", error);
     } finally {
       setIsLoading(false);
+      router.refresh();
     }
   }
 
@@ -95,24 +99,7 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="••••••••"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>Your account password.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           <FormField
             control={form.control}
             name="email"
@@ -146,6 +133,24 @@ export function RegisterForm() {
                   />
                 </FormControl>
                 <FormDescription>Your phone number.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="••••••••"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Your account password.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

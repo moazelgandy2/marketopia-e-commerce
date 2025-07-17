@@ -8,7 +8,7 @@ import { ProfileIcon } from "@/components/profile-icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import SearchInput from "./search-input";
+import { SearchInput } from "../search-input";
 
 export const Header = () => {
   const session = useAuth();

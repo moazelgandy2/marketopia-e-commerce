@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useAddresses } from "@/hooks/use-addresses";
 import { Address } from "@/types";
 import { Plus, Trash2 } from "lucide-react";
 import { AddressDialog } from "./address-dialog";
+import { AddressesSkeleton } from "./address-skeleton";
+import { AddressEmptyState } from "./address-empty-state";
+import { AddressErrorState } from "./address-error-state";
 import { deleteAddress } from "@/actions/addresses";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocale } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
@@ -26,11 +29,13 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export const AddressesTab = () => {
-  const { addresses, isAddressesLoading, isAddressesError } = useAddresses();
+  const { addresses, isAddressesLoading, isAddressesError, error } =
+    useAddresses();
   const { session } = useAuth();
   const locale = useLocale();
   const queryClient = useQueryClient();
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [addressDialogOpen, setAddressDialogOpen] = useState(false);
 
   const handleDeleteAddress = async (addressId: number) => {
     if (!session?.token) {
@@ -98,24 +103,29 @@ export const AddressesTab = () => {
       setDeletingId(null);
     }
   };
+
+  const handleRetry = () => {
+    queryClient.invalidateQueries({ queryKey: ["addresses"] });
+  };
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
         <CardTitle>Shipping Addresses</CardTitle>
-        <AddressDialog />
+        <AddressDialog
+          open={addressDialogOpen}
+          onOpenChange={setAddressDialogOpen}
+        />
       </CardHeader>
       <CardContent className="space-y-4">
         {isAddressesLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-24 w-full rounded-xl" />
-            <Skeleton className="h-24 w-full rounded-xl" />
-          </div>
+          <AddressesSkeleton />
         ) : isAddressesError ? (
-          <div className="text-red-500">
-            Failed to load addresses. Please try again later.
-          </div>
-        ) : (
-          addresses?.map((a: Address) => (
+          <AddressErrorState
+            onRetry={handleRetry}
+            error={error?.message}
+          />
+        ) : addresses && addresses.length > 0 ? (
+          addresses.map((a: Address) => (
             <div
               key={a.id}
               className="border rounded-xl p-4 flex justify-between items-start dark:border-slate-700"
@@ -158,6 +168,8 @@ export const AddressesTab = () => {
               </AlertDialog>
             </div>
           ))
+        ) : (
+          <AddressEmptyState onAddAddress={() => setAddressDialogOpen(true)} />
         )}
       </CardContent>
     </Card>

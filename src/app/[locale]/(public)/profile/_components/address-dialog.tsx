@@ -119,14 +119,25 @@ const MapWithControls = ({
   );
 };
 
-export const AddressDialog = () => {
-  const [open, setOpen] = useState(false);
+interface AddressDialogProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export const AddressDialog = ({
+  open: controlledOpen,
+  onOpenChange,
+}: AddressDialogProps = {}) => {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const defaultPosition = { lat: 53.54992, lng: 10.00678 };
   const [selectedPosition, setSelectedPosition] = useState<
     google.maps.LatLngLiteral | undefined
   >(undefined);
+
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
 
   const { session } = useAuth();
   const locale = useLocale();

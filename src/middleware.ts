@@ -8,6 +8,14 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  if (
+    pathname.startsWith("/images/") ||
+    pathname.startsWith("/public/") ||
+    pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|avif)$/)
+  ) {
+    return;
+  }
+
   const hasLocale = routing.locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );

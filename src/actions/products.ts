@@ -57,7 +57,7 @@ export async function getProducts(
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_API_URL
-      }/api/products?${searchParams.toString()}`,
+      }/api/products?search=${searchParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -88,7 +88,7 @@ export async function getProducts(
 export async function getProductById(id: string, lang: string = "en") {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/details/${id}?lang=${lang}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}?lang=${lang}`,
       {
         method: "GET",
         headers: {
@@ -107,7 +107,6 @@ export async function getProductById(id: string, lang: string = "en") {
       throw new Error(data.message || "Failed to fetch product");
     }
 
-    // Return the product data directly
     return data.data;
   } catch (error) {
     console.error("Error fetching product:", error);

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
+import { Search, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,23 +23,38 @@ export function SearchInput({ className }: { className?: string }) {
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
 
-  // Debounced fetch
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
       setLoading(false);
+      setIsOpen(false);
+      return;
+    }
+
+    if (query.trim().length < 2) {
+      setResults([]);
+      setLoading(false);
+      setIsOpen(false);
       return;
     }
 
     const timer = setTimeout(async () => {
       setLoading(true);
+      setIsOpen(true);
       try {
         const res = await fetch(
-          `/ar/api/search?q=${encodeURIComponent(query)}`
+          `/${
+            window.location.pathname.split("/")[1]
+          }/api/search?q=${encodeURIComponent(query.trim())}`
         );
-        const data: SearchResult[] = await res.json();
-        setResults(data);
-      } catch {
+        if (res.ok) {
+          const data: SearchResult[] = await res.json();
+          setResults(data);
+        } else {
+          setResults([]);
+        }
+      } catch (error) {
+        console.error("Search error:", error);
         setResults([]);
       } finally {
         setLoading(false);
@@ -49,46 +64,57 @@ export function SearchInput({ className }: { className?: string }) {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // Click-outside to close
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node))
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsOpen(false);
+        setActiveIndex(-1);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Keyboard navigation
   const handleKey = (e: React.KeyboardEvent) => {
-    if (!isOpen) return;
+    if (!isOpen || (!loading && results.length === 0)) return;
 
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setActiveIndex((prev) => (prev + 1) % results.length);
+        setActiveIndex((prev) => (prev < results.length - 1 ? prev + 1 : 0));
         break;
       case "ArrowUp":
         e.preventDefault();
-        setActiveIndex((prev) => (prev - 1 + results.length) % results.length);
+        setActiveIndex((prev) => (prev > 0 ? prev - 1 : results.length - 1));
         break;
       case "Enter":
         e.preventDefault();
-        if (activeIndex >= 0) {
-          router.push(`/products/${results[activeIndex].slug}`);
+        if (activeIndex >= 0 && activeIndex < results.length) {
+          onSelect(results[activeIndex]);
+        } else if (query.trim()) {
+          router.push(`/products?search=${encodeURIComponent(query.trim())}`);
           setIsOpen(false);
         }
         break;
       case "Escape":
         setIsOpen(false);
+        setActiveIndex(-1);
         break;
     }
   };
 
   const onSelect = (item: SearchResult) => {
-    router.push(`/products/${item.slug}`);
+    router.push(`/products/${item.id}`);
     setIsOpen(false);
     setQuery("");
+    setActiveIndex(-1);
+  };
+
+  const clearSearch = () => {
+    setQuery("");
+    setResults([]);
+    setIsOpen(false);
+    setActiveIndex(-1);
   };
 
   return (
@@ -105,59 +131,114 @@ export function SearchInput({ className }: { className?: string }) {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setIsOpen(true);
             setActiveIndex(-1);
           }}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            if (query.trim().length >= 2) {
+              setIsOpen(true);
+            }
+          }}
           className={cn(
-            "w-full h-9 pl-10 pr-4 rounded-md border bg-white dark:bg-slate-800",
-            "border-slate-300 dark:border-slate-600",
-            "focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none",
-            "text-sm"
+            "w-full h-10 pl-10 pr-10 rounded-lg border bg-white dark:bg-slate-900",
+            "border-slate-200 dark:border-slate-700",
+            "focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none",
+            "text-sm placeholder:text-slate-400",
+            "transition-all duration-200"
           )}
         />
+        {query && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       {/* Dropdown */}
-      {isOpen && (query || loading) && (
-        <ul
+      {isOpen && (query.trim().length >= 2 || loading) && (
+        <div
           className={cn(
-            "absolute z-20 w-full mt-1 max-h-64 overflow-y-auto",
-            "bg-white dark:bg-slate-800 border rounded-md shadow-lg",
-            "border-slate-200 dark:border-slate-700"
+            "absolute z-50 w-full mt-2 max-h-80 overflow-y-auto",
+            "bg-white dark:bg-slate-900 border rounded-lg shadow-xl",
+            "border-slate-200 dark:border-slate-700",
+            "animate-in fade-in-0 zoom-in-95 duration-100"
           )}
         >
           {loading && (
-            <li className="px-3 py-2">
-              <Skeleton className="h-4 w-full rounded" />
-            </li>
+            <div className="flex items-center gap-3 px-4 py-3">
+              <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+              <span className="text-sm text-slate-500">Searching...</span>
+            </div>
           )}
 
-          {!loading && results.length === 0 && query && (
-            <li className="px-3 py-2 text-sm text-slate-500">No results</li>
+          {!loading && results.length === 0 && query.trim() && (
+            <div className="px-4 py-8 text-center">
+              <Search className="h-8 w-8 mx-auto text-slate-300 mb-2" />
+              <p className="text-sm text-slate-500 mb-1">No products found</p>
+              <p className="text-xs text-slate-400">
+                Try searching with different keywords
+              </p>
+            </div>
           )}
 
-          {results.map((item, idx) => (
-            <li key={item.id}>
+          {!loading && results.length > 0 && (
+            <ul className="py-2">
+              {results.map((item, idx) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(item)}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-4 py-3 text-left",
+                      "hover:bg-slate-50 dark:hover:bg-slate-800",
+                      "focus:bg-slate-50 dark:focus:bg-slate-800 focus:outline-none",
+                      "transition-colors duration-150",
+                      idx === activeIndex && "bg-slate-50 dark:bg-slate-800"
+                    )}
+                  >
+                    <div className="relative">
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.image}`}
+                        alt={item.name}
+                        className="h-10 w-10 rounded-lg object-cover bg-slate-100 dark:bg-slate-800"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/images/placeholder-product.svg";
+                        }}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
+                        {item.name}
+                      </p>
+                    </div>
+                    <Search className="h-4 w-4 text-slate-400" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {!loading && results.length > 0 && query.trim() && (
+            <div className="border-t border-slate-200 dark:border-slate-700 px-4 py-3">
               <button
                 type="button"
-                onClick={() => onSelect(item)}
-                className={cn(
-                  "w-full flex items-center gap-3 px-3 py-2 text-left text-sm",
-                  "hover:bg-slate-100 dark:hover:bg-slate-700",
-                  idx === activeIndex && "bg-slate-100 dark:bg-slate-700"
-                )}
+                onClick={() => {
+                  router.push(
+                    `/products?search=${encodeURIComponent(query.trim())}`
+                  );
+                  setIsOpen(false);
+                }}
+                className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
               >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-8 w-8 rounded object-cover"
-                />
-                <span className="truncate">{item.name}</span>
+                View all results for "{query.trim()}"
               </button>
-            </li>
-          ))}
-        </ul>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

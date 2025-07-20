@@ -1,8 +1,13 @@
 "use client";
 
 import ProductsList from "@/components/elements/products-list";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function ProductsPage() {
+function ProductsContent() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
+
   return (
     <div className="w-full min-h-screen relative bg-gray-50">
       <div className="container mx-auto px-4 py-6">
@@ -11,19 +16,49 @@ export default function ProductsPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Grab the best deal on{" "}
-                <span className="text-purple-600">Products</span>
+                {search ? (
+                  <>
+                    Search results for{" "}
+                    <span className="text-purple-600">"{search}"</span>
+                  </>
+                ) : (
+                  <>
+                    Grab the best deal on{" "}
+                    <span className="text-purple-600">Products</span>
+                  </>
+                )}
               </h1>
               <div className="w-16 h-1 bg-purple-600 mt-2"></div>
             </div>
-            <button className="text-purple-600 hover:text-purple-700 font-medium text-sm transition-colors">
-              View All →
-            </button>
           </div>
 
-          <ProductsList perPage={15} />
+          <ProductsList
+            perPage={15}
+            initialSearch={search}
+          />
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full min-h-screen relative bg-gray-50">
+          <div className="container mx-auto px-4 py-6">
+            <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm">
+              <div className="animate-pulse space-y-4">
+                <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+                <div className="h-1 bg-gray-200 rounded w-16"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <ProductsContent />
+    </Suspense>
   );
 }

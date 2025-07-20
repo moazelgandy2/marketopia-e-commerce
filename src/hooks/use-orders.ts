@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "./use-auth";
 
 export const useOrders = () => {
-  const session = useAuth();
+  const {session} = useAuth();
   const t = useTranslations("errors");
   const locale = useLocale();
   const {

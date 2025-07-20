@@ -1,21 +1,42 @@
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { authMiddleware } from "./lib/auth-middleware";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const isProtectedRoute = ["/profile", "/cart", "/orders", "/checkout"].some(
-    (route) => pathname.includes(route)
+
+  const hasLocale = routing.locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (isProtectedRoute) {
-    return (authMiddleware as any)(req);
-  } else {
-    return intlMiddleware(req);
+  const isProtectedRoute = ["/profile", "/cart", "/orders", "/checkout"].some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  const isProtectedRouteWithLocale = routing.locales.some((locale) =>
+    ["/profile", "/cart", "/orders", "/checkout"].some(
+      (route) =>
+        pathname === `/${locale}${route}` ||
+        pathname.startsWith(`/${locale}${route}/`)
+    )
+  );
+
+  if (isProtectedRoute && !hasLocale) {
+    const intlResponse = intlMiddleware(req);
+
+    if (intlResponse && intlResponse.status === 307) {
+      return intlResponse;
+    }
   }
+
+  if (isProtectedRouteWithLocale) {
+    return (authMiddleware as any)(req);
+  }
+
+  return intlMiddleware(req);
 }
 
 export const config = {

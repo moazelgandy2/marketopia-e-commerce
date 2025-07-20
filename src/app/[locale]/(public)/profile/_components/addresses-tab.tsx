@@ -2,12 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAddresses } from "@/hooks/use-addresses";
 import { Address } from "@/types";
-import { Plus, Trash2, MapPin, Phone, Edit, Home } from "lucide-react";
+import { Plus, Trash2, MapPin, Phone, Edit, Home, Star } from "lucide-react";
 import { AddressDialog } from "./address-dialog";
 import { AddressesSkeleton } from "./address-skeleton";
 import { AddressEmptyState } from "./address-empty-state";
 import { AddressErrorState } from "./address-error-state";
-import { deleteAddress } from "@/actions/addresses";
+import {
+  deleteAddress,
+  updateAddress,
+  SaveAddressData,
+} from "@/actions/addresses";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocale } from "next-intl";
@@ -35,7 +39,91 @@ export const AddressesTab = () => {
   const locale = useLocale();
   const queryClient = useQueryClient();
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [settingDefaultId, setSettingDefaultId] = useState<number | null>(null);
   const [addressDialogOpen, setAddressDialogOpen] = useState(false);
+  const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+
+  const handleSetAsDefault = async (address: Address) => {
+    if (!session?.token) {
+      toast.custom(() => (
+        <Alert
+          variant="destructive"
+          appearance="outline"
+          close={true}
+        >
+          <AlertIcon>
+            <BellIcon />
+          </AlertIcon>
+          <AlertTitle>Please login to set default address</AlertTitle>
+        </Alert>
+      ));
+      return;
+    }
+
+    setSettingDefaultId(address.id);
+    try {
+      const addressData = {
+        name: address.name,
+        address: address.address,
+        phone: address.phone,
+        lat: address.lat,
+        lng: address.lng,
+        is_default: 1,
+        city_id: address.city_id,
+      };
+
+      const result = await updateAddress(
+        session.token,
+        locale as "en" | "ar",
+        address.id,
+        addressData
+      );
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      // Refresh the addresses list
+      await queryClient.invalidateQueries({ queryKey: ["addresses"] });
+
+      toast.custom(() => (
+        <Alert
+          variant="success"
+          appearance="outline"
+          close={true}
+        >
+          <AlertIcon>
+            <BellIcon />
+          </AlertIcon>
+          <AlertTitle>Address set as default successfully</AlertTitle>
+        </Alert>
+      ));
+    } catch (error) {
+      console.error("Error setting default address:", error);
+      toast.custom(() => (
+        <Alert
+          variant="destructive"
+          appearance="outline"
+          close={true}
+        >
+          <AlertIcon>
+            <BellIcon />
+          </AlertIcon>
+          <AlertTitle>
+            {error instanceof Error
+              ? error.message
+              : "Failed to set default address. Please try again."}
+          </AlertTitle>
+        </Alert>
+      ));
+    } finally {
+      setSettingDefaultId(null);
+    }
+  };
+
+  const handleEditAddress = (address: Address) => {
+    setEditingAddress(address);
+  };
 
   const handleDeleteAddress = async (addressId: number) => {
     if (!session?.token) {
@@ -108,19 +196,22 @@ export const AddressesTab = () => {
     queryClient.invalidateQueries({ queryKey: ["addresses"] });
   };
 
+  const handleCloseEditDialog = () => {
+    setEditingAddress(null);
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header - Minimal */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Shipping Addresses
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+            Addresses
           </h2>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Manage your delivery addresses
           </p>
         </div>
-
         <AddressDialog />
       </div>
       {/* Addresses Grid */}
@@ -130,17 +221,21 @@ export const AddressesTab = () => {
           Array.from({ length: 3 }).map((_, index) => (
             <Card
               key={index}
-              className="p-6"
+              className="border-slate-200 dark:border-slate-700"
             >
-              <div className="space-y-3">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-                <div className="flex justify-end space-x-2">
-                  <Skeleton className="h-8 w-8 rounded" />
-                  <Skeleton className="h-8 w-8 rounded" />
+              <CardContent className="p-5">
+                <div className="space-y-3">
+                  <Skeleton className="h-5 w-2/3" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-4 w-1/3" />
+                  <div className="flex gap-2 pt-2">
+                    <Skeleton className="h-7 w-20" />
+                    <Skeleton className="h-7 w-16" />
+                    <Skeleton className="h-7 w-18" />
+                  </div>
                 </div>
-              </div>
+              </CardContent>
             </Card>
           ))
         ) : isAddressesError ? (
@@ -154,57 +249,84 @@ export const AddressesTab = () => {
           addresses.map((address: Address) => (
             <Card
               key={address.id}
-              className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200"
+              className={`relative overflow-hidden transition-all duration-200 hover:shadow-md ${
+                address.is_default === 1
+                  ? "border-emerald-200 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/20"
+                  : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+              }`}
             >
-              <CardContent className="p-6">
+              {/* Default Badge */}
+              {address.is_default === 1 && (
+                <div className="absolute top-3 right-3">
+                  <div className="flex items-center gap-1 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full text-xs font-medium">
+                    <Star className="w-3 h-3" />
+                    Default
+                  </div>
+                </div>
+              )}
+
+              {/* Setting Default Loading Badge */}
+              {settingDefaultId === address.id && (
+                <div className="absolute top-3 right-3">
+                  <div className="flex items-center gap-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full text-xs font-medium">
+                    <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    Setting...
+                  </div>
+                </div>
+              )}
+
+              <CardContent className="p-5">
                 <div className="space-y-4">
-                  {/* Header */}
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-                        <Home className="w-4 h-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-900 dark:text-white">
-                          {address.name}
-                        </h3>
-                        <span className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 px-2 py-1 rounded-full">
-                          Primary
-                        </span>
-                      </div>
+                  {/* Header - Minimal */}
+                  <div className="space-y-1">
+                    <h3 className="font-semibold text-slate-900 dark:text-white text-lg">
+                      {address.name}
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      {address.address}
+                    </p>
+                  </div>
+
+                  {/* Details - Clean Layout */}
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      <span>{address.city.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                      <Phone className="w-4 h-4 flex-shrink-0" />
+                      <span>{address.phone}</span>
                     </div>
                   </div>
 
-                  {/* Address Details */}
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <MapPin className="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-sm text-slate-700 dark:text-slate-300">
-                          {address.city.name}
-                        </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          Coordinates: {address.lat}, {address.lng}
-                        </p>
-                      </div>
-                    </div>
+                  {/* Actions - Minimal Buttons */}
+                  <div className="flex items-center gap-1 pt-3">
+                    {address.is_default === 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSetAsDefault(address)}
+                        disabled={settingDefaultId === address.id}
+                        className="h-8 px-3 text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-700 dark:text-emerald-400 dark:hover:bg-emerald-950"
+                      >
+                        {settingDefaultId === address.id ? (
+                          <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <Star className="w-3 h-3 mr-1" />
+                            Set Default
+                          </>
+                        )}
+                      </Button>
+                    )}
 
-                    <div className="flex items-center gap-3">
-                      <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                      <p className="text-sm text-slate-700 dark:text-slate-300">
-                        {address.phone}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+                      onClick={() => handleEditAddress(address)}
+                      className="h-8 px-3 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-700"
                     >
-                      <Edit className="w-4 h-4 mr-1" />
+                      <Edit className="w-3 h-3 mr-1" />
                       Edit
                     </Button>
 
@@ -214,14 +336,16 @@ export const AddressesTab = () => {
                           variant="ghost"
                           size="sm"
                           disabled={deletingId === address.id}
-                          className="text-slate-600 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400"
+                          className="h-8 px-3 text-xs text-slate-600 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-red-950"
                         >
                           {deletingId === address.id ? (
-                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-1" />
+                            <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
                           ) : (
-                            <Trash2 className="w-4 h-4 mr-1" />
+                            <>
+                              <Trash2 className="w-3 h-3 mr-1" />
+                              Delete
+                            </>
                           )}
-                          Delete
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
@@ -256,6 +380,17 @@ export const AddressesTab = () => {
           </div>
         )}
       </div>
+
+      {/* Edit Address Dialog */}
+      {editingAddress && (
+        <AddressDialog
+          open={!!editingAddress}
+          onOpenChange={(open) => {
+            if (!open) handleCloseEditDialog();
+          }}
+          address={editingAddress}
+        />
+      )}
     </div>
   );
 };

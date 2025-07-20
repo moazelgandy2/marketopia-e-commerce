@@ -106,3 +106,38 @@ export const deleteAddress = async (
     status: response.status,
   };
 };
+
+export const updateAddress = async (
+  token: string,
+  lang: "en" | "ar",
+  addressId: number,
+  addressData: SaveAddressData
+): Promise<ActionResponse<Address>> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Accept-Language": lang,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(addressData),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return {
+      error: data.message || "Something went wrong",
+      data: null,
+      status: response.status,
+    };
+  }
+  return {
+    error: null,
+    data: data.data,
+    status: response.status,
+  };
+};

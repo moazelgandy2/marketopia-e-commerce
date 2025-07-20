@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useConfigData } from "@/hooks/use-config";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Address } from "@/types";
 
 interface AddressFormData {
   name: string;
@@ -21,6 +22,7 @@ interface AddressFormProps {
   onSubmit: (data: AddressFormData) => void;
   onCancel: () => void;
   isLoading?: boolean;
+  initialData?: Address; // For editing existing address
 }
 
 export const AddressForm = ({
@@ -28,6 +30,7 @@ export const AddressForm = ({
   onSubmit,
   onCancel,
   isLoading = false,
+  initialData,
 }: AddressFormProps) => {
   const { config, cities, isLoading: citiesLoading } = useConfigData();
 
@@ -40,6 +43,31 @@ export const AddressForm = ({
     is_default: 0,
     city_id: 0,
   });
+
+  // Update form data when initialData or selectedPosition changes
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        address: initialData.address,
+        phone: initialData.phone,
+        lat: selectedPosition
+          ? selectedPosition.lat.toString()
+          : initialData.lat,
+        lng: selectedPosition
+          ? selectedPosition.lng.toString()
+          : initialData.lng,
+        is_default: initialData.is_default,
+        city_id: initialData.city.id,
+      });
+    } else if (selectedPosition) {
+      setFormData((prev) => ({
+        ...prev,
+        lat: selectedPosition.lat.toString(),
+        lng: selectedPosition.lng.toString(),
+      }));
+    }
+  }, [initialData, selectedPosition]);
 
   const handleInputChange = (
     field: keyof AddressFormData,
@@ -175,17 +203,63 @@ export const AddressForm = ({
         </div>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          id="is_default"
-          checked={formData.is_default === 1}
-          onChange={(e) =>
-            handleInputChange("is_default", e.target.checked ? 1 : 0)
-          }
-          className="rounded border-gray-300"
-        />
-        <Label htmlFor="is_default">Set as default address</Label>
+      {/* Default Address Toggle */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+              <svg
+                className="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <Label
+                htmlFor="is_default"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
+                Set as default address
+              </Label>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                This address will be used as your primary shipping address
+              </p>
+            </div>
+          </div>
+          <div className="relative">
+            <input
+              type="checkbox"
+              id="is_default"
+              checked={formData.is_default === 1}
+              onChange={(e) =>
+                handleInputChange("is_default", e.target.checked ? 1 : 0)
+              }
+              className="sr-only"
+            />
+            <label
+              htmlFor="is_default"
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer ${
+                formData.is_default === 1
+                  ? "bg-gradient-to-r from-blue-500 to-purple-600"
+                  : "bg-gray-200 dark:bg-gray-700"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  formData.is_default === 1 ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </label>
+          </div>
+        </div>
       </div>
 
       <div className="flex justify-end space-x-2 pt-4">

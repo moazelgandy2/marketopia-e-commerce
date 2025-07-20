@@ -20,12 +20,17 @@ import { Button } from "@/components/ui/button";
 import { BellIcon, Plus } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
 import { AddressForm } from "./address-form";
-import { saveAddress, SaveAddressData } from "@/actions/addresses";
+import {
+  saveAddress,
+  updateAddress,
+  SaveAddressData,
+} from "@/actions/addresses";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocale } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Alert, AlertIcon, AlertTitle } from "@/components/ui/alert";
+import { Address } from "@/types";
 
 const MapWithControls = ({
   onLocationUpdate,
@@ -122,11 +127,15 @@ const MapWithControls = ({
 interface AddressDialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  address?: Address; // For editing existing address
+  children?: React.ReactNode; // Custom trigger
 }
 
 export const AddressDialog = ({
   open: controlledOpen,
   onOpenChange,
+  address,
+  children,
 }: AddressDialogProps = {}) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -138,6 +147,7 @@ export const AddressDialog = ({
 
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
+  const isEditing = !!address;
 
   const { session } = useAuth();
   const locale = useLocale();
@@ -147,8 +157,15 @@ export const AddressDialog = ({
     if (!open) {
       setSelectedPosition(undefined);
       setShowForm(false);
+    } else if (isEditing && address) {
+      // If editing, set the position from existing address and show form
+      setSelectedPosition({
+        lat: parseFloat(address.lat),
+        lng: parseFloat(address.lng),
+      });
+      setShowForm(true);
     }
-  }, [open]);
+  }, [open, isEditing, address]);
 
   const handleMapClick = (event: MapMouseEvent) => {
     if (event.detail.latLng) {
@@ -180,17 +197,32 @@ export const AddressDialog = ({
 
       console.log("Submitting address data:", addressData);
 
-      const result = await saveAddress(
-        session.token,
-        locale as "en" | "ar",
-        addressData
-      );
+      let result;
+      if (isEditing && address) {
+        // Update existing address
+        result = await updateAddress(
+          session.token,
+          locale as "en" | "ar",
+          address.id,
+          addressData
+        );
+      } else {
+        // Create new address
+        result = await saveAddress(
+          session.token,
+          locale as "en" | "ar",
+          addressData
+        );
+      }
 
       if (result.error) {
         throw new Error(result.error);
       }
 
-      console.log("Address saved successfully:", result.data);
+      console.log(
+        `Address ${isEditing ? "updated" : "saved"} successfully:`,
+        result.data
+      );
 
       await queryClient.invalidateQueries({ queryKey: ["addresses"] });
       toast.custom(() => (
@@ -202,12 +234,17 @@ export const AddressDialog = ({
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Address saved successfully</AlertTitle>
+          <AlertTitle>
+            Address {isEditing ? "updated" : "saved"} successfully
+          </AlertTitle>
         </Alert>
       ));
       setOpen(false);
     } catch (error) {
-      console.error("Error saving address:", error);
+      console.error(
+        `Error ${isEditing ? "updating" : "saving"} address:`,
+        error
+      );
       toast.custom(() => (
         <Alert
           variant="destructive"
@@ -220,7 +257,9 @@ export const AddressDialog = ({
           <AlertTitle>
             {error instanceof Error
               ? error.message
-              : "Failed to save address. Please try again."}
+              : `Failed to ${
+                  isEditing ? "update" : "save"
+                } address. Please try again.`}
           </AlertTitle>
         </Alert>
       ));
@@ -239,13 +278,17 @@ export const AddressDialog = ({
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus className="h-4 w-4 mr-1" /> Add
-        </Button>
+        {children || (
+          <Button size="sm">
+            <Plus className="h-4 w-4 mr-1" /> Add
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Add Address</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Edit Address" : "Add Address"}
+          </DialogTitle>
           <DialogDescription>
             {showForm
               ? "Fill in the address details below."
@@ -259,8 +302,8 @@ export const AddressDialog = ({
               <div className="h-[400px] rounded-md overflow-hidden relative">
                 <APIProvider apiKey={"AIzaSyAIVOkyF-EJANwkFgqJSJYLQlMRoZJKsTc"}>
                   <Map
-                    defaultCenter={defaultPosition}
-                    defaultZoom={10}
+                    defaultCenter={selectedPosition || defaultPosition}
+                    defaultZoom={selectedPosition ? 15 : 10}
                     mapId="map"
                     gestureHandling={"greedy"}
                     onClick={handleMapClick}
@@ -292,6 +335,7 @@ export const AddressDialog = ({
               onSubmit={handleFormSubmit}
               onCancel={handleFormCancel}
               isLoading={isSubmitting}
+              initialData={address}
             />
           </div>
         )}

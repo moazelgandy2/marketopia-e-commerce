@@ -5,93 +5,256 @@ import { useOrders } from "@/hooks/use-orders";
 import { cn } from "@/lib/utils";
 import { OrderStatus, OrderType } from "@/types";
 import { format } from "date-fns";
-import { CreditCard, MapPin } from "lucide-react";
+import {
+  CreditCard,
+  MapPin,
+  Package,
+  Truck,
+  CheckCircle,
+  Clock,
+  XCircle,
+  Eye,
+} from "lucide-react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const statusColors: Record<OrderStatus, string> = {
-  pending: "bg-purple-100 text-purple-800",
-  confirmed: "bg-blue-100 text-blue-800",
-  ready: "bg-sky-100 text-sky-800",
-  on_delivery: "bg-amber-100 text-amber-800",
-  delivered: "bg-emerald-100 text-emerald-800",
-  cancelled: "bg-rose-100 text-rose-800",
+  pending:
+    "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800",
+  confirmed:
+    "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800",
+  ready:
+    "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-800",
+  on_delivery:
+    "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800",
+  delivered:
+    "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800",
+  cancelled:
+    "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800",
 };
+
+const statusIcons: Record<OrderStatus, any> = {
+  pending: Clock,
+  confirmed: CheckCircle,
+  ready: Package,
+  on_delivery: Truck,
+  delivered: CheckCircle,
+  cancelled: XCircle,
+};
+
 export const OrdersTab = () => {
   const { orders, isOrdersLoading, isOrdersError } = useOrders();
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Order History</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="space-y-6">
+      {/* Header with summary */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            Order History
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400">
+            Track and manage your orders
+          </p>
+        </div>
+        {orders && (
+          <div className="text-right">
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+              {orders.length}
+            </div>
+            <div className="text-sm text-slate-600 dark:text-slate-400">
+              Total Orders
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Orders List */}
+      <div className="space-y-4">
         {isOrdersLoading ? (
           <div className="space-y-4">
-            <Skeleton className="h-24 w-full rounded-xl" />
-            <Skeleton className="h-24 w-full rounded-xl" />
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <Skeleton className="h-6 w-24" />
+                  <Skeleton className="h-6 w-20" />
+                </div>
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-12 w-12 rounded-lg" />
+                    <Skeleton className="h-12 w-12 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : isOrdersError ? (
-          <div className="text-red-500">
-            Failed to load orders. Please try again later.
-          </div>
+          <Card className="border-red-200 dark:border-red-800">
+            <CardContent className="p-8 text-center">
+              <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2">
+                Failed to load orders
+              </h3>
+              <p className="text-red-600 dark:text-red-400">
+                Please try refreshing the page or contact support if the problem
+                persists.
+              </p>
+            </CardContent>
+          </Card>
+        ) : !orders || orders.length === 0 ? (
+          <Card className="border-slate-200 dark:border-slate-700">
+            <CardContent className="p-12 text-center">
+              <Package className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                No orders yet
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
+                When you place your first order, it will appear here.
+              </p>
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                Start Shopping
+              </Button>
+            </CardContent>
+          </Card>
         ) : (
-          orders?.map((o: OrderType) => (
-            <div
-              key={o.id}
-              className="border rounded-xl p-4 space-y-2 dark:border-slate-700"
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="font-bold">#{o.id}</p>
-                  <p className="text-sm text-slate-600">
-                    {format(new Date(o.created_at), "PPP")}
-                  </p>
-                </div>
-                <Badge className={cn(statusColors[o.status])}>{o.status}</Badge>
-              </div>
+          orders?.map((o: OrderType) => {
+            const StatusIcon = statusIcons[o.status];
+            return (
+              <Card
+                key={o.id}
+                className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200 overflow-hidden"
+              >
+                <CardContent className="p-0">
+                  {/* Header */}
+                  <div className="p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+                          <Package className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-slate-900 dark:text-white">
+                            Order #{o.id}
+                          </h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            {format(new Date(o.created_at), "PPP")}
+                          </p>
+                        </div>
+                      </div>
 
-              <div className="flex items-center gap-2 text-sm">
-                <CreditCard className="h-4 w-4" />
-                <span>
-                  {o.payment_method} ·{" "}
-                  {o.payment_status === "paid" ? "Paid" : "Unpaid"}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="h-4 w-4" />
-                <span>{o.address?.name ?? "No address"}</span>
-              </div>
-
-              <div className="text-sm font-bold">Total: ${o.total}</div>
-
-              {/* items */}
-              <div className="space-y-1">
-                {o.order_details.map((d) => (
-                  <div
-                    key={d.id}
-                    className="flex items-center gap-2 text-xs"
-                  >
-                    <Image
-                      src={
-                        d.product.image
-                          ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${d.product.image}`
-                          : "/images/default-avatar.png"
-                      }
-                      alt={d.product.name}
-                      width={32}
-                      height={32}
-                      className="rounded"
-                    />
-                    <span>
-                      {d.product.name} ×{d.quantity}
-                    </span>
+                      <div className="flex items-center gap-3">
+                        <Badge
+                          className={cn(
+                            "border px-3 py-1 font-medium",
+                            statusColors[o.status]
+                          )}
+                        >
+                          <StatusIcon className="w-3 h-3 mr-1" />
+                          {o.status.replace("_", " ")}
+                        </Badge>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          View
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          ))
+
+                  {/* Content */}
+                  <div className="p-6 space-y-4">
+                    {/* Payment & Address Info */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <CreditCard className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                        <div>
+                          <div className="text-sm font-medium text-slate-900 dark:text-white">
+                            {o.payment_method}
+                          </div>
+                          <div className="text-xs text-slate-600 dark:text-slate-400">
+                            {o.payment_status === "paid"
+                              ? "✓ Paid"
+                              : "⏳ Unpaid"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <MapPin className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                        <div>
+                          <div className="text-sm font-medium text-slate-900 dark:text-white">
+                            {o.address?.name ?? "No address"}
+                          </div>
+                          <div className="text-xs text-slate-600 dark:text-slate-400">
+                            Delivery address
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Order Items */}
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-slate-900 dark:text-white">
+                        Order Items
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                        {o.order_details.map((d) => (
+                          <div
+                            key={d.id}
+                            className="flex items-center gap-3 p-3 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg"
+                          >
+                            <div className="relative">
+                              <Image
+                                src={
+                                  d.product.image
+                                    ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${d.product.image}`
+                                    : "/images/default-avatar.png"
+                                }
+                                alt={d.product.name}
+                                width={40}
+                                height={40}
+                                className="rounded-lg object-cover"
+                              />
+                              <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                {d.quantity}
+                              </span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-medium text-slate-900 dark:text-white truncate">
+                                {d.product.name}
+                              </div>
+                              <div className="text-xs text-slate-600 dark:text-slate-400">
+                                ${d.price} each
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Total */}
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-slate-600 dark:text-slate-400">
+                        Order Total
+                      </span>
+                      <span className="text-xl font-bold text-slate-900 dark:text-white">
+                        ${o.total}
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };

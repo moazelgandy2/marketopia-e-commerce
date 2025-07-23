@@ -1,0 +1,121 @@
+"use server";
+
+import { CartApiResponse, DeleteCartItemResponse } from "@/types";
+import { getSession } from "@/lib/session";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export const getCart = async (
+  lang: string = "en"
+): Promise<CartApiResponse> => {
+  const session = await getSession();
+
+  if (!session?.token) {
+    throw new Error("Authentication required");
+  }
+
+  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${lang}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch cart");
+  }
+
+  return response.json();
+};
+
+export const deleteCartItem = async (
+  cartItemId: number
+): Promise<DeleteCartItemResponse> => {
+  const session = await getSession();
+
+  if (!session?.token) {
+    throw new Error("Authentication required");
+  }
+
+  const response = await fetch(`${API_BASE_URL}/api/carts/${cartItemId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete cart item");
+  }
+
+  return response.json();
+};
+
+export const addToCart = async (
+  productId: number,
+  quantity: number = 1,
+  attributeValues: number[] = [],
+  lang: string = "en"
+): Promise<CartApiResponse> => {
+  const session = await getSession();
+
+  if (!session?.token) {
+    throw new Error("Authentication required");
+  }
+
+  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${lang}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.token}`,
+    },
+    body: JSON.stringify({
+      product_id: productId,
+      quantity,
+      product_attribute_value_ids: attributeValues,
+    }),
+  });
+  console.log("req=>", productId, quantity, attributeValues, lang);
+
+  const data = await response.json();
+
+  console.log("data=>", data);
+
+  if (!response.ok) {
+    throw new Error("Failed to add item to cart");
+  }
+
+  return data;
+};
+
+export const updateCartItemQuantity = async (
+  cartItemId: number,
+  quantity: number,
+  lang: string = "en"
+): Promise<CartApiResponse> => {
+  const session = await getSession();
+
+  if (!session?.token) {
+    throw new Error("Authentication required");
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${lang}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.token}`,
+      },
+      body: JSON.stringify({ quantity }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to update cart item quantity");
+  }
+
+  return response.json();
+};

@@ -57,7 +57,7 @@ export async function getProducts(
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_API_URL
-      }/api/products?search=${searchParams.toString()}`,
+      }/api/products?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {

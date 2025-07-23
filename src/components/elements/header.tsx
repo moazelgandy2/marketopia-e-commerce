@@ -6,13 +6,18 @@ import { ShoppingCart, Search, UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { ProfileIcon } from "@/components/profile-icon";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SearchInput } from "../search-input";
+import { useCart } from "@/hooks/use-cart";
 
 export const Header = () => {
   const { session } = useAuth();
+  const { data: cartData } = useCart();
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+
+  const cartItemsCount = cartData?.data?.items?.length || 0;
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700">
@@ -66,10 +71,18 @@ export const Header = () => {
           >
             <Link
               href="/cart"
-              className="flex items-center space-x-1"
+              className="flex items-center space-x-1 relative"
             >
               <ShoppingCart className="h-5 w-5" />
               <span>Cart</span>
+              {cartItemsCount > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                >
+                  {cartItemsCount}
+                </Badge>
+              )}
             </Link>
           </Button>
         </div>
@@ -136,8 +149,17 @@ export const Header = () => {
             <Link
               href="/cart"
               aria-label="Cart"
+              className="relative"
             >
               <ShoppingCart className="h-5 w-5" />
+              {cartItemsCount > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                >
+                  {cartItemsCount}
+                </Badge>
+              )}
             </Link>
           </Button>
         </div>

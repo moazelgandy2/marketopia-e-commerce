@@ -1,20 +1,22 @@
 "use client";
 
-import { useProductsByCategory } from "@/hooks/use-products";
 import { useCategoryWithChildren } from "@/hooks/use-categories";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+
+import { useProductsByCategory } from "@/hooks/use-products";
+
 import ProductCard from "./product-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Category } from "@/types/category";
+import { Product } from "@/types/product";
 import {
   ChevronLeft,
   ChevronRight,
   Grid3X3,
   List,
-  Search,
   Filter,
   SortAsc,
   SortDesc,
@@ -33,7 +35,7 @@ export default function CategoryProducts({
   categoryId,
 }: CategoryProductsProps) {
   const [page, setPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
+
   const [sortBy, setSortBy] = useState<"price" | "name" | "newest">("newest");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -49,8 +51,52 @@ export default function CategoryProducts({
   const { data: categoryData, isLoading: categoryLoading } =
     useCategoryWithChildren(categoryId);
 
+  // Client-side filtering and sorting of products
+
+  const filteredAndSortedProducts = useMemo(() => {
+    if (!productsData?.data) return [];
+
+    let filtered = productsData.data.filter((product: Product) => {
+      // Price range filter
+      const price = product.discount_price
+        ? parseFloat(product.discount_price)
+        : parseFloat(product.price);
+      const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+
+      return matchesPrice;
+    });
+
+    // Sorting
+    return filtered.sort((a: Product, b: Product) => {
+      let comparison = 0;
+
+      switch (sortBy) {
+        case "name":
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case "price":
+          const priceA = a.discount_price
+            ? parseFloat(a.discount_price)
+            : parseFloat(a.price);
+          const priceB = b.discount_price
+            ? parseFloat(b.discount_price)
+            : parseFloat(b.price);
+          comparison = priceA - priceB;
+          break;
+        case "newest":
+        default:
+          // Assuming products with higher IDs are newer
+          comparison = b.id - a.id;
+          break;
+      }
+
+      return sortOrder === "desc" ? -comparison : comparison;
+    });
+  }, [productsData?.data, sortBy, sortOrder, priceRange]);
+
   const isLoading = productsLoading || categoryLoading;
-  const hasProducts = productsData?.data && productsData.data.length > 0;
+  const hasProducts =
+    filteredAndSortedProducts && filteredAndSortedProducts.length > 0;
 
   // Loading skeleton component
   const ProductSkeleton = () => (
@@ -95,11 +141,21 @@ export default function CategoryProducts({
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             {categoryData?.name || "Products"}
           </h1>
-          {productsData?.total && (
-            <p className="text-gray-600">
-              {productsData.total}{" "}
-              {productsData.total === 1 ? "product" : "products"} found
-            </p>
+          {productsData?.data && (
+            <div className="text-gray-600">
+              {filteredAndSortedProducts.length !== productsData.data.length ? (
+                <p>
+                  Showing {filteredAndSortedProducts.length} of{" "}
+                  {productsData.data.length} products
+                </p>
+              ) : (
+                <p>
+                  {productsData.data.length}{" "}
+                  {productsData.data.length === 1 ? "product" : "products"}{" "}
+                  found
+                </p>
+              )}
+            </div>
           )}
         </div>
         {categoryData?.image && (
@@ -141,17 +197,6 @@ export default function CategoryProducts({
     <Card className="mb-6">
       <CardContent className="p-4">
         <div className="flex flex-col gap-4">
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-
           {/* Filters Row */}
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             <div className="flex flex-wrap gap-2 flex-1">
@@ -190,7 +235,7 @@ export default function CategoryProducts({
             {/* View Mode Toggle */}
             <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
               <Button
-                variant={viewMode === "grid" ? "default" : "ghost"}
+                variant={viewMode === "grid" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("grid")}
                 className="flex items-center gap-2 h-8"
@@ -199,7 +244,7 @@ export default function CategoryProducts({
                 <span className="hidden sm:inline">Grid</span>
               </Button>
               <Button
-                variant={viewMode === "list" ? "default" : "ghost"}
+                variant={viewMode === "list" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("list")}
                 className="flex items-center gap-2 h-8"
@@ -211,40 +256,45 @@ export default function CategoryProducts({
           </div>
 
           {/* Active Filters */}
-          {(searchTerm || sortBy !== "newest") && (
+          {(sortBy !== "newest" || sortOrder !== "asc") && (
             <div className="flex flex-wrap gap-2 items-center">
               <span className="text-sm text-gray-600">Active filters:</span>
-              {searchTerm && (
+
+              {(sortBy !== "newest" || sortOrder !== "asc") && (
                 <Badge
                   variant="secondary"
                   className="flex items-center gap-1"
                 >
-                  Search: {searchTerm}
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="ml-1 hover:text-red-500"
-                  >
-                    ×
-                  </button>
-                </Badge>
-              )}
-              {sortBy !== "newest" && (
-                <Badge
-                  variant="secondary"
-                  className="flex items-center gap-1"
-                >
-                  Sort: {sortBy} ({sortOrder})
+                  Sort:{" "}
+                  {sortBy === "price"
+                    ? "Price"
+                    : sortBy === "name"
+                    ? "Name"
+                    : "Newest"}{" "}
+                  ({sortOrder === "asc" ? "Low to High" : "High to Low"})
                   <button
                     onClick={() => {
                       setSortBy("newest");
                       setSortOrder("asc");
                     }}
-                    className="ml-1 hover:text-red-500"
+                    className="ml-1 hover:text-red-500 text-lg leading-none"
+                    aria-label="Clear sort filter"
                   >
                     ×
                   </button>
                 </Badge>
               )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSortBy("newest");
+                  setSortOrder("asc");
+                }}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 text-sm"
+              >
+                Clear all filters
+              </Button>
             </div>
           )}
         </div>
@@ -253,35 +303,42 @@ export default function CategoryProducts({
   );
 
   // Empty state component
-  const EmptyState = () => (
-    <div className="text-center py-16">
-      <div className="w-24 h-24 mx-auto mb-6 text-gray-300">
-        <Package className="w-full h-full" />
+  const EmptyState = () => {
+    const hasOriginalData = productsData?.data && productsData.data.length > 0;
+    const isFiltered = sortBy !== "newest" || sortOrder !== "asc";
+
+    return (
+      <div className="text-center py-16">
+        <div className="w-24 h-24 mx-auto mb-6 text-gray-300">
+          <Package className="w-full h-full" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          {hasOriginalData && isFiltered
+            ? "No matching products"
+            : "No products found"}
+        </h3>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {isFiltered && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSortBy("newest");
+                setSortOrder("asc");
+              }}
+              className="flex items-center gap-2"
+            >
+              <Filter className="w-4 h-4" />
+              Clear all filters
+            </Button>
+          )}
+          <Link href="/categories">
+            <Button variant="primary">Browse all categories</Button>
+          </Link>
+        </div>
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-        No products found
-      </h3>
-      <p className="text-gray-600 mb-6">
-        {searchTerm
-          ? `No products match "${searchTerm}" in this category.`
-          : "This category doesn't have any products yet."}
-      </p>
-      {searchTerm && (
-        <Button
-          variant="outline"
-          onClick={() => setSearchTerm("")}
-          className="mb-4"
-        >
-          Clear search
-        </Button>
-      )}
-      <div>
-        <Link href="/categories">
-          <Button variant="default">Browse all categories</Button>
-        </Link>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // Error state component
   const ErrorState = () => (
@@ -297,7 +354,7 @@ export default function CategoryProducts({
           "Unable to load products. Please try again."}
       </p>
       <Button
-        variant="default"
+        variant="primary"
         onClick={() => window.location.reload()}
       >
         Try again
@@ -307,7 +364,29 @@ export default function CategoryProducts({
 
   // Enhanced pagination component
   const EnhancedPagination = () => {
+    // Only show pagination if no client-side filters are active
+    // and there are multiple pages from the API
     if (!productsData || productsData.last_page <= 1) return null;
+
+    const hasActiveFilters = sortBy !== "newest" || sortOrder !== "asc";
+
+    // Hide pagination when filters are active since we're showing filtered results
+    if (hasActiveFilters) {
+      return (
+        <div className="text-center mt-8">
+          <div className="text-sm text-gray-500 mb-4">
+            Showing {filteredAndSortedProducts.length} filtered results from
+            page {productsData.current_page}
+          </div>
+          {productsData.last_page > 1 && (
+            <div className="text-sm text-gray-400">
+              Clear filters to browse other pages ({productsData.current_page}{" "}
+              of {productsData.last_page})
+            </div>
+          )}
+        </div>
+      );
+    }
 
     const currentPage = productsData.current_page;
     const totalPages = productsData.last_page;
@@ -340,7 +419,7 @@ export default function CategoryProducts({
           ).map((pageNum) => (
             <Button
               key={pageNum}
-              variant={pageNum === currentPage ? "default" : "outline"}
+              variant={pageNum === currentPage ? "primary" : "outline"}
               size="sm"
               onClick={() => setPage(pageNum)}
               className="min-w-[40px]"
@@ -407,7 +486,7 @@ export default function CategoryProducts({
                   : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
               }`}
             >
-              {productsData.data.map((product) => (
+              {filteredAndSortedProducts.map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}

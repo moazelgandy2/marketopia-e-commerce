@@ -1,20 +1,101 @@
-import Link from "next/link";
+"use client";
+
+import { useState, useMemo } from "react";
+import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Home, Grid3X3 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import Pagination from "@/components/elements/pagination";
+import {
+  ArrowRight,
+  Home,
+  Search,
+  Grid3X3,
+  Package,
+  Filter,
+  SortAsc,
+  SortDesc,
+} from "lucide-react";
+import { useParentCategories } from "@/hooks/use-categories";
+import { Category } from "@/types";
 
 export default function AllCategoriesPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const { data, isLoading, error } = useParentCategories(currentPage);
+
+  // Filter and sort categories based on search term and sort order
+  const filteredAndSortedCategories = useMemo(() => {
+    if (!data?.categories) return [];
+
+    let filtered = data.categories.filter((category) =>
+      category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    return filtered.sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.name.localeCompare(b.name);
+      } else {
+        return b.name.localeCompare(a.name);
+      }
+    });
+  }, [data?.categories, searchTerm, sortOrder]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const toggleSortOrder = () => {
+    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+              <div className="text-red-600 mb-2">
+                <Package className="w-8 h-8 mx-auto" />
+              </div>
+              <h3 className="text-lg font-semibold text-red-800 mb-2">
+                Failed to Load Categories
+              </h3>
+              <p className="text-red-600 text-sm mb-4">
+                {error instanceof Error
+                  ? error.message
+                  : "Something went wrong"}
+              </p>
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="border-red-200 text-red-600 hover:bg-red-50"
+              >
+                Try Again
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
           <Link
             href="/"
-            className="hover:text-primary transition-colors flex items-center"
+            className="hover:text-primary transition-colors flex items-center group"
           >
-            <Home className="w-4 h-4 mr-1" />
+            <Home className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
             Home
           </Link>
           <ArrowRight className="w-4 h-4" />
@@ -22,49 +103,183 @@ export default function AllCategoriesPage() {
         </nav>
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
             Browse All Categories
           </h1>
-          <p className="text-gray-600">
-            Discover products across all our categories
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Discover amazing products across all our carefully curated
+            categories
           </p>
+          {data?.pagination && (
+            <div className="mt-4 text-sm text-gray-500">
+              Showing {data.pagination.from} - {data.pagination.to} of{" "}
+              {data.pagination.total} categories
+            </div>
+          )}
+        </div>
+
+        {/* Search and Filters */}
+        <div className="mb-8 bg-white rounded-xl shadow-sm border p-6">
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                type="text"
+                placeholder="Search categories..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 border-gray-200 focus:border-primary/50 focus:ring-primary/20"
+              />
+            </div>
+            <Button
+              onClick={toggleSortOrder}
+              variant="outline"
+              className="flex items-center gap-2 whitespace-nowrap"
+            >
+              {sortOrder === "asc" ? (
+                <SortAsc className="w-4 h-4" />
+              ) : (
+                <SortDesc className="w-4 h-4" />
+              )}
+              Sort {sortOrder === "asc" ? "A-Z" : "Z-A"}
+            </Button>
+          </div>
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Placeholder for categories - you can fetch this from your API */}
-          <Card className="group hover:shadow-lg transition-shadow cursor-pointer">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Grid3X3 className="w-6 h-6 text-primary" />
-                </div>
-                <Badge variant="secondary">Coming Soon</Badge>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">All Categories</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Browse through all available product categories
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <Card
+                key={index}
+                className="overflow-hidden"
+              >
+                <CardContent className="p-0">
+                  <Skeleton className="h-48 w-full" />
+                  <div className="p-6">
+                    <Skeleton className="h-6 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-full mb-4" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : filteredAndSortedCategories.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+            {filteredAndSortedCategories.map((category: Category) => (
+              <Card
+                key={category.id}
+                className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md hover:-translate-y-1 overflow-hidden bg-white"
+              >
+                <CardContent className="p-0">
+                  <div className="relative overflow-hidden">
+                    <div className="aspect-video relative bg-gradient-to-br from-gray-100 to-gray-200">
+                      {category.image ? (
+                        <>
+                          <Image
+                            src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${category.image}`}
+                            alt={category.name}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                              const fallback = e.currentTarget
+                                .nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                            }}
+                          />
+                          <div
+                            className="hidden items-center justify-center h-full absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200"
+                            style={{ display: "none" }}
+                          >
+                            <Grid3X3 className="w-12 h-12 text-gray-400" />
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <Grid3X3 className="w-12 h-12 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="absolute top-3 right-3">
+                      {category.popular === 1 && (
+                        <Badge
+                          variant="secondary"
+                          className="bg-yellow-500/90 text-white border-0 shadow-md"
+                        >
+                          Popular
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900 group-hover:text-primary transition-colors line-clamp-1">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                      Explore our collection of {category.name.toLowerCase()}{" "}
+                      products
+                    </p>
+                    <Link href={`/categories/${category.id}`}>
+                      <Button className="w-full group-hover:bg-primary group-hover:text-white transition-all duration-300 bg-gray-50 text-gray-700 hover:bg-primary border-0">
+                        Browse Category
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="bg-white rounded-xl shadow-sm border p-8 max-w-md mx-auto">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                No Categories Found
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {searchTerm
+                  ? `No categories match "${searchTerm}". Try a different search term.`
+                  : "No categories are available at the moment."}
               </p>
-              <Link href="/">
+              {searchTerm && (
                 <Button
+                  onClick={() => setSearchTerm("")}
                   variant="outline"
-                  className="w-full group-hover:bg-primary group-hover:text-white transition-colors"
                 >
-                  View All
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  Clear Search
                 </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {data?.pagination && data.pagination.last_page > 1 && !searchTerm && (
+          <div className="mb-8">
+            <Pagination
+              currentPage={data.pagination.current_page}
+              totalPages={data.pagination.last_page}
+              onPageChange={handlePageChange}
+              showingFrom={data.pagination.from}
+              showingTo={data.pagination.to}
+              total={data.pagination.total}
+            />
+          </div>
+        )}
 
         {/* Back to Home */}
-        <div className="mt-12 text-center">
+        <div className="text-center">
           <Link href="/">
             <Button
               variant="outline"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 mx-auto bg-white hover:bg-gray-50 border-gray-200 shadow-sm"
             >
               <Home className="w-4 h-4" />
               Back to Home

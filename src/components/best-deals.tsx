@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useBestSelling } from "@/hooks/use-best-selling";
 import { BestSelling } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 
 export const SmartphoneDeals = () => {
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
@@ -143,93 +144,100 @@ export const SmartphoneDeals = () => {
                   key={product.id}
                   className="pl-1 md:pl-2 py-2 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6"
                 >
-                  <div
-                    className={`bg-white p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer h-full flex flex-col mx-1 ${
-                      selectedProduct === index ? "ring-2 ring-purple-500" : ""
-                    }`}
-                    onClick={() => handleProductClick(index, product)}
+                  <Link
+                    href={`/products/${product.id}`}
+                    passHref
                   >
-                    <div className="relative">
-                      {discountPercentage && (
-                        <Badge className="absolute top-1 md:top-2 left-1 md:left-2 z-10 bg-red-500 hover:bg-red-600 text-xs font-semibold px-1 py-0">
-                          -{discountPercentage}%
-                        </Badge>
-                      )}
-                      <div className="h-28 md:h-32 relative bg-gray-50 overflow-hidden">
-                        <Image
-                          src={`${process.env.NEXT_PUBLIC_API_URL}/storage/${product.image}`}
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            // Fallback to gradient background if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const parent = target.parentElement;
-                            if (parent) {
-                              parent.className = `h-28 md:h-32 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center`;
-                              parent.innerHTML = `<div class="text-white text-xs font-medium text-center p-1">${product.name}</div>`;
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Card Content - Compact */}
-                    <div className="p-2 md:p-3 flex-1 flex flex-col justify-between">
-                      {/* Product Name - Compact */}
-                      <div className="h-8 md:h-10 mb-2">
-                        <h3 className="font-medium text-gray-800 group-hover:text-purple-600 transition-colors text-xs md:text-sm leading-tight line-clamp-2">
-                          {product.name}
-                        </h3>
-                      </div>
-
-                      {/* Rating Section - Compact */}
-                      <div className="flex items-center gap-1 mb-1">
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <span
-                              key={i}
-                              className={`text-xs ${
-                                i < Math.floor(product.rate)
-                                  ? "text-yellow-400"
-                                  : "text-gray-300"
-                              }`}
-                            >
-                              ★
-                            </span>
-                          ))}
+                    <div
+                      className={`bg-white p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer h-full flex flex-col mx-1 ${
+                        selectedProduct === index
+                          ? "ring-2 ring-purple-500"
+                          : ""
+                      }`}
+                      onClick={() => handleProductClick(index, product)}
+                    >
+                      <div className="relative">
+                        {discountPercentage && (
+                          <Badge className="absolute top-1 md:top-2 left-1 md:left-2 z-10 bg-red-500 hover:bg-red-600 text-xs font-semibold px-1 py-0">
+                            -{discountPercentage}%
+                          </Badge>
+                        )}
+                        <div className="h-28 md:h-32 relative bg-gray-50 overflow-hidden">
+                          <Image
+                            src={`${process.env.NEXT_PUBLIC_API_URL}/storage/${product.image}`}
+                            alt={product.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              // Fallback to gradient background if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const parent = target.parentElement;
+                              if (parent) {
+                                parent.className = `h-28 md:h-32 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center`;
+                                parent.innerHTML = `<div class="text-white text-xs font-medium text-center p-1">${product.name}</div>`;
+                              }
+                            }}
+                          />
                         </div>
-                        <span className="text-xs text-gray-500">
-                          ({product.total_sold})
-                        </span>
                       </div>
 
-                      {/* Pricing Section - Compact */}
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-1 flex-wrap">
-                          <span className="text-sm md:text-base font-bold text-gray-900">
-                            {product.discount_price
-                              ? product.discount_price.toLocaleString()
-                              : product.price.toLocaleString()}{" "}
-                            <span className="text-xs font-normal text-gray-600">
-                              EGP
-                            </span>
+                      {/* Card Content - Compact */}
+                      <div className="p-2 md:p-3 flex-1 flex flex-col justify-between">
+                        {/* Product Name - Compact */}
+                        <div className="h-8 md:h-10 mb-2">
+                          <h3 className="font-medium text-gray-800 group-hover:text-purple-600 transition-colors text-xs md:text-sm leading-tight line-clamp-2">
+                            {product.name}
+                          </h3>
+                        </div>
+
+                        {/* Rating Section - Compact */}
+                        <div className="flex items-center gap-1 mb-1">
+                          <div className="flex items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <span
+                                key={i}
+                                className={`text-xs ${
+                                  i < Math.floor(product.rate)
+                                    ? "text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              >
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            ({product.total_sold})
                           </span>
-                          {product.discount_price && (
-                            <span className="text-xs text-gray-500 line-through">
-                              {product.price.toLocaleString()}
+                        </div>
+
+                        {/* Pricing Section - Compact */}
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1 flex-wrap">
+                            <span className="text-sm md:text-base font-bold text-gray-900">
+                              {product.discount_price
+                                ? product.discount_price.toLocaleString()
+                                : product.price.toLocaleString()}{" "}
+                              <span className="text-xs font-normal text-gray-600">
+                                EGP
+                              </span>
                             </span>
+                            {product.discount_price && (
+                              <span className="text-xs text-gray-500 line-through">
+                                {product.price.toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+                          {savings && (
+                            <p className="text-green-600 text-xs font-medium">
+                              Save {savings.toLocaleString()} EGP
+                            </p>
                           )}
                         </div>
-                        {savings && (
-                          <p className="text-green-600 text-xs font-medium">
-                            Save {savings.toLocaleString()} EGP
-                          </p>
-                        )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </CarouselItem>
               );
             })}

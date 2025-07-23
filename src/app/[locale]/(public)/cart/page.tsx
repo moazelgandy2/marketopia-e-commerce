@@ -5,8 +5,10 @@ import {
   useDeleteCartItem,
   useUpdateCartItemQuantity,
 } from "@/hooks/use-cart";
+import { useValidateCoupon } from "@/hooks/use-coupons";
 import { CartItem, CartProductAttributeValue } from "@/types";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +18,15 @@ import {
   AlertIcon,
   AlertTitle,
 } from "@/components/ui/alert";
-import { Minus, Plus, Trash2, ShoppingBag, BellIcon } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  Trash2,
+  ShoppingBag,
+  BellIcon,
+  Tag,
+  CheckCircle,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -26,8 +36,15 @@ export default function CartPage() {
   const { data: cartData, isLoading, error } = useCart();
   const deleteCartItemMutation = useDeleteCartItem();
   const updateQuantityMutation = useUpdateCartItemQuantity();
+  const validateCouponMutation = useValidateCoupon();
 
   const [updatingItems, setUpdatingItems] = useState<Set<number>>(new Set());
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount_type: string;
+    discount_value: string;
+  } | null>(null);
 
   const handleDeleteItem = async (cartItemId: number) => {
     try {
@@ -109,6 +126,97 @@ export default function CartPage() {
       });
     }
   };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast.custom(() => (
+        <Alert
+          variant="destructive"
+          appearance="outline"
+          close={true}
+        >
+          <AlertIcon>
+            <BellIcon />
+          </AlertIcon>
+          <AlertTitle>Please enter a coupon code</AlertTitle>
+        </Alert>
+      ));
+      return;
+    }
+
+    try {
+      // Validate the coupon
+      const validationResult = await validateCouponMutation.mutateAsync(
+        couponCode
+      );
+
+      if (validationResult.status) {
+        setAppliedCoupon({
+          code: validationResult.data.code,
+          discount_type: validationResult.data.discount_type,
+          discount_value: validationResult.data.discount_value,
+        });
+        setCouponCode("");
+
+        // Create discount display text
+        const discountText =
+          validationResult.data.discount_type === "percentage"
+            ? `${validationResult.data.discount_value}% off`
+            : `${formatPrice(validationResult.data.discount_value)} off`;
+
+        toast.custom(() => (
+          <Alert
+            variant="success"
+            appearance="outline"
+            close={true}
+          >
+            <AlertIcon>
+              <CheckCircle />
+            </AlertIcon>
+            <AlertTitle>
+              Coupon "{validationResult.data.code}" applied successfully!
+              <span className="block text-sm font-normal text-green-700 mt-1">
+                You get {discountText}
+              </span>
+            </AlertTitle>
+          </Alert>
+        ));
+      }
+    } catch (error: any) {
+      toast.custom(() => (
+        <Alert
+          variant="destructive"
+          appearance="outline"
+          close={true}
+        >
+          <AlertIcon>
+            <BellIcon />
+          </AlertIcon>
+          <AlertTitle>{error.message || "Failed to apply coupon"}</AlertTitle>
+        </Alert>
+      ));
+    }
+  };
+
+  // Calculate coupon discount
+  const calculateCouponDiscount = () => {
+    if (!appliedCoupon || !cartData?.data?.pricing) return 0;
+
+    const subtotal = cartData.data.pricing.total_price;
+    if (appliedCoupon.discount_type === "percentage") {
+      return Math.min(
+        subtotal * (parseFloat(appliedCoupon.discount_value) / 100),
+        subtotal
+      );
+    } else {
+      return Math.min(parseFloat(appliedCoupon.discount_value), subtotal);
+    }
+  };
+
+  const couponDiscount = calculateCouponDiscount();
+  const finalTotal = cartData?.data?.pricing
+    ? cartData.data.pricing.total_price_after_discount - couponDiscount
+    : 0;
 
   const formatPrice = (price: string | number) => {
     return new Intl.NumberFormat("en-US", {
@@ -343,16 +451,91 @@ export default function CartPage() {
 
                 {pricing.discount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>Discount:</span>
+                    <span>Product Discount:</span>
                     <span>-{formatPrice(pricing.discount)}</span>
                   </div>
                 )}
+
+                {/* Coupon Section */}
+                <div className="border-t pt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Tag className="h-4 w-4 text-purple-600" />
+                    <span className="font-medium">Discount Code</span>
+                  </div>
+
+                  {appliedCoupon || pricing.applied_coupon ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between p-2 bg-green-50 border border-green-200 rounded-md">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          <span className="text-sm font-medium text-green-800">
+                            {appliedCoupon?.code ||
+                              pricing.applied_coupon?.code}
+                          </span>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setAppliedCoupon(null);
+                            // TODO: Add remove coupon API call
+                          }}
+                          className="text-green-600 hover:text-green-700 h-6 px-2"
+                        >
+                          Remove
+                        </Button>
+                      </div>
+
+                      {(couponDiscount > 0 || pricing.coupon_discount) && (
+                        <div className="flex justify-between text-green-600">
+                          <span>Coupon Discount:</span>
+                          <span>
+                            -
+                            {formatPrice(
+                              couponDiscount || pricing.coupon_discount || 0
+                            )}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        type="text"
+                        placeholder="Enter coupon code"
+                        value={couponCode}
+                        onChange={(e) =>
+                          setCouponCode(e.target.value.toUpperCase())
+                        }
+                        className="flex-1"
+                        disabled={
+                          appliedCoupon || validateCouponMutation.isPending
+                        }
+                      />
+                      <Button
+                        onClick={handleApplyCoupon}
+                        disabled={
+                          !couponCode.trim() ||
+                          appliedCoupon ||
+                          validateCouponMutation.isPending
+                        }
+                        className="bg-purple-600 hover:bg-purple-700"
+                      >
+                        {validateCouponMutation.isPending ? "..." : "Apply"}
+                      </Button>
+                    </div>
+                  )}
+                </div>
 
                 <hr />
 
                 <div className="flex justify-between text-lg font-semibold">
                   <span>Total:</span>
-                  <span>{formatPrice(pricing.total_price_after_discount)}</span>
+                  <span>
+                    {formatPrice(
+                      finalTotal || pricing.total_price_after_discount
+                    )}
+                  </span>
                 </div>
 
                 <Button

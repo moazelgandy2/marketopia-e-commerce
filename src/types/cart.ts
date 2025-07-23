@@ -52,6 +52,12 @@ export interface CartPricing {
   total_price: number;
   total_price_after_discount: number;
   discount: number;
+  coupon_discount?: number;
+  applied_coupon?: {
+    code: string;
+    discount_type: string;
+    discount_value: string;
+  };
 }
 
 export interface CartData {

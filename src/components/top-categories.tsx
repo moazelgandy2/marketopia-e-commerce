@@ -4,14 +4,19 @@ import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCategories } from "@/hooks/use-categories";
 import { Category } from "@/types";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 export const TopCategories = () => {
   const [activeCategory, setActiveCategory] = useState(0);
   const { data: categories, isLoading, error } = useCategories();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const handleCategoryClick = (index: number, category: Category) => {
     setActiveCategory(index);
+    router.push(`/categories/${category.id}`);
     console.log(`Selected category: ${category.name} (ID: ${category.id})`);
   };
 
@@ -80,7 +85,7 @@ export const TopCategories = () => {
   }
 
   return (
-    <section className="container mx-auto px-4 py-8 md:py-12">
+    <section className="container mx-auto px-4 py-4 md:py-8">
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
@@ -88,10 +93,15 @@ export const TopCategories = () => {
           </h2>
           <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
         </div>
-        <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base">
-          View All
-          <span>→</span>
-        </button>
+        <Link href={"/categories"}>
+          <Button
+            variant={"outline"}
+            className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base"
+          >
+            View All
+            <span>→</span>
+          </Button>
+        </Link>
       </div>
 
       {/* Carousel Container */}
@@ -134,7 +144,7 @@ export const TopCategories = () => {
               onClick={() => handleCategoryClick(index, category)}
             >
               <div
-                className={`w-32 h-32 md:w-42 md:h-42 mx-auto mb-2 md:mb-4 rounded-full flex items-center justify-center transition-all duration-300 relative overflow-hidden ${
+                className={`w-28 h-28 md:w-36 md:h-36 mx-auto mb-2 md:mb-4 rounded-full flex items-center justify-center transition-all duration-300 relative overflow-hidden ${
                   activeCategory === index
                     ? "bg-purple-600 text-white shadow-lg ring-4 ring-purple-200"
                     : "bg-gray-100 text-gray-600 group-hover:bg-purple-100 group-hover:text-purple-600"

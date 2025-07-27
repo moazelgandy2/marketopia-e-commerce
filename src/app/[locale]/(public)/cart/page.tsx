@@ -540,7 +540,7 @@ export default function CartPage() {
 
                 <Link href="/checkout">
                   <Button
-                    className="w-full"
+                    className="w-full my-2"
                     size="lg"
                   >
                     Proceed to Checkout
@@ -549,7 +549,7 @@ export default function CartPage() {
 
                 <Link
                   href="/products"
-                  className="block"
+                  className="block my-2"
                 >
                   <Button
                     variant="outline"

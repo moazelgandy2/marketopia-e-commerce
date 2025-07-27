@@ -2,6 +2,11 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useProductById } from "@/hooks/use-products";
+import {
+  useAddToCart,
+  useCart,
+  useUpdateCartItemQuantity,
+} from "@/hooks/use-cart";
 import { useLocale } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -10,19 +15,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Star,
-  Heart,
   Minus,
   Plus,
   ShoppingCart,
   Truck,
   RotateCcw,
-  ChevronLeft,
   ArrowLeft,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 
-// Helper function to get color values for color attributes
 const getColorValue = (colorName: string): string => {
   const colorMap: Record<string, string> = {
     black: "#000000",
@@ -43,7 +46,7 @@ const getColorValue = (colorName: string): string => {
   };
 
   const normalizedColor = colorName.toLowerCase().trim();
-  return colorMap[normalizedColor] || "#9ca3af"; // Default gray color
+  return colorMap[normalizedColor] || "#9ca3af";
 };
 
 export default function ProductDetailPage() {
@@ -60,14 +63,19 @@ export default function ProductDetailPage() {
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
   const { data: product, isLoading, error } = useProductById(productId, locale);
+  const addToCartMutation = useAddToCart();
+  const updateCartItemMutation = useUpdateCartItemQuantity();
+  const { data: cartData } = useCart();
 
-  // Reset failed images when product changes
   useEffect(() => {
     setFailedImages(new Set());
     setCurrentImageIndex(0);
   }, [productId]);
 
-  // Group attributes by their attribute name
+  useEffect(() => {
+    setQuantity(1);
+  }, [selectedAttributes]);
+
   const attributeGroups =
     product?.product_attributes.reduce((groups, attr) => {
       const attributeName = attr.attribute_value.attribute.name;
@@ -78,7 +86,6 @@ export default function ProductDetailPage() {
       return groups;
     }, {} as Record<string, typeof product.product_attributes>) || {};
 
-  // Calculate total price including selected attributes
   const calculateTotalPrice = () => {
     const basePrice = parseFloat(
       product?.discount_price || product?.price || "0"
@@ -93,6 +100,119 @@ export default function ProductDetailPage() {
       0
     );
     return basePrice + attributePrices;
+  };
+
+  const areRequiredAttributesSelected = () => {
+    if (!product?.product_attributes.length) return true;
+
+    const attributeNames = Object.keys(attributeGroups);
+    const selectedAttributeNames = Object.keys(selectedAttributes);
+
+    return true;
+  };
+
+  const canAddToCart = () => {
+    if (!product || product.quantity <= 0 || !areRequiredAttributesSelected()) {
+      return false;
+    }
+
+    if (addToCartMutation.isPending || updateCartItemMutation.isPending) {
+      return false;
+    }
+
+    if (existingCartItem) {
+      const newTotalQuantity = existingCartItem.quantity + quantity;
+      return newTotalQuantity <= product.quantity;
+    }
+
+    return quantity <= product.quantity;
+  };
+
+  const getExistingCartItem = () => {
+    if (!cartData?.data?.items || !product) return null;
+
+    const selectedAttributeValues = Object.values(selectedAttributes);
+
+    return cartData.data.items.find((cartItem) => {
+      if (cartItem.product_id !== parseInt(productId)) return false;
+
+      const cartItemAttributeIds =
+        cartItem.product_attribute_values?.map(
+          (attr) => attr.attribute_value_id
+        ) || [];
+
+      if (selectedAttributeValues.length !== cartItemAttributeIds.length)
+        return false;
+
+      return selectedAttributeValues.every((attrId) =>
+        cartItemAttributeIds.includes(attrId)
+      );
+    });
+  };
+
+  const existingCartItem = getExistingCartItem();
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+
+    try {
+      const attributeValues = Object.values(selectedAttributes);
+
+      if (existingCartItem) {
+        const newQuantity = existingCartItem.quantity + quantity;
+
+        if (newQuantity > product.quantity) {
+          toast.error("Cannot add to cart", {
+            description: `Only ${product.quantity} items available. You already have ${existingCartItem.quantity} in your cart.`,
+          });
+          return;
+        }
+
+        await updateCartItemMutation.mutateAsync({
+          cartItemId: existingCartItem.id,
+          quantity: newQuantity,
+        });
+
+        toast.success("Cart updated successfully!", {
+          description: `${
+            product.name
+          } quantity updated to ${newQuantity} item${
+            newQuantity > 1 ? "s" : ""
+          }.`,
+          action: {
+            label: "View Cart",
+            onClick: () => router.push("/cart"),
+          },
+        });
+      } else {
+        await addToCartMutation.mutateAsync({
+          productId: parseInt(productId),
+          quantity: quantity,
+          attributeValues: attributeValues,
+        });
+
+        toast.success("Product added to cart successfully!", {
+          description: `${product.name} (${quantity} item${
+            quantity > 1 ? "s" : ""
+          }) has been added to your cart.`,
+          action: {
+            label: "View Cart",
+            onClick: () => router.push("/cart"),
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to add/update cart:", error);
+      toast.error(
+        existingCartItem
+          ? "Failed to update cart"
+          : "Failed to add product to cart",
+        {
+          description:
+            error instanceof Error ? error.message : "Please try again later.",
+        }
+      );
+    }
   };
 
   if (isLoading) {
@@ -127,13 +247,15 @@ export default function ProductDetailPage() {
 
   const handleQuantityChange = (type: "increase" | "decrease") => {
     if (type === "increase") {
-      setQuantity((prev) => Math.min(prev + 1, product.quantity));
+      const maxQuantity = existingCartItem
+        ? Math.max(1, product.quantity - existingCartItem.quantity)
+        : product.quantity;
+      setQuantity((prev) => Math.min(prev + 1, maxQuantity));
     } else {
       setQuantity((prev) => Math.max(prev - 1, 1));
     }
   };
 
-  // Product images from API
   const productImages =
     product.images?.length > 0
       ? product.images.map(
@@ -143,7 +265,6 @@ export default function ProductDetailPage() {
       ? [`${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.image}`]
       : [];
 
-  // Reset image index if it's out of bounds
   if (currentImageIndex >= productImages.length) {
     setCurrentImageIndex(0);
   }
@@ -568,40 +689,115 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Quantity & Add to Cart */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center border border-gray-300 rounded-lg">
-                <button
-                  onClick={() => handleQuantityChange("decrease")}
-                  className="p-2 hover:bg-gray-100 rounded-l-lg"
-                  disabled={quantity <= 1}
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="px-4 py-2 font-medium">{quantity}</span>
-                <button
-                  onClick={() => handleQuantityChange("increase")}
-                  className="p-2 hover:bg-gray-100 rounded-r-lg"
-                  disabled={quantity >= product.quantity}
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
+            {/* Summary of selected options */}
+            {Object.keys(selectedAttributes).length > 0 && (
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <h4 className="font-medium text-purple-900 mb-2">
+                  Selected Options:
+                </h4>
+                <div className="space-y-1">
+                  {Object.entries(selectedAttributes).map(
+                    ([attrName, attrValueId]) => {
+                      const attr = product.product_attributes.find(
+                        (a) => a.attribute_value_id === attrValueId
+                      );
+                      if (!attr) return null;
+
+                      return (
+                        <div
+                          key={attrName}
+                          className="flex justify-between items-center text-sm"
+                        >
+                          <span className="text-purple-700">
+                            {attrName}:{" "}
+                            <strong>{attr.attribute_value.value}</strong>
+                          </span>
+                          {attr.price > 0 && (
+                            <span className="text-purple-600 font-medium">
+                              +{attr.price.toLocaleString()} EGP
+                            </span>
+                          )}
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
               </div>
-              <Button
-                size="lg"
-                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
-                disabled={product.quantity <= 0}
-              >
-                <ShoppingCart className="w-5 h-5 mr-2" />
-                {product.quantity > 0 ? "Buy Now" : "Out of Stock"}
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="p-3 border-2 border-gray-300 hover:bg-gray-50"
-              >
-                <Heart className="w-5 h-5" />
-              </Button>
+            )}
+
+            {/* Quantity & Add to Cart */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center border border-gray-300 rounded-lg">
+                  <button
+                    onClick={() => handleQuantityChange("decrease")}
+                    className="p-2 hover:bg-gray-100 rounded-l-lg"
+                    disabled={quantity <= 1}
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <span className="px-4 py-2 font-medium">{quantity}</span>
+                  <button
+                    onClick={() => handleQuantityChange("increase")}
+                    className="p-2 hover:bg-gray-100 rounded-r-lg"
+                    disabled={quantity >= product.quantity}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-medium disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
+                  disabled={!canAddToCart()}
+                  onClick={handleAddToCart}
+                >
+                  {addToCartMutation.isPending ||
+                  updateCartItemMutation.isPending ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                      {existingCartItem ? "Updating..." : "Adding..."}
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="w-5 h-5 mr-2" />
+                      {product.quantity <= 0
+                        ? "Out of Stock"
+                        : existingCartItem
+                        ? `Update Cart (${existingCartItem.quantity} in cart)`
+                        : "Add to Cart"}
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* Show existing cart item info */}
+              {existingCartItem && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <div className="flex items-center space-x-2 text-sm text-blue-800">
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>
+                      This item is already in your cart (
+                      {existingCartItem.quantity} item
+                      {existingCartItem.quantity > 1 ? "s" : ""})
+                    </span>
+                  </div>
+                  <p className="text-xs text-blue-600 mt-1">
+                    Clicking "Update Cart" will add {quantity} more item
+                    {quantity > 1 ? "s" : ""} to your existing quantity.
+                  </p>
+                  {existingCartItem.quantity + quantity > product.quantity && (
+                    <div className="mt-2 p-2 bg-orange-50 border border-orange-200 rounded text-xs text-orange-800">
+                      <strong>Warning:</strong> Adding {quantity} more would
+                      exceed available stock ({product.quantity} available).
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Delivery Info */}

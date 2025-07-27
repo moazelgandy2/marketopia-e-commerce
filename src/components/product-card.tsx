@@ -5,7 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
-import { useAddToCart } from "@/hooks/use-cart";
+import {
+  useAddToCart,
+  useCart,
+  useUpdateCartItemQuantity,
+} from "@/hooks/use-cart";
 import { getProductById } from "@/actions/products";
 import { toast } from "sonner";
 import { Alert, AlertIcon, AlertTitle } from "@/components/ui/alert";
@@ -15,6 +19,8 @@ import Link from "next/link";
 
 export default function ProductCard({ product }: { product: Product }) {
   const addToCartMutation = useAddToCart();
+  const updateCartItemMutation = useUpdateCartItemQuantity();
+  const { data: cartData } = useCart();
   const locale = useLocale();
 
   const discount =
@@ -24,6 +30,42 @@ export default function ProductCard({ product }: { product: Product }) {
         parseFloat(product.price)) *
       100
     ).toFixed(0);
+
+  // Check if product (with any attributes) is already in cart for display purposes
+  const getExistingCartItemSimple = () => {
+    if (!cartData?.data?.items) return null;
+
+    return cartData.data.items.find((cartItem) => {
+      return cartItem.product_id === product.id;
+    });
+  };
+
+  // Check if product with specific attributes is already in cart for add/update logic
+  const getExistingCartItem = (defaultAttributeValues: number[]) => {
+    if (!cartData?.data?.items) return null;
+
+    return cartData.data.items.find((cartItem) => {
+      // Check if product ID matches
+      if (cartItem.product_id !== product.id) return false;
+
+      // Get attribute value IDs from cart item
+      const cartItemAttributeIds =
+        cartItem.product_attribute_values?.map(
+          (attr) => attr.attribute_value_id
+        ) || [];
+
+      // Check if default attributes match cart item attributes
+      if (defaultAttributeValues.length !== cartItemAttributeIds.length)
+        return false;
+
+      // Check if all default attributes are present in cart item
+      return defaultAttributeValues.every((attrId) =>
+        cartItemAttributeIds.includes(attrId)
+      );
+    });
+  };
+
+  const existingCartItemSimple = getExistingCartItemSimple();
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -59,44 +101,57 @@ export default function ProductCard({ product }: { product: Product }) {
         });
       }
 
-      console.log("Sending to cart:", {
-        productId: product.id,
-        quantity: 1,
-        attributeValues: defaultAttributeValues,
-      });
+      // Check if item already exists in cart
+      const existingCartItem = getExistingCartItem(defaultAttributeValues);
 
-      await addToCartMutation.mutateAsync({
-        productId: product.id,
-        quantity: 1,
-        attributeValues: defaultAttributeValues,
-      });
+      if (existingCartItem) {
+        // Update existing cart item quantity
+        const newQuantity = existingCartItem.quantity + 1;
 
-      toast.custom(() => (
-        <Alert
-          variant="success"
-          appearance="outline"
-          close={true}
-        >
-          <AlertIcon>
-            <BellIcon />
-          </AlertIcon>
-          <AlertTitle>Item added to cart successfully</AlertTitle>
-        </Alert>
-      ));
+        // Check if new quantity exceeds stock
+        if (newQuantity > product.quantity) {
+          toast.error("Cannot add to cart", {
+            description: `Only ${product.quantity} items available. You already have ${existingCartItem.quantity} in your cart.`,
+          });
+          return;
+        }
+
+        await updateCartItemMutation.mutateAsync({
+          cartItemId: existingCartItem.id,
+          quantity: newQuantity,
+        });
+
+        toast.success("Cart updated successfully!", {
+          description: `${
+            product.name
+          } quantity updated to ${newQuantity} item${
+            newQuantity > 1 ? "s" : ""
+          }.`,
+        });
+      } else {
+        // Add new item to cart
+        console.log("Sending to cart:", {
+          productId: product.id,
+          quantity: 1,
+          attributeValues: defaultAttributeValues,
+        });
+
+        await addToCartMutation.mutateAsync({
+          productId: product.id,
+          quantity: 1,
+          attributeValues: defaultAttributeValues,
+        });
+
+        toast.success("Product added to cart successfully!", {
+          description: `${product.name} has been added to your cart.`,
+        });
+      }
     } catch (error) {
       console.error("Add to cart error:", error);
-      toast.custom(() => (
-        <Alert
-          variant="destructive"
-          appearance="outline"
-          close={true}
-        >
-          <AlertIcon>
-            <BellIcon />
-          </AlertIcon>
-          <AlertTitle>Failed to add item to cart</AlertTitle>
-        </Alert>
-      ));
+      toast.error("Failed to add product to cart", {
+        description:
+          error instanceof Error ? error.message : "Please try again later.",
+      });
     }
   };
 
@@ -110,6 +165,12 @@ export default function ProductCard({ product }: { product: Product }) {
           {discount && (
             <div className="absolute top-3 left-3 z-10 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold">
               {discount}%<div className="text-[10px] font-normal">OFF</div>
+            </div>
+          )}
+          {existingCartItemSimple && (
+            <div className="absolute top-3 right-3 z-10 bg-green-600 text-white px-2 py-1 rounded-md text-xs font-bold flex items-center gap-1">
+              <ShoppingCart className="w-3 h-3" />
+              {existingCartItemSimple.quantity}
             </div>
           )}
           <Image
@@ -154,16 +215,26 @@ export default function ProductCard({ product }: { product: Product }) {
       <CardFooter className="p-4 pt-0">
         <Button
           onClick={handleAddToCart}
-          disabled={addToCartMutation.isPending || product.quantity <= 0}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+          disabled={
+            addToCartMutation.isPending ||
+            updateCartItemMutation.isPending ||
+            product.quantity <= 0
+          }
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
           size="sm"
         >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          {addToCartMutation.isPending
-            ? "Adding..."
-            : product.quantity > 0
-            ? "Add to Cart"
-            : "Out of Stock"}
+          <ShoppingCart className="w-4 h-4 mr-2 flex-shrink-0" />
+          <span className="truncate">
+            {addToCartMutation.isPending || updateCartItemMutation.isPending
+              ? existingCartItemSimple
+                ? "Updating..."
+                : "Adding..."
+              : product.quantity <= 0
+              ? "Out of Stock"
+              : existingCartItemSimple
+              ? `Update (${existingCartItemSimple.quantity} in cart)`
+              : "Add to Cart"}
+          </span>
         </Button>
       </CardFooter>
     </Card>

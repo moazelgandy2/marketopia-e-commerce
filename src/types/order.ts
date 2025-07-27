@@ -7,23 +7,23 @@ export enum OrderStatus {
   CANCELLED = "cancelled",
 }
 
-enum PaymentMethod {
+export enum PaymentMethod {
   CASH = "cash",
   VISA = "visa",
   WALLET = "wallet",
 }
 
-enum PaymentStatus {
+export enum PaymentStatus {
   PAID = "paid",
   UNPAID = "unpaid",
 }
 
-enum OrderCreationType {
+export enum OrderCreationType {
   ONLINE = "online",
   POS = "pos",
 }
 
-enum DiscountType {
+export enum DiscountType {
   PERCENTAGE = "percentage",
   FIXED = "fixed",
 }
@@ -43,6 +43,7 @@ export type CouponType = {
 export type AddressType = {
   id: number;
   name: string;
+  address: string; // Changed from phone to address as first field
   phone: string;
   lat: string;
   lng: string;
@@ -50,7 +51,7 @@ export type AddressType = {
   city_id: number;
   user_id: number;
 
-  city: CityType;
+  city?: CityType; // Made optional
 
   created_at: string;
   updated_at: string;
@@ -77,16 +78,16 @@ export type AreaType = {
 
 export type ProductType = {
   id: number;
-  name: string;
+  name: string; // API returns this field
   slug: string;
   description: string;
   price: string;
   discount_price: string | null;
   quantity: number;
-  status: boolean;
+  status: string; // API returns string, not boolean
   category_id: number;
   brand_id: number;
-  image: string;
+  image: string; // API includes this field
   rate: number;
 
   created_at: string;

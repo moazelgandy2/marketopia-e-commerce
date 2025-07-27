@@ -538,12 +538,14 @@ export default function CartPage() {
                   </span>
                 </div>
 
-                <Button
-                  className="w-full"
-                  size="lg"
-                >
-                  Proceed to Checkout
-                </Button>
+                <Link href="/checkout">
+                  <Button
+                    className="w-full"
+                    size="lg"
+                  >
+                    Proceed to Checkout
+                  </Button>
+                </Link>
 
                 <Link
                   href="/products"

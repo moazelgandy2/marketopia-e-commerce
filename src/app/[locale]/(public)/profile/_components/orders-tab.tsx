@@ -23,6 +23,8 @@ const statusColors: Record<OrderStatus, string> = {
     "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800",
   confirmed:
     "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800",
+  preparing:
+    "bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800",
   ready:
     "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-800",
   on_delivery:
@@ -36,6 +38,7 @@ const statusColors: Record<OrderStatus, string> = {
 const statusIcons: Record<OrderStatus, any> = {
   pending: Clock,
   confirmed: CheckCircle,
+  preparing: Package,
   ready: Package,
   on_delivery: Truck,
   delivered: CheckCircle,

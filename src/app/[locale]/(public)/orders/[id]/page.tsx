@@ -146,8 +146,14 @@ const getOrderStatusConfig = (currentStatus: OrderStatus) => {
       color: "green",
     },
     {
+      key: OrderStatus.PREPARING,
+      label: "Preparing Order",
+      icon: Package,
+      color: "orange",
+    },
+    {
       key: OrderStatus.READY,
-      label: "Preparing",
+      label: "Ready for Pickup/Delivery",
       icon: Package,
       color: "yellow",
     },
@@ -413,6 +419,8 @@ export default function OrderDetailsPage() {
                             ? "bg-yellow-100 text-yellow-800 border-yellow-200"
                             : order.status === OrderStatus.CONFIRMED
                             ? "bg-blue-100 text-blue-800 border-blue-200"
+                            : order.status === OrderStatus.PREPARING
+                            ? "bg-orange-100 text-orange-800 border-orange-200"
                             : order.status === OrderStatus.READY
                             ? "bg-purple-100 text-purple-800 border-purple-200"
                             : order.status === OrderStatus.ON_DELIVERY

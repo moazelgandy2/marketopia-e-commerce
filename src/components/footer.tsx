@@ -1,205 +1,194 @@
 "use client";
 
-import { Phone, Smartphone } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+  MessageCircle,
+  ExternalLink,
+  Smartphone,
+  Apple,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useConfigData } from "@/hooks/use-config";
 
 export const Footer = () => {
-  return (
-    <footer className="bg-gradient-to-r from-purple-600 to-purple-800 text-white">
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {/* Logo and Contact */}
-          <div className="space-y-4 md:space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 md:w-12 md:h-12 border rounded-lg flex items-center justify-center">
-                <Image
-                  src={"/images/logo.png"}
-                  width={650}
-                  height={650}
-                  alt="Logo"
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-xl md:text-2xl font-bold">Marketopia</span>
-            </div>
+  const { config, isLoading } = useConfigData();
 
-            <div>
-              <h3 className="font-semibold mb-3 md:mb-4">Contact Us</h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <span>Whatsapp</span>
-                </div>
-                <p className="text-sm opacity-90">+1 202-918-2132</p>
-                <div className="flex items-center gap-2 mt-4">
-                  <Phone className="w-4 h-4" />
-                  <span>Call Us</span>
-                </div>
-                <p className="text-sm opacity-90">+1 202-918-2132</p>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-3 md:mb-4">Download App</h3>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="bg-black rounded-lg px-3 md:px-4 py-2 flex items-center gap-2">
-                  <span className="text-xs">📱</span>
-                  <div>
-                    <div className="text-xs">Download on the</div>
-                    <div className="font-semibold text-sm">App Store</div>
-                  </div>
-                </div>
-                <div className="bg-black rounded-lg px-3 md:px-4 py-2 flex items-center gap-2">
-                  <span className="text-xs">📱</span>
-                  <div>
-                    <div className="text-xs">GET IT ON</div>
-                    <div className="font-semibold text-sm">Google Play</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Most Popular Categories */}
-          <div>
-            <h3 className="font-semibold mb-3 md:mb-4">
-              Most Popular Categories
-            </h3>
-            <ul className="space-y-2 text-sm opacity-90">
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Staples
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Beverages
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Personal Care
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Home Care
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Baby Care
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Vegetables & Fruits
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Snacks & Foods
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Dairy & Bakery
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Customer Services */}
-          <div>
-            <h3 className="font-semibold mb-3 md:mb-4">Customer Services</h3>
-            <ul className="space-y-2 text-sm opacity-90">
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Terms & Conditions
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  E-waste Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-purple-200 transition-colors"
-                >
-                  Cancellation & Return Policy
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Decorative element - hidden on small screens */}
-          <div className="relative hidden lg:block">
-            <div className="absolute inset-0 opacity-10">
-              <div className="w-32 h-32 border-4 border-white rounded-full absolute top-0 right-0"></div>
-              <div className="w-24 h-24 border-2 border-white rounded-full absolute bottom-8 right-8"></div>
+  if (isLoading || !config) {
+    return (
+      <footer className="bg-gradient-to-r from-[#6a15b5] to-[#8238b2]/90 border-t border-[#941DFB]/20">
+        <div className="container mx-auto px-4 py-12">
+          <div className="animate-pulse">
+            <div className="h-4 bg-white/20 rounded w-32 mb-6"></div>
+            <div className="space-y-3">
+              <div className="h-3 bg-white/20 rounded w-24"></div>
+              <div className="h-3 bg-white/20 rounded w-28"></div>
+              <div className="h-3 bg-white/20 rounded w-20"></div>
             </div>
           </div>
         </div>
+      </footer>
+    );
+  }
 
-        {/* Copyright */}
-        <div className="border-t border-white/20 mt-8 md:mt-12 pt-4 md:pt-6 text-center text-sm opacity-75">
-          © 2023 All rights reserved. Reliance Retail Ltd.
+  const socialLinks = [
+    { icon: Facebook, url: config.facebook, name: "Facebook" },
+    { icon: Instagram, url: config.instagram, name: "Instagram" },
+    { icon: Twitter, url: config.twitter, name: "Twitter" },
+    { icon: Linkedin, url: config.linkedin, name: "LinkedIn" },
+  ].filter((link) => link.url && link.url !== "https://www.twitter.com");
+
+  const legalLinks = [
+    { label: "About Us", url: config.about_us },
+    { label: "Terms & Conditions", url: config.terms_and_conditions },
+    { label: "Privacy Policy", url: config.privacy_policy },
+    { label: "Refund Policy", url: config.refund_policy },
+    { label: "Contact Us", url: config.contact_us },
+  ].filter((link) => link.url);
+
+  return (
+    <footer className="bg-gradient-to-r from-[#6a15b5] to-[#8238b2]/90 border-t border-[#941DFB]/20">
+      <div className="container mx-auto px-4 py-12 text-white">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          {/* Brand Section */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center">
+                <Image
+                  src="/images/logo.png"
+                  width={24}
+                  height={24}
+                  alt="Marketopia"
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-xl font-bold text-white">
+                <span className="text-white">Marketopia</span>
+              </span>
+            </div>
+
+            {/* Social Links */}
+            {socialLinks.length > 0 && (
+              <div>
+                <h3 className="text-sm font-medium text-white/90 mb-3">
+                  Follow Us
+                </h3>
+                <div className="flex gap-3">
+                  {socialLinks.map(({ icon: Icon, url, name }) => (
+                    <Link
+                      key={name}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors group"
+                    >
+                      <Icon className="w-4 h-4 text-white group-hover:text-white transition-colors" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* App Downloads */}
+          <div className="space-y-6">
+            <h3 className="text-sm font-medium text-white/90">Get the App</h3>
+            <div className="space-y-3">
+              {config.ios_app_url && (
+                <Link
+                  href={config.ios_app_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 transition-colors group"
+                >
+                  <Apple className="w-6 h-6 text-white" />
+                  <div>
+                    <div className="text-xs text-white/80">Download on the</div>
+                    <div className="text-sm font-medium text-white">
+                      App Store
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-white/70 ml-auto" />
+                </Link>
+              )}
+
+              {config.android_app_url && (
+                <Link
+                  href={config.android_app_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 transition-colors group"
+                >
+                  <Smartphone className="w-6 h-6 text-white" />
+                  <div>
+                    <div className="text-xs text-white/80">Get it on</div>
+                    <div className="text-sm font-medium text-white">
+                      Google Play
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-white/70 ml-auto" />
+                </Link>
+              )}
+            </div>
+
+            {/* WhatsApp Contact */}
+            {config.whatsapp && (
+              <div className="pt-4 border-t border-white/20">
+                <Link
+                  href={config.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-white hover:bg-white/90 transition-colors text-[#941DFB]"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  <span className="font-medium">Chat on WhatsApp</span>
+                  <ExternalLink className="w-4 h-4 ml-auto" />
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Legal Links */}
+          {legalLinks.length > 0 && (
+            <div className="space-y-6">
+              <h3 className="text-sm font-medium text-white/90">Support</h3>
+              <ul className="space-y-2">
+                {legalLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-white/80 hover:text-white transition-colors flex items-center gap-2 group"
+                    >
+                      {link.label}
+                      <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Section */}
+        <div className="mt-12 pt-6 border-t border-white/20">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-white/80">
+              © {new Date().getFullYear()} Marketopia. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4 text-xs text-white/80">
+              <span>Made with ❤️</span>
+              {config.deliveryman && (
+                <span className="px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-xs font-medium">
+                  Delivery Available
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </footer>

@@ -20,46 +20,49 @@ export const Header = () => {
   const cartItemsCount = cartData?.data?.items?.length || 0;
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700">
+    <header className="sticky top-0 z-40 w-full bg-white/70 backdrop-blur-md dark:bg-slate-900/70 shadow-sm">
       {/* Desktop / Tablet */}
-      <div className="hidden md:grid md:grid-cols-3 md:items-center md:h-20 md:px-6">
+      <div className="hidden md:flex md:items-center md:justify-between md:h-16 md:px-8 max-w-7xl mx-auto">
         {/* Logo */}
         <div className="flex items-center">
           <Link
             href="/"
-            className="flex items-center space-x-2"
+            className="flex items-center transition-transform hover:scale-105"
           >
             <Image
               src="/images/logo.png"
               alt="Marketopia"
-              width={80}
-              height={80}
+              width={60}
+              height={60}
               className="object-contain"
             />
           </Link>
         </div>
 
         {/* Search */}
-        <div className="flex justify-center">
+        <div className="flex-grow max-w-md mx-6">
           <SearchInput />
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end space-x-4">
+        <div className="flex items-center space-x-6">
           {session ? (
-            <ProfileIcon />
+            <div className="transition-transform hover:scale-105">
+              <ProfileIcon />
+            </div>
           ) : (
             <Button
               asChild
               variant="ghost"
               size="sm"
+              className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Link
                 href="/login"
                 className="flex items-center space-x-1"
               >
                 <UserIcon className="h-5 w-5" />
-                <span>Login</span>
+                <span className="font-medium">Login</span>
               </Link>
             </Button>
           )}
@@ -68,17 +71,18 @@ export const Header = () => {
             asChild
             variant="ghost"
             size="sm"
+            className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <Link
               href="/cart"
               className="flex items-center space-x-1 relative"
             >
               <ShoppingCart className="h-5 w-5" />
-              <span>Cart</span>
+              <span className="font-medium">Cart</span>
               {cartItemsCount > 0 && (
                 <Badge
                   variant="destructive"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
                 >
                   {cartItemsCount}
                 </Badge>
@@ -93,13 +97,13 @@ export const Header = () => {
         {/* Left: Logo */}
         <Link
           href="/"
-          className="flex items-center"
+          className="flex items-center transition-transform hover:scale-105"
         >
           <Image
             src="/images/logo.png"
             alt="Marketopia"
-            width={48}
-            height={48}
+            width={40}
+            height={40}
             className="object-contain"
           />
         </Link>
@@ -110,14 +114,17 @@ export const Header = () => {
             <SearchInput />
           </div>
         ) : (
-          <span className="font-bold text-lg">Marketopia</span>
+          <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Marketopia
+          </span>
         )}
 
         {/* Right: Icons */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           <Button
             variant="ghost"
             size="icon"
+            className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             aria-label="Toggle search"
             onClick={() => setShowMobileSearch((s) => !s)}
           >
@@ -125,12 +132,15 @@ export const Header = () => {
           </Button>
 
           {session ? (
-            <ProfileIcon />
+            <div className="transition-transform hover:scale-105">
+              <ProfileIcon />
+            </div>
           ) : (
             <Button
               asChild
               variant="ghost"
               size="icon"
+              className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Link
                 href="/login"
@@ -145,6 +155,7 @@ export const Header = () => {
             asChild
             variant="ghost"
             size="icon"
+            className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <Link
               href="/cart"
@@ -155,7 +166,7 @@ export const Header = () => {
               {cartItemsCount > 0 && (
                 <Badge
                   variant="destructive"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
                 >
                   {cartItemsCount}
                 </Badge>

@@ -15,23 +15,15 @@ import {
   Baby,
   Sparkles,
   TrendingUp,
-  Star,
   ChevronRight,
   Grid3X3,
-  ArrowRight,
-  Zap,
-  Tag,
   Eye,
-  Heart,
   Plus,
-  Search,
-  Filter,
   Menu,
   X,
   Flame,
   Crown,
   Layers,
-  ChevronDown,
 } from "lucide-react";
 
 import {
@@ -172,28 +164,28 @@ export function CategoryNav() {
   }
 
   return (
-    <div className="w-full bg-white border-b border-gray-200 shadow-sm">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <div className="w-full bg-white/90 backdrop-blur-md shadow-sm">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="flex items-center justify-between h-14">
           {/* Main Navigation */}
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center">
             <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-2">
+              <NavigationMenuList className="flex items-center space-x-3">
                 {/* All Categories Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 border-0 h-10 px-6 rounded-lg text-sm">
-                    <Grid3X3 className="h-4 w-4 mr-2" />
+                  <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium text-xs md:text-sm shadow-md hover:shadow-lg transform hover:scale-102 border-0 h-9 px-4 rounded-full">
+                    <Grid3X3 className="h-3.5 w-3.5 mr-1.5" />
                     All Categories
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-4 p-6 w-[600px] lg:w-[800px] grid-cols-3 bg-gradient-to-br from-gray-50 to-white shadow-xl rounded-xl">
+                    <div className="grid gap-4 p-5 w-[600px] lg:w-[800px] grid-cols-3 bg-white/95 backdrop-blur-md shadow-xl rounded-2xl border border-gray-100">
                       {/* Popular Categories */}
                       <div className="space-y-3">
-                        <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
-                          <Flame className="h-5 w-5 mr-2 text-orange-500" />
+                        <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
+                          <Flame className="h-4 w-4 mr-2 text-orange-500" />
                           Popular
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                           {getPopularCategories().map((category) => (
                             <ModernCategoryLink
                               key={category.id}
@@ -209,11 +201,11 @@ export function CategoryNav() {
 
                       {/* Featured Categories */}
                       <div className="space-y-3">
-                        <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
-                          <Crown className="h-5 w-5 mr-2 text-amber-500" />
+                        <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
+                          <Crown className="h-4 w-4 mr-2 text-amber-500" />
                           Featured
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                           {getFeaturedCategories().map((category) => (
                             <ModernCategoryLink
                               key={category.name}
@@ -229,11 +221,11 @@ export function CategoryNav() {
 
                       {/* All Categories */}
                       <div className="space-y-3">
-                        <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
-                          <Layers className="h-5 w-5 mr-2 text-blue-500" />
+                        <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
+                          <Layers className="h-4 w-4 mr-2 text-blue-500" />
                           All Categories
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                           {getParentCategories()
                             .slice(0, 6)
                             .map((category) => (
@@ -252,7 +244,7 @@ export function CategoryNav() {
                 </NavigationMenuItem>
 
                 {/* Top Level Categories */}
-                <div className="hidden md:flex items-center space-x-1">
+                <div className="hidden md:flex items-center space-x-2">
                   {getParentCategories()
                     .slice(0, 5)
                     .map((category) => (
@@ -269,45 +261,45 @@ export function CategoryNav() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
             ) : (
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
-            <div className="space-y-2">
+          <div className="md:hidden border-t border-gray-100 py-3">
+            <div className="space-y-1">
               {getParentCategories()
                 .slice(0, 6)
                 .map((category) => (
                   <Link
                     key={category.id}
                     href={`/categories/${category.id}`}
-                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center space-x-3 p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                    <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
                       {getCategoryIcon(category.name)}
                     </div>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-sm text-gray-800">
                       {category.name}
                     </span>
                   </Link>
                 ))}
               <Link
                 href="/categories"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-blue-600 font-medium"
+                className="flex items-center space-x-3 p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-blue-600 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
-                  <Eye className="h-4 w-4" />
+                <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
+                  <Eye className="h-3.5 w-3.5" />
                 </div>
                 <span>View All Categories</span>
               </Link>
@@ -339,18 +331,18 @@ function ModernCategoryLink({
     <NavigationMenuLink asChild>
       <Link
         href={href}
-        className="group flex items-center space-x-3 p-3 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 border border-transparent hover:border-blue-200 hover:shadow-md"
+        className="group flex items-center space-x-2.5 p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
       >
-        <div className="relative">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-300">
+        <div className="relative flex-shrink-0">
+          <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-200 group-hover:scale-105">
             {image ? (
-              <div className="w-5 h-5 relative overflow-hidden rounded">
+              <div className="w-4.5 h-4.5 relative overflow-hidden rounded-full">
                 <Image
                   src={getImageUrl(image)}
                   alt={title}
                   fill
                   className="object-cover"
-                  sizes="20px"
+                  sizes="18px"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                   }}
@@ -361,22 +353,22 @@ function ModernCategoryLink({
             )}
           </div>
           {isPopular && (
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full flex items-center justify-center">
-              <Flame className="h-2 w-2 text-white" />
+            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-orange-500 rounded-full flex items-center justify-center ring-1 ring-white">
+              <Flame className="h-1.5 w-1.5 text-white" />
             </div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+          <div className="font-medium text-sm text-gray-800 group-hover:text-blue-600 transition-colors truncate">
             {title}
           </div>
           {description && (
-            <div className="text-xs text-gray-500 mt-1 truncate">
+            <div className="text-xs text-gray-500 mt-0.5 truncate">
               {description}
             </div>
           )}
         </div>
-        <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100" />
+        <ChevronRight className="h-3.5 w-3.5 text-gray-400 group-hover:text-blue-500 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-0.5 transition-all" />
       </Link>
     </NavigationMenuLink>
   );
@@ -402,24 +394,26 @@ function ModernCategoryDropdown({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <NavigationMenuTrigger className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 font-medium border border-transparent hover:border-blue-200 hover:shadow-md h-10 px-4 rounded-lg text-sm">
-        <div className="flex items-center space-x-2">
-          <div className="w-5 h-5 text-blue-600">
+      <NavigationMenuTrigger className="hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 font-medium border-0 h-9 px-3 rounded-full text-xs md:text-sm">
+        <div className="flex items-center space-x-1.5">
+          <div className="w-4 h-4 text-blue-600">
             {getCategoryIcon(category.name)}
           </div>
-          <span className="truncate max-w-[100px]">{category.name}</span>
+          <span className="truncate max-w-[80px] md:max-w-[100px]">
+            {category.name}
+          </span>
         </div>
       </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <div className="grid gap-4 p-6 w-[500px] grid-cols-2 bg-gradient-to-br from-gray-50 to-white shadow-xl rounded-xl">
+        <div className="grid gap-3 p-4 w-[480px] grid-cols-2 bg-white/95 backdrop-blur-md shadow-lg rounded-2xl border border-gray-100">
           {isLoading && isHovered ? (
-            <div className="col-span-2 space-y-3">
+            <div className="col-span-2 space-y-2.5">
               {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="flex items-center space-x-3 p-3 rounded-lg"
+                  className="flex items-center space-x-3 p-2.5 rounded-lg"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse rounded-lg"></div>
+                  <div className="w-7 h-7 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse rounded-full"></div>
                   <div className="flex-1">
                     <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse rounded w-3/4 mb-1"></div>
                     <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse rounded w-1/2"></div>
@@ -429,14 +423,14 @@ function ModernCategoryDropdown({
             </div>
           ) : (
             <>
-              <div className="space-y-3">
-                <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
-                  <div className="w-5 h-5 mr-2 text-blue-600">
+              <div className="space-y-2.5">
+                <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
+                  <div className="w-4 h-4 mr-1.5 text-blue-600">
                     {getCategoryIcon(category.name)}
                   </div>
                   {category.name}
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <ModernCategoryLink
                     href={`/categories/${category.id}`}
                     title={`All ${category.name}`}
@@ -458,12 +452,12 @@ function ModernCategoryDropdown({
               </div>
 
               {children.length > 4 && (
-                <div className="space-y-3">
-                  <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
-                    <Plus className="h-5 w-5 mr-2 text-green-600" />
+                <div className="space-y-2.5">
+                  <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
+                    <Plus className="h-4 w-4 mr-1.5 text-green-600" />
                     More Options
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {children.slice(4, 8).map((child) => (
                       <ModernCategoryLink
                         key={child.id}

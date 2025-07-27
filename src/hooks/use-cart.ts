@@ -55,10 +55,17 @@ export const useAddToCart = () => {
   return useMutation<
     CartApiResponse,
     Error,
-    { productId: number; quantity?: number; attributeValues?: number[] }
+    {
+      productId: number;
+      quantity?: number;
+      product_attribute_value_ids?: number[];
+    }
   >({
-    mutationFn: ({ productId, quantity = 1, attributeValues = [] }) =>
-      addToCart(productId, quantity, attributeValues, locale),
+    mutationFn: ({
+      productId,
+      quantity = 1,
+      product_attribute_value_ids = [],
+    }) => addToCart(productId, quantity, product_attribute_value_ids, locale),
     onSuccess: () => {
       // Invalidate and refetch cart data after successful addition
       queryClient.invalidateQueries({ queryKey: ["cart"] });

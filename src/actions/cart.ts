@@ -56,7 +56,7 @@ export const deleteCartItem = async (
 export const addToCart = async (
   productId: number,
   quantity: number = 1,
-  attributeValues: number[] = [],
+  product_attribute_value_ids: number[] = [],
   lang: string = "en"
 ): Promise<CartApiResponse> => {
   const session = await getSession();
@@ -74,10 +74,10 @@ export const addToCart = async (
     body: JSON.stringify({
       product_id: productId,
       quantity,
-      product_attribute_value_ids: attributeValues,
+      product_attribute_value_ids: product_attribute_value_ids,
     }),
   });
-  console.log("req=>", productId, quantity, attributeValues, lang);
+  console.log("req=>", productId, quantity, product_attribute_value_ids, lang);
 
   const data = await response.json();
 

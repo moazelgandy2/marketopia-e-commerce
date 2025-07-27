@@ -1,8 +1,8 @@
 "use client";
 import { Product } from "@/types/product";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+
+import { Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import {
@@ -12,8 +12,6 @@ import {
 } from "@/hooks/use-cart";
 import { getProductById } from "@/actions/products";
 import { toast } from "sonner";
-import { Alert, AlertIcon, AlertTitle } from "@/components/ui/alert";
-import { BellIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 
@@ -31,7 +29,6 @@ export default function ProductCard({ product }: { product: Product }) {
       100
     ).toFixed(0);
 
-  // Check if product (with any attributes) is already in cart for display purposes
   const getExistingCartItemSimple = () => {
     if (!cartData?.data?.items) return null;
 
@@ -40,25 +37,18 @@ export default function ProductCard({ product }: { product: Product }) {
     });
   };
 
-  // Check if product with specific attributes is already in cart for add/update logic
   const getExistingCartItem = (defaultAttributeValues: number[]) => {
     if (!cartData?.data?.items) return null;
 
     return cartData.data.items.find((cartItem) => {
-      // Check if product ID matches
       if (cartItem.product_id !== product.id) return false;
 
-      // Get attribute value IDs from cart item
       const cartItemAttributeIds =
-        cartItem.product_attribute_values?.map(
-          (attr) => attr.attribute_value_id
-        ) || [];
+        cartItem.product_attribute_values?.map((attr) => attr.id) || [];
 
-      // Check if default attributes match cart item attributes
       if (defaultAttributeValues.length !== cartItemAttributeIds.length)
         return false;
 
-      // Check if all default attributes are present in cart item
       return defaultAttributeValues.every((attrId) =>
         cartItemAttributeIds.includes(attrId)
       );
@@ -84,7 +74,7 @@ export default function ProductCard({ product }: { product: Product }) {
       ) {
         const attributeGroups = productDetails.product_attributes.reduce(
           (groups, attr) => {
-            const attributeId = attr.attribute_value.attribute_id;
+            const attributeId = attr.id;
             if (!groups[attributeId]) {
               groups[attributeId] = [];
             }
@@ -101,14 +91,11 @@ export default function ProductCard({ product }: { product: Product }) {
         });
       }
 
-      // Check if item already exists in cart
       const existingCartItem = getExistingCartItem(defaultAttributeValues);
 
       if (existingCartItem) {
-        // Update existing cart item quantity
         const newQuantity = existingCartItem.quantity + 1;
 
-        // Check if new quantity exceeds stock
         if (newQuantity > product.quantity) {
           toast.error("Cannot add to cart", {
             description: `Only ${product.quantity} items available. You already have ${existingCartItem.quantity} in your cart.`,
@@ -129,17 +116,16 @@ export default function ProductCard({ product }: { product: Product }) {
           }.`,
         });
       } else {
-        // Add new item to cart
         console.log("Sending to cart:", {
           productId: product.id,
           quantity: 1,
-          attributeValues: defaultAttributeValues,
+          product_attribute_value_ids: defaultAttributeValues,
         });
 
         await addToCartMutation.mutateAsync({
           productId: product.id,
           quantity: 1,
-          attributeValues: defaultAttributeValues,
+          product_attribute_value_ids: defaultAttributeValues,
         });
 
         toast.success("Product added to cart successfully!", {

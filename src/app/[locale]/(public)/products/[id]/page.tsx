@@ -91,9 +91,9 @@ export default function ProductDetailPage() {
       product?.discount_price || product?.price || "0"
     );
     const attributePrices = Object.values(selectedAttributes).reduce(
-      (total, attributeValueId) => {
+      (total, productAttributeId) => {
         const attribute = product?.product_attributes.find(
-          (attr) => attr.attribute_value_id === attributeValueId
+          (attr) => attr.id === productAttributeId
         );
         return total + (attribute?.price || 0);
       },
@@ -131,21 +131,22 @@ export default function ProductDetailPage() {
   const getExistingCartItem = () => {
     if (!cartData?.data?.items || !product) return null;
 
-    const selectedAttributeValues = Object.values(selectedAttributes);
+    const selectedProductAttributeIds = Object.values(selectedAttributes);
 
     return cartData.data.items.find((cartItem) => {
       if (cartItem.product_id !== parseInt(productId)) return false;
 
-      const cartItemAttributeIds =
-        cartItem.product_attribute_values?.map(
-          (attr) => attr.attribute_value_id
-        ) || [];
+      const cartItemProductAttributeIds =
+        cartItem.product_attribute_values?.map((attr) => attr.id) || [];
 
-      if (selectedAttributeValues.length !== cartItemAttributeIds.length)
+      if (
+        selectedProductAttributeIds.length !==
+        cartItemProductAttributeIds.length
+      )
         return false;
 
-      return selectedAttributeValues.every((attrId) =>
-        cartItemAttributeIds.includes(attrId)
+      return selectedProductAttributeIds.every((attrId) =>
+        cartItemProductAttributeIds.includes(attrId)
       );
     });
   };
@@ -188,7 +189,7 @@ export default function ProductDetailPage() {
         await addToCartMutation.mutateAsync({
           productId: parseInt(productId),
           quantity: quantity,
-          attributeValues: attributeValues,
+          product_attribute_value_ids: attributeValues,
         });
 
         toast.success("Product added to cart successfully!", {
@@ -472,9 +473,9 @@ export default function ProductDetailPage() {
                 </div>
 
                 {Object.entries(selectedAttributes).map(
-                  ([attrName, attrValueId]) => {
+                  ([attrName, productAttributeId]) => {
                     const attr = product.product_attributes.find(
-                      (a) => a.attribute_value_id === attrValueId
+                      (a) => a.id === productAttributeId
                     );
                     if (!attr || attr.price <= 0) return null;
 
@@ -580,7 +581,7 @@ export default function ProductDetailPage() {
                               {
                                 attributes.find(
                                   (attr) =>
-                                    attr.attribute_value_id ===
+                                    attr.id ===
                                     selectedAttributes[attributeName]
                                 )?.attribute_value.value
                               }
@@ -606,8 +607,7 @@ export default function ProductDetailPage() {
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {attributes.map((attr) => {
                           const isSelected =
-                            selectedAttributes[attributeName] ===
-                            attr.attribute_value_id;
+                            selectedAttributes[attributeName] === attr.id;
                           const hasPrice = attr.price > 0;
 
                           return (
@@ -616,7 +616,7 @@ export default function ProductDetailPage() {
                               onClick={() => {
                                 setSelectedAttributes((prev) => ({
                                   ...prev,
-                                  [attributeName]: attr.attribute_value_id,
+                                  [attributeName]: attr.id,
                                 }));
                               }}
                               className={`relative p-4 rounded-xl border-2 text-center transition-all duration-200 hover:scale-105 ${
@@ -697,9 +697,9 @@ export default function ProductDetailPage() {
                 </h4>
                 <div className="space-y-1">
                   {Object.entries(selectedAttributes).map(
-                    ([attrName, attrValueId]) => {
+                    ([attrName, productAttributeId]) => {
                       const attr = product.product_attributes.find(
-                        (a) => a.attribute_value_id === attrValueId
+                        (a) => a.id === productAttributeId
                       );
                       if (!attr) return null;
 

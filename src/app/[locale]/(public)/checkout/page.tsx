@@ -44,8 +44,19 @@ interface CheckoutData {
   notes: string;
 }
 
+interface OrderResponse {
+  status: boolean;
+  message: string;
+  data: {
+    order_id?: number;
+    id?: number;
+    link?: string;
+    [key: string]: any;
+  };
+}
+
 // Order submission function
-const submitOrder = async (orderData: CheckoutData) => {
+const submitOrder = async (orderData: CheckoutData): Promise<OrderResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
@@ -118,11 +129,42 @@ export default function CheckoutPage() {
   const orderMutation = useMutation({
     mutationFn: submitOrder,
     onSuccess: (response) => {
-      // Redirect to success page with order ID
-      const orderId = response.data?.order_id;
-      router.push(`/orders/success?order_id=${orderId}`);
+      console.log("Order response:", response);
+
+      // Check if payment method is visa and there's a payment link
+      if (checkoutData.payment_method === "visa") {
+        if (response.data?.link && typeof response.data.link === "string") {
+          // For visa payments, redirect to the payment link
+          toast.success("Order created! Redirecting to payment...", {
+            description: "You will be redirected to complete your payment.",
+          });
+
+          // Small delay to show the success message
+          setTimeout(() => {
+            window.location.href = response.data.link as string;
+          }, 1000);
+        } else {
+          // If no payment link is provided, show error and fallback to success page
+          console.warn("No payment link provided for visa payment");
+          toast.warning("Payment link not available", {
+            description:
+              "Your order has been created. Please contact support to complete payment.",
+          });
+
+          const orderId = response.data?.order_id || response.data?.id;
+          router.push(`/orders/success?order_id=${orderId}`);
+        }
+      } else {
+        // For cash and wallet payments, redirect to success page
+        const orderId = response.data?.order_id || response.data?.id;
+        toast.success("Order placed successfully!", {
+          description: "Your order has been confirmed.",
+        });
+        router.push(`/orders/success?order_id=${orderId}`);
+      }
     },
     onError: (error: any) => {
+      console.error("Order submission error:", error);
       toast.error("Failed to place order", {
         description: error.message || "Please try again later.",
       });
@@ -166,10 +208,26 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Log the data being sent (for debugging)
+    if (checkoutData.payment_method === "visa") {
+      toast.loading("Creating order and preparing payment...", {
+        description: "You will be redirected to complete your payment.",
+        id: "order-processing",
+      });
+    } else {
+      toast.loading("Processing your order...", {
+        id: "order-processing",
+      });
+    }
+
     console.log("Submitting order data:", checkoutData);
 
-    orderMutation.mutate(checkoutData);
+    try {
+      await orderMutation.mutateAsync(checkoutData);
+
+      toast.dismiss("order-processing");
+    } catch (error) {
+      toast.dismiss("order-processing");
+    }
   };
 
   if (isCartLoading || isAddressesLoading || isConfigLoading) {
@@ -470,7 +528,8 @@ export default function CheckoutPage() {
                         <div>
                           <h3 className="font-medium">Credit/Debit Card</h3>
                           <p className="text-sm text-gray-500">
-                            Pay securely with your card
+                            Pay securely online - you'll be redirected to
+                            complete payment
                           </p>
                         </div>
                       </div>
@@ -509,6 +568,25 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Payment Method Info */}
+                {checkoutData.payment_method === "visa" && (
+                  <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-start gap-2">
+                      <CreditCard className="h-4 w-4 text-blue-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-blue-800">
+                          Online Payment Selected
+                        </p>
+                        <p className="text-xs text-blue-600 mt-1">
+                          After clicking "Proceed to Payment", you'll be
+                          redirected to a secure payment page to complete your
+                          transaction with your credit/debit card.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -660,12 +738,23 @@ export default function CheckoutPage() {
                     {orderMutation.isPending ? (
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Placing Order...
+                        {checkoutData.payment_method === "visa"
+                          ? "Creating Order..."
+                          : "Placing Order..."}
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <Truck className="h-4 w-4" />
-                        Place Order
+                        {checkoutData.payment_method === "visa" ? (
+                          <>
+                            <CreditCard className="h-4 w-4" />
+                            Proceed to Payment
+                          </>
+                        ) : (
+                          <>
+                            <Truck className="h-4 w-4" />
+                            Place Order
+                          </>
+                        )}
                       </div>
                     )}
                   </Button>

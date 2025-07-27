@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const statusColors: Record<OrderStatus, string> = {
   pending:
@@ -47,7 +48,11 @@ const statusIcons: Record<OrderStatus, any> = {
 
 export const OrdersTab = () => {
   const { orders, isOrdersLoading, isOrdersError } = useOrders();
+  const router = useRouter();
 
+  const viewOrderDetails = (orderId: string) => {
+    router.push(`/orders/${orderId}`);
+  };
   return (
     <div className="space-y-6">
       {/* Header with summary */}
@@ -163,6 +168,7 @@ export const OrdersTab = () => {
                         <Button
                           variant="outline"
                           size="sm"
+                          onClick={() => viewOrderDetails(o.id.toString())}
                         >
                           <Eye className="w-4 h-4 mr-1" />
                           View

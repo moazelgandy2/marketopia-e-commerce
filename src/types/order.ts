@@ -5,6 +5,7 @@ export enum OrderStatus {
   ON_DELIVERY = "on_delivery",
   DELIVERED = "delivered",
   CANCELLED = "cancelled",
+  PREPARING = "preparing",
 }
 
 export enum PaymentMethod {
@@ -121,6 +122,11 @@ export type OrderType = {
   area_id: number | null;
   deliveryman_id: number | null;
   created_by: number | null;
+
+  // Optional tracking and delivery fields that may come from API
+  tracking_number?: string | null;
+  delivery_date?: string | null;
+  estimated_delivery?: string | null;
 
   coupon?: CouponType | null;
 

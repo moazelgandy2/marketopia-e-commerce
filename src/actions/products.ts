@@ -87,30 +87,26 @@ export async function getProducts(
 
 export async function getProductById(id: string, lang: string = "en") {
   try {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}?lang=${lang}`;
-    console.log("Fetching product from URL:", url);
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log("Product API response status:", response.status);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}?lang=${lang}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data: ProductDetailApiResponse = await response.json();
-    console.log("Product API response data:", data);
 
     if (!data.status) {
       throw new Error(data.message || "Failed to fetch product");
     }
 
-    console.log("Returning product data:", data.data);
     return data.data;
   } catch (error) {
     console.error("Error fetching product:", error);

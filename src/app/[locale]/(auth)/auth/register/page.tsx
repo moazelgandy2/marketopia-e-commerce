@@ -12,9 +12,11 @@ import {
   UserPlus2Icon,
 } from "lucide-react";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
 export default async function RegisterPage() {
   const session = await getSession();
+  const t = await getTranslations("RegisterPage");
 
   return (
     <div className="lg:h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 flex items-center justify-center">
@@ -23,17 +25,15 @@ export default async function RegisterPage() {
           <div className="text-center mb-4">
             <Image
               src="/images/logo.png"
-              alt="Marketopia Logo"
+              alt={t("logoAlt")}
               width={56}
               height={56}
               className="mx-auto mb-2"
             />
             <h1 className="text-2xl font-bold text-gray-900 mb-1">
-              Join Marketopia
+              {t("title")}
             </h1>
-            <p className="text-sm text-gray-600">
-              Create your account and start shopping
-            </p>
+            <p className="text-sm text-gray-600">{t("subtitle")}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-4 items-start">
@@ -44,11 +44,11 @@ export default async function RegisterPage() {
                   <div className="flex items-center gap-2 mb-1">
                     <Users className="h-5 w-5 text-green-600" />
                     <h2 className="text-base font-semibold">
-                      Welcome back, {session.user.name}!
+                      {t("sessionActive.title", { name: session.user.name })}
                     </h2>
                   </div>
                   <p className="text-sm text-green-700">
-                    Continue shopping or create a new account for someone else.
+                    {t("sessionActive.subtitle")}
                   </p>
                 </div>
               ) : (
@@ -56,38 +56,40 @@ export default async function RegisterPage() {
                   <div className="flex items-center gap-2 mb-1">
                     <ShoppingBag className="h-5 w-5 text-purple-600" />
                     <h2 className="text-base font-semibold">
-                      Start Your Journey
+                      {t("startJourney.title")}
                     </h2>
                   </div>
                   <p className="text-sm text-purple-700">
-                    Join millions of happy customers and discover amazing deals!
+                    {t("startJourney.subtitle")}
                   </p>
                 </div>
               )}
 
               <div className="bg-white rounded-xl shadow border p-4">
-                <h3 className="text-base font-bold mb-3">Why Shop With Us?</h3>
+                <h3 className="text-base font-bold mb-3">
+                  {t("whyShopWithUs")}
+                </h3>
                 <div className="space-y-3 text-sm">
                   {[
                     {
                       icon: Truck,
-                      title: "Free Shipping",
-                      desc: "On orders over $50",
+                      title: t("benefits.freeShipping.title"),
+                      desc: t("benefits.freeShipping.description"),
                     },
                     {
                       icon: Shield,
-                      title: "Secure Payments",
-                      desc: "Bank-level security",
+                      title: t("benefits.securePayments.title"),
+                      desc: t("benefits.securePayments.description"),
                     },
                     {
                       icon: Star,
-                      title: "Best Quality",
-                      desc: "Curated brands",
+                      title: t("benefits.bestQuality.title"),
+                      desc: t("benefits.bestQuality.description"),
                     },
                     {
                       icon: Headphones,
-                      title: "24/7 Support",
-                      desc: "Always here to help",
+                      title: t("benefits.support.title"),
+                      desc: t("benefits.support.description"),
                     },
                   ].map(({ icon: Icon, title, desc }) => (
                     <div
@@ -113,9 +115,11 @@ export default async function RegisterPage() {
                 <div className="inline-flex items-center justify-center w-10 h-10 bg-purple-600 rounded-full mb-1">
                   <UserPlus2Icon className="h-5 w-5 text-white" />
                 </div>
-                <h2 className="text-lg font-bold">Create Account</h2>
+                <h2 className="text-lg font-bold">
+                  {t("createAccount.title")}
+                </h2>
                 <p className="text-sm text-gray-600">
-                  Takes less than 2 minutes
+                  {t("createAccount.subtitle")}
                 </p>
               </div>
               <RegisterForm />

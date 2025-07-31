@@ -39,6 +39,42 @@
       "subtitle": "Welcome back"
     }
   },
+  "RegisterPage": {
+    "title": "Join Marketopia",
+    "subtitle": "Create your account and start shopping",
+    "logoAlt": "Marketopia Logo",
+    "sessionActive": {
+      "title": "Welcome back, {name}!",
+      "subtitle": "Continue shopping or create a new account for someone else."
+    },
+    "startJourney": {
+      "title": "Start Your Journey",
+      "subtitle": "Join millions of happy customers and discover amazing deals!"
+    },
+    "whyShopWithUs": "Why Shop With Us?",
+    "benefits": {
+      "freeShipping": {
+        "title": "Free Shipping",
+        "description": "On orders over $50"
+      },
+      "securePayments": {
+        "title": "Secure Payments",
+        "description": "Bank-level security"
+      },
+      "bestQuality": {
+        "title": "Best Quality",
+        "description": "Curated brands"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Always here to help"
+      }
+    },
+    "createAccount": {
+      "title": "Create Account",
+      "subtitle": "Takes less than 2 minutes"
+    }
+  },
   "LoginForm": {
     "identifier": {
       "label": "Identifier",
@@ -52,6 +88,34 @@
     "loggingIn": "Logging in...",
     "loginSuccess": "Login Successful!",
     "termsAndPrivacy": "By logging in, you agree to our {terms} and {privacy}",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "RegisterForm": {
+    "name": {
+      "label": "Name",
+      "placeholder": "Full name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Phone"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password"
+    },
+    "confirmPassword": {
+      "label": "Confirm",
+      "placeholder": "Confirm"
+    },
+    "createButton": "Create Account",
+    "creating": "Creating...",
+    "registrationSuccess": "Registration Successful!",
+    "termsAndPrivacy": "By signing up, you agree to our {terms} and {privacy}",
     "terms": "Terms",
     "privacy": "Privacy"
   }

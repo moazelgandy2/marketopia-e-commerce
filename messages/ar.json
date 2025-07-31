@@ -39,6 +39,42 @@
       "subtitle": "مرحباً بك مرة أخرى"
     }
   },
+  "RegisterPage": {
+    "title": "انضم إلى ماركتوبيا",
+    "subtitle": "أنشئ حسابك وابدأ التسوق",
+    "logoAlt": "شعار ماركتوبيا",
+    "sessionActive": {
+      "title": "مرحباً بك مرة أخرى، {name}!",
+      "subtitle": "تابع التسوق أو أنشئ حساب جديد لشخص آخر."
+    },
+    "startJourney": {
+      "title": "ابدأ رحلتك",
+      "subtitle": "انضم إلى ملايين العملاء السعداء واكتشف العروض المذهلة!"
+    },
+    "whyShopWithUs": "لماذا تتسوق معنا؟",
+    "benefits": {
+      "freeShipping": {
+        "title": "شحن مجاني",
+        "description": "على الطلبات فوق 50 دولار"
+      },
+      "securePayments": {
+        "title": "مدفوعات آمنة",
+        "description": "أمان بمستوى البنوك"
+      },
+      "bestQuality": {
+        "title": "أفضل جودة",
+        "description": "علامات تجارية منتقاة"
+      },
+      "support": {
+        "title": "دعم على مدار الساعة",
+        "description": "دائماً هنا لمساعدتك"
+      }
+    },
+    "createAccount": {
+      "title": "إنشاء حساب",
+      "subtitle": "يستغرق أقل من دقيقتين"
+    }
+  },
   "LoginForm": {
     "identifier": {
       "label": "المعرف",
@@ -52,6 +88,34 @@
     "loggingIn": "جاري تسجيل الدخول...",
     "loginSuccess": "تم تسجيل الدخول بنجاح!",
     "termsAndPrivacy": "بتسجيل الدخول، أنت توافق على {terms} و {privacy} الخاصة بنا",
+    "terms": "الشروط",
+    "privacy": "الخصوصية"
+  },
+  "RegisterForm": {
+    "name": {
+      "label": "الاسم",
+      "placeholder": "الاسم الكامل"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "البريد الإلكتروني"
+    },
+    "phone": {
+      "label": "الهاتف",
+      "placeholder": "الهاتف"
+    },
+    "password": {
+      "label": "كلمة المرور",
+      "placeholder": "كلمة المرور"
+    },
+    "confirmPassword": {
+      "label": "تأكيد",
+      "placeholder": "تأكيد"
+    },
+    "createButton": "إنشاء حساب",
+    "creating": "جاري الإنشاء...",
+    "registrationSuccess": "تم التسجيل بنجاح!",
+    "termsAndPrivacy": "بالتسجيل، أنت توافق على {terms} و {privacy} الخاصة بنا",
     "terms": "الشروط",
     "privacy": "الخصوصية"
   }

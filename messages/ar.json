@@ -2,5 +2,57 @@
   "HomePage": {
     "title": "مرحبا بالعالم!",
     "about": "اذهب إلى صفحة حول"
+  },
+  "LoginPage": {
+    "title": "مرحباً بك مرة أخرى",
+    "subtitle": "سجل الدخول لمتابعة رحلة التسوق",
+    "logoAlt": "شعار ماركتوبيا",
+    "sessionActive": {
+      "title": "مرحباً بك مرة أخرى، {name}!",
+      "subtitle": "جلستك نشطة. جاري التوجيه..."
+    },
+    "continueShopping": {
+      "title": "متابعة التسوق",
+      "subtitle": "سجل الدخول للوصول إلى سلة التسوق والطلبات وقائمة الأمنيات."
+    },
+    "whyShopWithUs": "لماذا تتسوق معنا؟",
+    "benefits": {
+      "freeShipping": {
+        "title": "شحن مجاني",
+        "description": "على الطلبات فوق 50 دولار"
+      },
+      "secureLogin": {
+        "title": "دخول آمن",
+        "description": "تشفير بمستوى البنوك"
+      },
+      "bestPrices": {
+        "title": "أفضل الأسعار",
+        "description": "عروض حصرية للأعضاء"
+      },
+      "support": {
+        "title": "دعم على مدار الساعة",
+        "description": "دائماً هنا لمساعدتك"
+      }
+    },
+    "signIn": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحباً بك مرة أخرى"
+    }
+  },
+  "LoginForm": {
+    "identifier": {
+      "label": "المعرف",
+      "placeholder": "البريد الإلكتروني أو اسم المستخدم"
+    },
+    "password": {
+      "label": "كلمة المرور",
+      "placeholder": "كلمة المرور"
+    },
+    "loginButton": "تسجيل الدخول",
+    "loggingIn": "جاري تسجيل الدخول...",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
+    "termsAndPrivacy": "بتسجيل الدخول، أنت توافق على {terms} و {privacy} الخاصة بنا",
+    "terms": "الشروط",
+    "privacy": "الخصوصية"
   }
 }

@@ -2,5 +2,57 @@
   "HomePage": {
     "title": "Hello world!",
     "about": "Go to the about page"
+  },
+  "LoginPage": {
+    "title": "Welcome Back",
+    "subtitle": "Log in to continue your shopping journey",
+    "logoAlt": "Marketopia Logo",
+    "sessionActive": {
+      "title": "Welcome back, {name}!",
+      "subtitle": "Your session is active. Redirecting..."
+    },
+    "continueShopping": {
+      "title": "Continue Shopping",
+      "subtitle": "Log in to access your cart, orders, and wishlist."
+    },
+    "whyShopWithUs": "Why Shop With Us?",
+    "benefits": {
+      "freeShipping": {
+        "title": "Free Shipping",
+        "description": "On orders over $50"
+      },
+      "secureLogin": {
+        "title": "Secure Login",
+        "description": "Bank-level encryption"
+      },
+      "bestPrices": {
+        "title": "Best Prices",
+        "description": "Exclusive member deals"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Always here to help"
+      }
+    },
+    "signIn": {
+      "title": "Sign In",
+      "subtitle": "Welcome back"
+    }
+  },
+  "LoginForm": {
+    "identifier": {
+      "label": "Identifier",
+      "placeholder": "Email or Username"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password"
+    },
+    "loginButton": "Login",
+    "loggingIn": "Logging in...",
+    "loginSuccess": "Login Successful!",
+    "termsAndPrivacy": "By logging in, you agree to our {terms} and {privacy}",
+    "terms": "Terms",
+    "privacy": "Privacy"
   }
 }

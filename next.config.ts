@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
         hostname: "192.168.5.36",
       },
       {
-        hostname: "192.168.1.15",
+        hostname: "admin.narmertex.com",
       },
     ],
   },

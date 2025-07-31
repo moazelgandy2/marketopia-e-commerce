@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   User,
@@ -37,6 +37,7 @@ export const LoginForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("LoginForm");
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -83,7 +84,7 @@ export const LoginForm = () => {
       {isSuccess && (
         <div className="mb-2 p-2 bg-green-50 border border-green-200 rounded flex items-center gap-1 text-xs">
           <CheckCircle2 className="h-3 w-3 text-green-600" />
-          <span>Login Successful!</span>
+          <span>{t("loginSuccess")}</span>
         </div>
       )}
       {loginError && (
@@ -102,13 +103,15 @@ export const LoginForm = () => {
             name="identifier"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs">Identifier</FormLabel>
+                <FormLabel className="text-xs">
+                  {t("identifier.label")}
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Mail className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-400" />
                     <Input
                       type="text"
-                      placeholder="Email or Username"
+                      placeholder={t("identifier.placeholder")}
                       className="pl-7 pr-7 h-7 text-xs"
                       {...field}
                     />
@@ -123,13 +126,13 @@ export const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs">Password</FormLabel>
+                <FormLabel className="text-xs">{t("password.label")}</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Lock className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-400" />
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Password"
+                      placeholder={t("password.placeholder")}
                       className="pl-7 pr-7 h-7 text-xs"
                       {...field}
                     />
@@ -156,26 +159,30 @@ export const LoginForm = () => {
             type="submit"
             className="w-full h-7 text-xs bg-purple-600 hover:bg-purple-700"
           >
-            {isLoading ? "Logging in..." : "Login"}
+            {isLoading ? t("loggingIn") : t("loginButton")}
           </Button>
         </form>
       </Form>
 
       <p className="text-[10px] text-gray-500 text-center mt-2">
-        By logging in, you agree to our{" "}
-        <a
-          href="#"
-          className="text-purple-600 underline"
-        >
-          Terms
-        </a>{" "}
-        and{" "}
-        <a
-          href="#"
-          className="text-purple-600 underline"
-        >
-          Privacy
-        </a>
+        {t.rich("termsAndPrivacy", {
+          terms: (chunks) => (
+            <a
+              href="#"
+              className="text-purple-600 underline"
+            >
+              {t("terms")}
+            </a>
+          ),
+          privacy: (chunks) => (
+            <a
+              href="#"
+              className="text-purple-600 underline"
+            >
+              {t("privacy")}
+            </a>
+          ),
+        })}
       </p>
     </div>
   );

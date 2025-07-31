@@ -41,6 +41,10 @@
     "signIn": {
       "title": "Sign In",
       "subtitle": "Welcome back"
+    },
+    "noAccount": {
+      "text": "Don't have an account?",
+      "linkText": "Create Account"
     }
   },
   "RegisterPage": {
@@ -77,6 +81,10 @@
     "createAccount": {
       "title": "Create Account",
       "subtitle": "Takes less than 2 minutes"
+    },
+    "hasAccount": {
+      "text": "Already have an account?",
+      "linkText": "Sign In"
     }
   },
   "LoginForm": {

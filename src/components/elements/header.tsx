@@ -58,7 +58,7 @@ export const Header = () => {
               className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Link
-                href="/login"
+                href="/auth/login"
                 className="flex items-center space-x-1"
               >
                 <UserIcon className="h-5 w-5" />
@@ -143,7 +143,7 @@ export const Header = () => {
               className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Link
-                href="/login"
+                href="/auth/login"
                 aria-label="Login"
               >
                 <UserIcon className="h-5 w-5" />

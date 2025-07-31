@@ -41,6 +41,10 @@
     "signIn": {
       "title": "تسجيل الدخول",
       "subtitle": "مرحباً بك مرة أخرى"
+    },
+    "noAccount": {
+      "text": "ليس لديك حساب؟",
+      "linkText": "إنشاء حساب"
     }
   },
   "RegisterPage": {
@@ -77,6 +81,10 @@
     "createAccount": {
       "title": "إنشاء حساب",
       "subtitle": "يستغرق أقل من دقيقتين"
+    },
+    "hasAccount": {
+      "text": "لديك حساب بالفعل؟",
+      "linkText": "تسجيل الدخول"
     }
   },
   "LoginForm": {

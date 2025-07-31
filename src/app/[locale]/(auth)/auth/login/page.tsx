@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function LoginPage() {
   const session = await getSession();
@@ -72,11 +74,6 @@ export default async function LoginPage() {
                 <div className="space-y-3 text-sm">
                   {[
                     {
-                      icon: Truck,
-                      title: t("benefits.freeShipping.title"),
-                      desc: t("benefits.freeShipping.description"),
-                    },
-                    {
                       icon: Shield,
                       title: t("benefits.secureLogin.title"),
                       desc: t("benefits.secureLogin.description"),
@@ -119,6 +116,21 @@ export default async function LoginPage() {
                 <p className="text-sm text-gray-600">{t("signIn.subtitle")}</p>
               </div>
               <LoginForm />
+
+              {/* Navigation to Register */}
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600">
+                  {t("noAccount.text")}{" "}
+                  <Link href="/auth/register">
+                    <Button
+                      variant="ghost"
+                      className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                    >
+                      {t("noAccount.linkText")}
+                    </Button>
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -83,10 +83,6 @@ export const WishlistTab = () => {
                 <p className="text-slate-600 dark:text-slate-400 mb-6">
                   Start adding products you love to your wishlist!
                 </p>
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Continue Shopping
-                </Button>
               </CardContent>
             </Card>
           </div>

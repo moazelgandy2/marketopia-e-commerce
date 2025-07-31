@@ -124,9 +124,6 @@ export const OrdersTab = () => {
               <p className="text-slate-600 dark:text-slate-400 mb-6">
                 When you place your first order, it will appear here.
               </p>
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                Start Shopping
-              </Button>
             </CardContent>
           </Card>
         ) : (

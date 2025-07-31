@@ -17,13 +17,6 @@ export const AddressEmptyState = ({ onAddAddress }: AddressEmptyStateProps) => {
       <p className="text-gray-500 mb-6 max-w-sm mx-auto">
         Add your first shipping address to make checkout faster and easier.
       </p>
-      <Button
-        onClick={onAddAddress}
-        className="inline-flex items-center"
-      >
-        <Plus className="w-4 h-4 mr-2" />
-        Add Address
-      </Button>
     </div>
   );
 };

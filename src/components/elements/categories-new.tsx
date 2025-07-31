@@ -45,7 +45,7 @@ import { Category } from "@/types/category";
 const getImageUrl = (imagePath: string) => {
   if (!imagePath) return "";
   if (imagePath.startsWith("http")) return imagePath;
-  return `http://192.168.1.15/marketopiaEcommerce/public/storage/${imagePath}`;
+  return `http://192.168.1.15/NarmerEcommerce/public/storage/${imagePath}`;
 };
 
 const categoryIcons: {

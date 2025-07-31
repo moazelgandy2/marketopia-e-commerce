@@ -102,7 +102,7 @@ export const WishlistTab = () => {
                   src={
                     wishlistItem.product.image
                       ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${wishlistItem.product.image}`
-                      : "/images/default-avatar.png"
+                      : "/images/default-avatar.jpg"
                   }
                   alt={wishlistItem.product.name}
                   fill

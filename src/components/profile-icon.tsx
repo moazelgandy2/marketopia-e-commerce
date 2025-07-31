@@ -49,7 +49,7 @@ export function ProfileIcon() {
             src={
               user.image
                 ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
-                : "/images/default-avatar.png"
+                : "/images/default-avatar.jpg"
             }
             alt={user.name}
             className="h-full w-full rounded-full object-cover"
@@ -68,7 +68,7 @@ export function ProfileIcon() {
             src={
               user.image
                 ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
-                : "/images/default-avatar.png"
+                : "/images/default-avatar.jpg"
             }
             alt={user.name}
             className="h-10 w-10 rounded-full object-cover ring-2 ring-purple-300"

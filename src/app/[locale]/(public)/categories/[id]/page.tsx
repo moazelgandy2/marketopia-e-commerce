@@ -14,18 +14,18 @@ export async function generateMetadata({
   // const category = await getCategoryWithChildren(+id);
 
   return {
-    title: `Category Products - Marketopia`,
+    title: `Category Products - Narmer`,
     description: `Browse and shop products from our carefully curated category collection. Find the best deals and latest products.`,
     keywords: "products, category, shopping, e-commerce, deals",
     openGraph: {
-      title: `Category Products - Marketopia`,
+      title: `Category Products - Narmer`,
       description: `Browse and shop products from our carefully curated category collection.`,
       type: "website",
       locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
-      title: `Category Products - Marketopia`,
+      title: `Category Products - Narmer`,
       description: `Browse and shop products from our carefully curated category collection.`,
     },
   };

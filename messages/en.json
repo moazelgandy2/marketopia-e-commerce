@@ -6,7 +6,7 @@
   "LoginPage": {
     "title": "Welcome Back",
     "subtitle": "Log in to continue your shopping journey",
-    "logoAlt": "Marketopia Logo",
+    "logoAlt": "Narmer Logo",
     "sessionActive": {
       "title": "Welcome back, {name}!",
       "subtitle": "Your session is active. Redirecting..."
@@ -40,9 +40,9 @@
     }
   },
   "RegisterPage": {
-    "title": "Join Marketopia",
+    "title": "Join Narmer",
     "subtitle": "Create your account and start shopping",
-    "logoAlt": "Marketopia Logo",
+    "logoAlt": "Narmer Logo",
     "sessionActive": {
       "title": "Welcome back, {name}!",
       "subtitle": "Continue shopping or create a new account for someone else."

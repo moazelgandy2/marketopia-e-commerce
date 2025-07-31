@@ -24,7 +24,7 @@ export default async function RegisterPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-4">
             <Image
-              src="/images/logo.png"
+              src="/logo.png"
               alt={t("logoAlt")}
               width={56}
               height={56}

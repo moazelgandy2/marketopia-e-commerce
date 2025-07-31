@@ -26,7 +26,7 @@ export const AccountTab = () => {
     ? URL.createObjectURL(image[0])
     : session?.user.image
     ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${session.user.image}`
-    : "/images/default-avatar.png";
+    : "/images/default-avatar.jpg";
 
   return (
     <div className="space-y-6">

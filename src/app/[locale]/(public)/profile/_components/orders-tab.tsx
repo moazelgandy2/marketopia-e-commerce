@@ -224,7 +224,7 @@ export const OrdersTab = () => {
                                 src={
                                   d.product.image
                                     ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${d.product.image}`
-                                    : "/images/default-avatar.png"
+                                    : "/images/default-avatar.jpg"
                                 }
                                 alt={d.product.name}
                                 width={40}

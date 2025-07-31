@@ -229,7 +229,7 @@ export default function OrderDetailsPage() {
     if (navigator.share) {
       navigator.share({
         title: `Order #${orderId}`,
-        text: `Check out my order from Marketopia!`,
+        text: `Check out my order from Narmer!`,
         url: window.location.href,
       });
     }

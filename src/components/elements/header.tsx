@@ -30,8 +30,8 @@ export const Header = () => {
             className="flex items-center transition-transform hover:scale-105"
           >
             <Image
-              src="/images/logo.png"
-              alt="Marketopia"
+              src="/logo.png"
+              alt="Narmer"
               width={60}
               height={60}
               className="object-contain"
@@ -100,8 +100,8 @@ export const Header = () => {
           className="flex items-center transition-transform hover:scale-105"
         >
           <Image
-            src="/images/logo.png"
-            alt="Marketopia"
+            src="/logo.png"
+            alt="Narmer"
             width={40}
             height={40}
             className="object-contain"
@@ -115,7 +115,7 @@ export const Header = () => {
           </div>
         ) : (
           <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Marketopia
+            Narmer
           </span>
         )}
 

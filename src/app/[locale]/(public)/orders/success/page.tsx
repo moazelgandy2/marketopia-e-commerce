@@ -275,7 +275,7 @@ export default function OrderSuccessPage() {
                 {/* Footer Message */}
                 <div className="text-center pt-6 border-t border-gray-200">
                   <p className="text-gray-600 mb-2">
-                    Thank you for choosing Marketopia! 💙
+                    Thank you for choosing Narmer! 💙
                   </p>
                   <p className="text-sm text-gray-500">
                     You'll receive email updates about your order status.

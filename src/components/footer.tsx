@@ -58,15 +58,15 @@ export const Footer = () => {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center">
                 <Image
-                  src="/images/logo.png"
+                  src="/logo.png"
                   width={24}
                   height={24}
-                  alt="Marketopia"
+                  alt="Narmer"
                   className="object-contain"
                 />
               </div>
               <span className="text-xl font-bold text-white">
-                <span className="text-white">Marketopia</span>
+                <span className="text-white">Narmer</span>
               </span>
             </div>
 
@@ -178,7 +178,7 @@ export const Footer = () => {
         <div className="mt-12 pt-6 border-t border-white/20">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-xs text-white/80">
-              © {new Date().getFullYear()} Marketopia. All rights reserved.
+              © {new Date().getFullYear()} Narmer. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-xs text-white/80">
               <span>Made with ❤️</span>

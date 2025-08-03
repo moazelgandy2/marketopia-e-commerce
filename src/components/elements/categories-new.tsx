@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import {
   ShoppingBag,
   Smartphone,
@@ -41,11 +42,10 @@ import {
 } from "@/hooks/use-categories";
 import { Category } from "@/types/category";
 
-// Utility function to construct image URLs
 const getImageUrl = (imagePath: string) => {
   if (!imagePath) return "";
   if (imagePath.startsWith("http")) return imagePath;
-  return `http://192.168.1.15/NarmerEcommerce/public/storage/${imagePath}`;
+  return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${imagePath}`;
 };
 
 const categoryIcons: {
@@ -72,38 +72,12 @@ const categoryIcons: {
   default: ShoppingBag,
 };
 
-const featuredCategories = [
-  {
-    name: "Electronics",
-    href: "/categories/electronics",
-    image: "/images/categories/electronics.jpg",
-    description: "Latest gadgets and electronic devices",
-    color: "from-blue-500 to-indigo-600",
-    icon: Smartphone,
-  },
-  {
-    name: "Fashion",
-    href: "/categories/fashion",
-    image: "/images/categories/fashion.jpg",
-    description: "Trending clothes and accessories",
-    color: "from-pink-500 to-rose-600",
-    icon: Shirt,
-  },
-  {
-    name: "Home & Garden",
-    href: "/categories/home-garden",
-    image: "/images/categories/home.jpg",
-    description: "Everything for your home",
-    color: "from-green-500 to-emerald-600",
-    icon: Home,
-  },
-];
-
 export function CategoryNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { data: categories, isLoading, error } = useCategories();
   const { data: parentCategoriesData, isLoading: isLoadingParent } =
     useParentCategories();
+  const t = useTranslations("CategoryNav");
 
   const getCategoryIcon = (categoryName: string) => {
     const key = categoryName.toLowerCase().replace(/\s+/g, "");
@@ -112,10 +86,10 @@ export function CategoryNav() {
   };
 
   const getPopularCategories = () => {
-    if (!categories) return [];
+    if (!categories || !Array.isArray(categories)) return [];
     return categories
-      .filter((cat) => cat.popular > 0)
-      .sort((a, b) => b.popular - a.popular)
+      .filter((cat: any) => cat.popular > 0)
+      .sort((a: any, b: any) => b.popular - a.popular)
       .slice(0, 6);
   };
 
@@ -127,16 +101,24 @@ export function CategoryNav() {
   const getFeaturedCategories = () => {
     const parentCats = getParentCategories();
     if (parentCats.length >= 3) {
-      return parentCats.slice(0, 3).map((cat) => ({
+      return parentCats.slice(0, 3).map((cat: any) => ({
         name: cat.name,
         href: `/categories/${cat.id}`,
         image: cat.image,
-        description: `Browse all ${cat.name.toLowerCase()} products`,
+        description: t("browseAll", { categoryName: cat.name.toLowerCase() }),
         color: "from-blue-500 to-indigo-600",
         icon: getCategoryIcon(cat.name),
       }));
     }
-    return featuredCategories;
+    // If we don't have enough parent categories, return the first few available
+    return parentCats.slice(0, 3).map((cat: any) => ({
+      name: cat.name,
+      href: `/categories/${cat.id}`,
+      image: cat.image,
+      description: t("browseAll", { categoryName: cat.name.toLowerCase() }),
+      color: "from-blue-500 to-indigo-600",
+      icon: getCategoryIcon(cat.name),
+    }));
   };
 
   if (isLoading || isLoadingParent) {
@@ -175,7 +157,7 @@ export function CategoryNav() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium text-xs md:text-sm shadow-md hover:shadow-lg transform hover:scale-102 border-0 h-9 px-4 rounded-full">
                     <Grid3X3 className="h-3.5 w-3.5 mr-1.5" />
-                    All Categories
+                    {t("allCategories")}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-4 p-5 w-[600px] lg:w-[800px] grid-cols-3 bg-white/95 backdrop-blur-md shadow-xl rounded-2xl border border-gray-100">
@@ -183,10 +165,10 @@ export function CategoryNav() {
                       <div className="space-y-3">
                         <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
                           <Flame className="h-4 w-4 mr-2 text-orange-500" />
-                          Popular
+                          {t("popular")}
                         </h3>
                         <div className="space-y-1.5">
-                          {getPopularCategories().map((category) => (
+                          {getPopularCategories().map((category: any) => (
                             <ModernCategoryLink
                               key={category.id}
                               href={`/categories/${category.id}`}
@@ -203,7 +185,7 @@ export function CategoryNav() {
                       <div className="space-y-3">
                         <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
                           <Crown className="h-4 w-4 mr-2 text-amber-500" />
-                          Featured
+                          {t("featured")}
                         </h3>
                         <div className="space-y-1.5">
                           {getFeaturedCategories().map((category) => (
@@ -223,7 +205,7 @@ export function CategoryNav() {
                       <div className="space-y-3">
                         <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
                           <Layers className="h-4 w-4 mr-2 text-blue-500" />
-                          All Categories
+                          {t("allCategoriesTitle")}
                         </h3>
                         <div className="space-y-1.5">
                           {getParentCategories()
@@ -301,7 +283,7 @@ export function CategoryNav() {
                 <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
                   <Eye className="h-3.5 w-3.5" />
                 </div>
-                <span>View All Categories</span>
+                <span>{t("viewAllCategories")}</span>
               </Link>
             </div>
           </div>
@@ -385,6 +367,7 @@ function ModernCategoryDropdown({
   const [isHovered, setIsHovered] = React.useState(false);
   const { data: categoryWithChildren, isLoading } =
     useCategoryWithChildrenOnHover(category.id, isHovered);
+  const t = useTranslations("CategoryNav");
 
   const categoryData = categoryWithChildren || category;
   const children = categoryData.children || [];
@@ -455,7 +438,7 @@ function ModernCategoryDropdown({
                 <div className="space-y-2.5">
                   <h3 className="font-medium text-base text-gray-900 flex items-center border-b border-gray-100 pb-2">
                     <Plus className="h-4 w-4 mr-1.5 text-green-600" />
-                    More Options
+                    {t("moreOptions")}
                   </h3>
                   <div className="space-y-1.5">
                     {children.slice(4, 8).map((child) => (

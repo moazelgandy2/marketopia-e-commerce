@@ -657,5 +657,31 @@
         "saving": "Saving..."
       }
     }
+  },
+  "CategoryNav": {
+    "allCategories": "All Categories",
+    "popular": "Popular",
+    "featured": "Featured",
+    "allCategoriesTitle": "All Categories",
+    "viewAll": "View All",
+    "viewAllCategories": "View All Categories",
+    "browseAll": "Browse all {categoryName} products",
+    "allCategory": "All {categoryName}",
+    "moreOptions": "More Options",
+    "loading": "Loading categories..."
+  },
+  "CategoriesExplorer": {
+    "title": "Explore Categories",
+    "subtitle": "Browse through our main categories and discover subcategories"
+  },
+  "ParentCategoriesList": {
+    "failedToLoad": "Failed to load categories",
+    "noCategories": "No categories found",
+    "popularCategory": "Popular Category",
+    "category": "Category",
+    "showingText": "Showing {from} to {to} of {total} categories",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {current} of {total}"
   }
 }

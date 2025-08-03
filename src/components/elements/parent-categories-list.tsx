@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useParentCategories } from "@/hooks/use-categories";
 import { Button } from "@/components/ui/button";
 
@@ -22,6 +23,7 @@ export function ParentCategoriesList({
   className,
 }: ParentCategoriesListProps) {
   const { data, isLoading, error } = useParentCategories(page);
+  const t = useTranslations("ParentCategoriesList");
 
   if (isLoading) {
     return (
@@ -49,7 +51,7 @@ export function ParentCategoriesList({
   if (error) {
     return (
       <div className={`text-center py-8 ${className}`}>
-        <p className="text-red-600 text-sm">Failed to load categories</p>
+        <p className="text-red-600 text-sm">{t("failedToLoad")}</p>
       </div>
     );
   }
@@ -57,7 +59,7 @@ export function ParentCategoriesList({
   if (!data || data.categories.length === 0) {
     return (
       <div className={`text-center py-8 ${className}`}>
-        <p className="text-gray-500 text-sm">No categories found</p>
+        <p className="text-gray-500 text-sm">{t("noCategories")}</p>
       </div>
     );
   }
@@ -88,7 +90,9 @@ export function ParentCategoriesList({
                     {category.name}
                   </h3>
                   <p className="text-xs text-gray-500 mt-1">
-                    {category.popular > 0 ? "Popular Category" : "Category"}
+                    {category.popular > 0
+                      ? t("popularCategory")
+                      : t("category")}
                   </p>
                 </div>
                 <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-blue-500 transition-colors flex-shrink-0" />
@@ -101,8 +105,11 @@ export function ParentCategoriesList({
       {showPagination && data.pagination.last_page > 1 && (
         <div className="flex items-center justify-between pt-4 border-t">
           <div className="text-sm text-gray-500">
-            Showing {data.pagination.from} to {data.pagination.to} of{" "}
-            {data.pagination.total} categories
+            {t("showingText", {
+              from: data.pagination.from,
+              to: data.pagination.to,
+              total: data.pagination.total,
+            })}
           </div>
           <div className="flex items-center space-x-2">
             <Button
@@ -112,10 +119,13 @@ export function ParentCategoriesList({
               disabled={page <= 1}
             >
               <ChevronLeft className="h-4 w-4 mr-1" />
-              Previous
+              {t("previous")}
             </Button>
             <span className="text-sm text-gray-500">
-              Page {data.pagination.current_page} of {data.pagination.last_page}
+              {t("pageOf", {
+                current: data.pagination.current_page,
+                total: data.pagination.last_page,
+              })}
             </span>
             <Button
               variant="outline"
@@ -123,7 +133,7 @@ export function ParentCategoriesList({
               onClick={() => onPageChange?.(page + 1)}
               disabled={page >= data.pagination.last_page}
             >
-              Next
+              {t("next")}
               <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </div>

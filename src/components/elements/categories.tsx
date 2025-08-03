@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import {
   ShoppingBag,
   Smartphone,
@@ -49,11 +50,10 @@ import {
 } from "@/hooks/use-categories";
 import { Category } from "@/types/category";
 
-// Utility function to construct image URLs
 const getImageUrl = (imagePath: string) => {
   if (!imagePath) return "";
   if (imagePath.startsWith("http")) return imagePath;
-  return `http://192.168.1.15/NarmerEcommerce/public/storage/${imagePath}`;
+  return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${imagePath}`;
 };
 
 const categoryIcons: {
@@ -80,38 +80,12 @@ const categoryIcons: {
   default: ShoppingBag,
 };
 
-const featuredCategories = [
-  {
-    name: "Electronics",
-    href: "/categories/electronics",
-    image: "/images/categories/electronics.jpg",
-    description: "Latest gadgets and electronic devices",
-    color: "from-blue-500 to-indigo-600",
-    icon: Smartphone,
-  },
-  {
-    name: "Fashion",
-    href: "/categories/fashion",
-    image: "/images/categories/fashion.jpg",
-    description: "Trending clothes and accessories",
-    color: "from-pink-500 to-rose-600",
-    icon: Shirt,
-  },
-  {
-    name: "Home & Garden",
-    href: "/categories/home-garden",
-    image: "/images/categories/home.jpg",
-    description: "Everything for your home",
-    color: "from-green-500 to-emerald-600",
-    icon: Home,
-  },
-];
-
 export function CategoryNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { data: categories, isLoading, error } = useCategories();
   const { data: parentCategoriesData, isLoading: isLoadingParent } =
     useParentCategories();
+  const t = useTranslations("CategoryNav");
 
   const getCategoryIcon = (categoryName: string) => {
     const key = categoryName.toLowerCase().replace(/\s+/g, "");
@@ -120,10 +94,10 @@ export function CategoryNav() {
   };
 
   const getPopularCategories = () => {
-    if (!categories) return [];
+    if (!categories || !Array.isArray(categories)) return [];
     return categories
-      .filter((cat) => cat.popular > 0)
-      .sort((a, b) => b.popular - a.popular)
+      .filter((cat: any) => cat.popular > 0)
+      .sort((a: any, b: any) => b.popular - a.popular)
       .slice(0, 6);
   };
 
@@ -135,17 +109,22 @@ export function CategoryNav() {
   const getFeaturedCategories = () => {
     const parentCats = getParentCategories();
     if (parentCats.length >= 3) {
-      return parentCats.slice(0, 3).map((cat) => ({
+      return parentCats.slice(0, 3).map((cat: any) => ({
         name: cat.name,
         href: `/categories/${cat.id}`,
         image: cat.image,
-        description: `Browse all ${cat.name.toLowerCase()} products`,
+        description: t("browseAll", { categoryName: cat.name.toLowerCase() }),
         color: "from-blue-500 to-indigo-600",
         icon: getCategoryIcon(cat.name),
       }));
     }
-    return featuredCategories.map((cat) => ({
-      ...cat,
+
+    return parentCats.slice(0, 3).map((cat: any) => ({
+      name: cat.name,
+      href: `/categories/${cat.id}`,
+      image: cat.image,
+      description: t("browseAll", { categoryName: cat.name.toLowerCase() }),
+      color: "from-blue-500 to-indigo-600",
       icon: getCategoryIcon(cat.name),
     }));
   };
@@ -186,7 +165,7 @@ export function CategoryNav() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 border-0 h-10 px-6 rounded-lg text-sm">
                     <Grid3X3 className="h-4 w-4 mr-2" />
-                    All Categories
+                    {t("allCategories")}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-4 p-6 w-[600px] lg:w-[800px] grid-cols-3 bg-gradient-to-br from-gray-50 to-white shadow-xl rounded-xl">
@@ -194,10 +173,10 @@ export function CategoryNav() {
                       <div className="space-y-3">
                         <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
                           <Flame className="h-5 w-5 mr-2 text-orange-500" />
-                          Popular
+                          {t("popular")}
                         </h3>
                         <div className="space-y-2">
-                          {getPopularCategories().map((category) => (
+                          {getPopularCategories().map((category: any) => (
                             <ModernCategoryLink
                               key={category.id}
                               href={`/categories/${category.id}`}
@@ -214,10 +193,10 @@ export function CategoryNav() {
                       <div className="space-y-3">
                         <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
                           <Crown className="h-5 w-5 mr-2 text-amber-500" />
-                          Featured
+                          {t("featured")}
                         </h3>
                         <div className="space-y-2">
-                          {getFeaturedCategories().map((category) => (
+                          {getFeaturedCategories().map((category: any) => (
                             <ModernCategoryLink
                               key={category.name}
                               href={category.href}
@@ -234,12 +213,12 @@ export function CategoryNav() {
                       <div className="space-y-3">
                         <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
                           <Layers className="h-5 w-5 mr-2 text-blue-500" />
-                          All Categories
+                          {t("allCategoriesTitle")}
                         </h3>
                         <div className="space-y-2">
                           {getParentCategories()
                             .slice(0, 6)
-                            .map((category) => (
+                            .map((category: any) => (
                               <ModernCategoryLink
                                 key={category.id}
                                 href={`/categories/${category.id}`}
@@ -258,7 +237,7 @@ export function CategoryNav() {
                 <div className="hidden md:flex items-center space-x-1">
                   {getParentCategories()
                     .slice(0, 5)
-                    .map((category) => (
+                    .map((category: any) => (
                       <ModernCategoryDropdown
                         key={category.id}
                         category={category}
@@ -288,7 +267,7 @@ export function CategoryNav() {
             className="hidden md:flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors bg-gray-50 hover:bg-blue-50 px-4 py-2 rounded-lg"
           >
             <Eye className="h-4 w-4" />
-            <span>View All</span>
+            <span>{t("viewAll")}</span>
           </Link>
         </div>
 
@@ -298,7 +277,7 @@ export function CategoryNav() {
             <div className="space-y-2">
               {getParentCategories()
                 .slice(0, 6)
-                .map((category) => (
+                .map((category: any) => (
                   <Link
                     key={category.id}
                     href={`/categories/${category.id}`}
@@ -321,7 +300,7 @@ export function CategoryNav() {
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
                   <Eye className="h-4 w-4" />
                 </div>
-                <span>View All Categories</span>
+                <span>{t("viewAllCategories")}</span>
               </Link>
             </div>
           </div>
@@ -405,6 +384,7 @@ function ModernCategoryDropdown({
   const [isHovered, setIsHovered] = React.useState(false);
   const { data: categoryWithChildren, isLoading } =
     useCategoryWithChildrenOnHover(category.id, isHovered);
+  const t = useTranslations("CategoryNav");
 
   const categoryData = categoryWithChildren || category;
   const children = categoryData.children || [];
@@ -451,12 +431,14 @@ function ModernCategoryDropdown({
                 <div className="space-y-2">
                   <ModernCategoryLink
                     href={`/categories/${category.id}`}
-                    title={`All ${category.name}`}
+                    title={t("allCategory", { categoryName: category.name })}
                     icon={getCategoryIcon(category.name)}
                     image={category.image}
-                    description={`Browse all ${category.name.toLowerCase()} products`}
+                    description={t("browseAll", {
+                      categoryName: category.name.toLowerCase(),
+                    })}
                   />
-                  {children.slice(0, 4).map((child) => (
+                  {children.slice(0, 4).map((child: any) => (
                     <ModernCategoryLink
                       key={child.id}
                       href={`/categories/${child.id}`}
@@ -473,10 +455,10 @@ function ModernCategoryDropdown({
                 <div className="space-y-3">
                   <h3 className="font-bold text-lg text-gray-900 flex items-center border-b border-gray-200 pb-2">
                     <Plus className="h-5 w-5 mr-2 text-green-600" />
-                    More Options
+                    {t("moreOptions")}
                   </h3>
                   <div className="space-y-2">
-                    {children.slice(4, 8).map((child) => (
+                    {children.slice(4, 8).map((child: any) => (
                       <ModernCategoryLink
                         key={child.id}
                         href={`/categories/${child.id}`}

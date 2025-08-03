@@ -17,6 +17,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useTranslations } from "next-intl";
+import { destroySession } from "@/lib/session";
 
 const statusColors: Record<string, string> = {
   active:
@@ -113,10 +114,7 @@ export function ProfileIcon() {
 
         <DropdownMenuItem
           onSelect={async () => {
-            await fetch("/ar/api/auth/logout", {
-              method: "POST",
-              credentials: "include",
-            });
+            await destroySession();
             location.href = "/";
           }}
           className="text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-900"

@@ -657,5 +657,31 @@
         "saving": "جاري الحفظ..."
       }
     }
+  },
+  "CategoryNav": {
+    "allCategories": "جميع الفئات",
+    "popular": "شائع",
+    "featured": "مميز",
+    "allCategoriesTitle": "جميع الفئات",
+    "viewAll": "عرض الكل",
+    "viewAllCategories": "عرض جميع الفئات",
+    "browseAll": "تصفح جميع منتجات {categoryName}",
+    "allCategory": "جميع {categoryName}",
+    "moreOptions": "المزيد من الخيارات",
+    "loading": "جاري تحميل الفئات..."
+  },
+  "CategoriesExplorer": {
+    "title": "استكشاف الفئات",
+    "subtitle": "تصفح الفئات الرئيسية واكتشف الفئات الفرعية"
+  },
+  "ParentCategoriesList": {
+    "failedToLoad": "فشل في تحميل الفئات",
+    "noCategories": "لم يتم العثور على فئات",
+    "popularCategory": "فئة شائعة",
+    "category": "فئة",
+    "showingText": "عرض {from} إلى {to} من {total} فئة",
+    "previous": "السابق",
+    "next": "التالي",
+    "pageOf": "صفحة {current} من {total}"
   }
 }

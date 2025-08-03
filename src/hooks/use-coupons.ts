@@ -18,7 +18,6 @@ export const useApplyCoupon = () => {
   return useMutation<ApplyCouponResponse, Error, string>({
     mutationFn: (couponCode: string) => applyCouponToCart(couponCode, locale),
     onSuccess: () => {
-      // Invalidate and refetch cart data after successful coupon application
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });

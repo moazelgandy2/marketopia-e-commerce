@@ -4,11 +4,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useBanners } from "@/hooks/use-banners";
 
 export const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { data: banners, isLoading, error } = useBanners();
+  const t = useTranslations("HomePage.hero");
 
   const nextSlide = () => {
     if (banners && banners.length > 0) {
@@ -53,9 +55,7 @@ export const HeroBanner = () => {
         <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="relative bg-red-100 rounded-xl md:rounded-2xl overflow-hidden">
             <div className="flex items-center justify-center p-6 md:p-12">
-              <p className="text-red-600">
-                Failed to load banners. Please try again later.
-              </p>
+              <p className="text-red-600">{t("failedToLoad")}</p>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@ export const HeroBanner = () => {
         <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="relative bg-gray-100 rounded-xl md:rounded-2xl overflow-hidden">
             <div className="flex items-center justify-center p-6 md:p-12">
-              <p className="text-gray-600">No banners available.</p>
+              <p className="text-gray-600">{t("noBanners")}</p>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export const HeroBanner = () => {
               <a
                 href={currentBanner.link}
                 className="absolute inset-0 z-10 block"
-                aria-label={`Go to ${currentBanner.name}`}
+                aria-label={t("goTo", { name: currentBanner.name })}
               />
             )}
           </div>

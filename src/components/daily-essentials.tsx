@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const essentials = [
   {
@@ -49,6 +50,7 @@ const essentials = [
 
 export const DailyEssentials = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const t = useTranslations("HomePage.dailyEssentials");
 
   const handleItemClick = (index: number) => {
     setSelectedItems((prev) =>
@@ -62,12 +64,13 @@ export const DailyEssentials = () => {
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-            Daily <span className="text-purple-600">Essentials</span>
+            {t("title.part1")}{" "}
+            <span className="text-purple-600">{t("title.part2")}</span>
           </h2>
           <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
         </div>
         <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base">
-          View All
+          {t("viewAll")}
           <span>→</span>
         </button>
       </div>
@@ -105,7 +108,7 @@ export const DailyEssentials = () => {
       {selectedItems.length > 0 && (
         <div className="mt-4 md:mt-6 p-3 md:p-4 bg-purple-50 rounded-lg">
           <p className="text-purple-700 font-medium text-sm md:text-base">
-            Selected items:{" "}
+            {t("selectedItems")}:{" "}
             {selectedItems.map((i) => essentials[i].name).join(", ")}
           </p>
         </div>

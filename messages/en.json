@@ -5,7 +5,48 @@
   },
   "HomePage": {
     "title": "Hello world!",
-    "about": "Go to the about page"
+    "about": "Go to the about page",
+    "hero": {
+      "failedToLoad": "Failed to load banners. Please try again later.",
+      "noBanners": "No banners available.",
+      "goTo": "Go to {name}"
+    },
+    "bestDeals": {
+      "title": "Best Deals on Electronics",
+      "subtitle": "Amazing deals on top brands",
+      "viewAll": "View All",
+      "tryAgain": "Try Again",
+      "failedToLoad": "Failed to load products",
+      "noDeals": "No deals available at the moment.",
+      "save": "Save",
+      "off": "OFF",
+      "addToCart": "Add to Cart",
+      "viewDetails": "View Details"
+    },
+    "topCategories": {
+      "title": "Top Categories",
+      "subtitle": "Shop From",
+      "viewAll": "View All",
+      "failedToLoad": "Failed to load categories",
+      "tryAgain": "Try Again",
+      "noCategories": "No categories available."
+    },
+    "brands": {
+      "title": "Popular Brands",
+      "subtitle": "Shop by Brand",
+      "viewAll": "View All",
+      "failedToLoad": "Failed to load brands",
+      "tryAgain": "Try Again",
+      "noBrands": "No brands available."
+    },
+    "dailyEssentials": {
+      "title": {
+        "part1": "Daily",
+        "part2": "Essentials"
+      },
+      "viewAll": "View All",
+      "selectedItems": "Selected items"
+    }
   },
   "LoginPage": {
     "title": "Welcome Back",

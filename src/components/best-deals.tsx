@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useBestSelling } from "@/hooks/use-best-selling";
 import { BestSelling } from "@/types";
 import Image from "next/image";
@@ -17,6 +18,7 @@ import Link from "next/link";
 export const SmartphoneDeals = () => {
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
   const { data: products, isLoading, error } = useBestSelling();
+  const t = useTranslations("HomePage.bestDeals");
 
   const handleProductClick = (index: number, product: BestSelling) => {
     setSelectedProduct(selectedProduct === index ? null : index);
@@ -49,8 +51,8 @@ export const SmartphoneDeals = () => {
         <div className="flex items-center justify-between mb-4 md:mb-6">
           <div>
             <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-1">
-              Grab the best deal on{" "}
-              <span className="text-purple-600">Best Selling Products</span>
+              {t("subtitle")}{" "}
+              <span className="text-purple-600">{t("title")}</span>
             </h2>
             <div className="w-12 md:w-16 h-1 bg-purple-600 rounded"></div>
           </div>
@@ -87,7 +89,7 @@ export const SmartphoneDeals = () => {
     return (
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center text-red-600">
-          <p>Failed to load products. Please try again later.</p>
+          <p>{t("failedToLoad")}</p>
         </div>
       </section>
     );
@@ -98,7 +100,7 @@ export const SmartphoneDeals = () => {
     return (
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center text-gray-600">
-          <p>No products available.</p>
+          <p>{t("noDeals")}</p>
         </div>
       </section>
     );
@@ -109,13 +111,13 @@ export const SmartphoneDeals = () => {
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <div>
           <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-1">
-            Grab the best deal on{" "}
-            <span className="text-purple-600">Best Selling Products</span>
+            {t("subtitle")}{" "}
+            <span className="text-purple-600">{t("title")}</span>
           </h2>
           <div className="w-12 md:w-16 h-1 bg-purple-600 rounded"></div>
         </div>
         <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 text-sm">
-          View All
+          {t("viewAll")}
           <span>→</span>
         </button>
       </div>
@@ -231,7 +233,7 @@ export const SmartphoneDeals = () => {
                           </div>
                           {savings && (
                             <p className="text-green-600 text-xs font-medium">
-                              Save {savings.toLocaleString()} EGP
+                              {t("save")} {savings.toLocaleString()} EGP
                             </p>
                           )}
                         </div>

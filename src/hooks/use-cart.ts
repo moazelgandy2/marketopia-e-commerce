@@ -14,7 +14,7 @@ export const useCart = () => {
   return useQuery<CartApiResponse>({
     queryKey: ["cart", locale],
     queryFn: () => getCart(locale),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 };
 

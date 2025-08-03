@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useBrands } from "@/hooks/use-brands";
 import { Brand } from "@/types";
 import Image from "next/image";
@@ -19,6 +20,7 @@ export const ElectronicsBrands = () => {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const { data: brands, isLoading, error } = useBrands();
+  const t = useTranslations("HomePage.brands");
 
   const handleBrandClick = (index: number, brand: Brand) => {
     setSelectedBrand(selectedBrand === index ? null : index);
@@ -49,7 +51,8 @@ export const ElectronicsBrands = () => {
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <div>
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-              Top <span className="text-purple-600">Electronics Brands</span>
+              {t("subtitle")}{" "}
+              <span className="text-purple-600">{t("title")}</span>
             </h2>
             <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
           </div>
@@ -72,7 +75,7 @@ export const ElectronicsBrands = () => {
     return (
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center text-red-600">
-          <p>Failed to load brands. Please try again later.</p>
+          <p>{t("failedToLoad")}</p>
         </div>
       </section>
     );
@@ -82,7 +85,7 @@ export const ElectronicsBrands = () => {
     return (
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center text-gray-600">
-          <p>No brands available.</p>
+          <p>{t("noBrands")}</p>
         </div>
       </section>
     );
@@ -92,7 +95,8 @@ export const ElectronicsBrands = () => {
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-            Top <span className="text-purple-600">Electronics Brands</span>
+            {t("subtitle")}{" "}
+            <span className="text-purple-600">{t("title")}</span>
           </h2>
           <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
         </div>

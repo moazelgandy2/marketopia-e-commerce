@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "./use-auth";
+import { useLocale } from "next-intl";
 
 export const useUpdateProfile = () => {
   const { session, refetch } = useAuth();
@@ -16,6 +17,8 @@ export const useUpdateProfile = () => {
       phone: "",
     },
   });
+
+  const locale = useLocale();
 
   useEffect(() => {
     if (session) {
@@ -48,7 +51,7 @@ export const useUpdateProfile = () => {
       if (data.image) {
         formData.append("image", data.image[0]);
       }
-      return updateProfileAction(session?.token as string, formData);
+      return updateProfileAction(session?.token as string, formData, locale);
     },
     onSuccess: () => {
       refetch();

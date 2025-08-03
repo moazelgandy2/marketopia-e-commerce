@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCategories } from "@/hooks/use-categories";
 import { Category } from "@/types";
 import Link from "next/link";
@@ -13,6 +14,7 @@ export const TopCategories = () => {
   const { data: categories, isLoading, error } = useCategories();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const t = useTranslations("HomePage.topCategories");
 
   const handleCategoryClick = (index: number, category: Category) => {
     setActiveCategory(index);
@@ -44,7 +46,8 @@ export const TopCategories = () => {
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <div>
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-              Shop From <span className="text-purple-600">Top Categories</span>
+              {t("subtitle")}{" "}
+              <span className="text-purple-600">{t("title")}</span>
             </h2>
             <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
           </div>
@@ -68,7 +71,7 @@ export const TopCategories = () => {
     return (
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center text-red-600">
-          <p>Failed to load categories. Please try again later.</p>
+          <p>{t("failedToLoad")}</p>
         </div>
       </section>
     );
@@ -78,7 +81,7 @@ export const TopCategories = () => {
     return (
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center text-gray-600">
-          <p>No categories available.</p>
+          <p>{t("noCategories")}</p>
         </div>
       </section>
     );
@@ -98,7 +101,7 @@ export const TopCategories = () => {
             variant={"outline"}
             className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base"
           >
-            View All
+            {t("viewAll")}
             <span>→</span>
           </Button>
         </Link>

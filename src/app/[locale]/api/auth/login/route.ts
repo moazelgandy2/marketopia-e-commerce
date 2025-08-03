@@ -1,4 +1,5 @@
 import { loginAction } from "@/actions/auth";
+import { getLocale } from "next-intl/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -6,7 +7,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { identifier, password } = body;
     const values = { identifier, password };
-    const session = await loginAction(values);
+    const locale = await getLocale();
+
+    const session = await loginAction(values, locale);
 
     return NextResponse.json({
       message: "Data received successfully",

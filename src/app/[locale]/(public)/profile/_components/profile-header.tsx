@@ -5,18 +5,18 @@ import { UserType } from "@/types";
 import Image from "next/image";
 import { Calendar, Mail, Shield, Verified, Camera } from "lucide-react";
 import { useOrders } from "@/hooks/use-orders";
-import { useWishlists } from "@/hooks/use-wishlists";
+
 import { useAddresses } from "@/hooks/use-addresses";
 import { useTranslations } from "next-intl";
 
 export const ProfileHeader = ({ user }: { user: UserType }) => {
   const { orders, isOrdersLoading } = useOrders();
-  const { wishlists, isWishlistsLoading } = useWishlists();
+
   const { addresses, isAddressesLoading } = useAddresses();
   const t = useTranslations("ProfilePage.header");
 
   const ordersCount = isOrdersLoading ? "..." : orders?.length || 0;
-  const wishlistsCount = isWishlistsLoading ? "..." : wishlists?.length || 0;
+
   const addressesCount = isAddressesLoading ? "..." : addresses?.length || 0;
 
   return (
@@ -108,7 +108,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
               <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-xl border border-blue-200 dark:border-blue-800">
                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {ordersCount}
@@ -117,14 +117,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
                   {t("stats.orders")}
                 </div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 rounded-xl border border-purple-200 dark:border-purple-800">
-                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                  {wishlistsCount}
-                </div>
-                <div className="text-xs text-purple-600/70 dark:text-purple-400/70">
-                  {t("stats.wishlist")}
-                </div>
-              </div>
+
               <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 rounded-xl border border-green-200 dark:border-green-800">
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                   {addressesCount}

@@ -16,6 +16,7 @@ import { LogOut, User, Settings, CreditCard, Truck } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
+import { useTranslations } from "next-intl";
 
 const statusColors: Record<string, string> = {
   active:
@@ -30,6 +31,7 @@ const roleIcons: Record<UserRoleType, React.ReactNode> = {
 
 export function ProfileIcon() {
   const { session } = useAuth();
+  const t = useTranslations("ProfileIcon");
 
   if (!session)
     return (
@@ -102,17 +104,7 @@ export function ProfileIcon() {
               className="cursor-pointer"
             >
               <User className="mr-2 h-4 w-4" />
-              Profile
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem asChild>
-            <Link
-              href="/settings"
-              className="cursor-pointer"
-            >
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
+              {t("profile")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -130,7 +122,7 @@ export function ProfileIcon() {
           className="text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-900"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          Log out
+          {t("logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

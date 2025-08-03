@@ -2,21 +2,17 @@
 
 import { CartApiResponse, DeleteCartItemResponse } from "@/types";
 import { getSession } from "@/lib/session";
-import { getLocale } from "next-intl/server";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const getCart = async (
-  lang: string = "en"
-): Promise<CartApiResponse> => {
+export const getCart = async (lang: string): Promise<CartApiResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
     throw new Error("Authentication required");
   }
-  const locale = await getLocale();
 
-  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${locale}`, {
+  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${lang}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -32,17 +28,17 @@ export const getCart = async (
 };
 
 export const deleteCartItem = async (
-  cartItemId: number
+  cartItemId: number,
+  lang: string
 ): Promise<DeleteCartItemResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
     throw new Error("Authentication required");
   }
-  const locale = await getLocale();
 
   const response = await fetch(
-    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${locale}`,
+    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${lang}`,
     {
       method: "DELETE",
       headers: {
@@ -63,16 +59,15 @@ export const addToCart = async (
   productId: number,
   quantity: number = 1,
   product_attribute_value_ids: number[] = [],
-  lang: string = "en"
+  lang: string
 ): Promise<CartApiResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
     throw new Error("Authentication required");
   }
-  const locale = await getLocale();
 
-  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${locale}`, {
+  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${lang}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,17 +95,16 @@ export const addToCart = async (
 export const updateCartItemQuantity = async (
   cartItemId: number,
   quantity: number,
-  lang: string = "en"
+  lang: string
 ): Promise<CartApiResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
     throw new Error("Authentication required");
   }
-  const locale = await getLocale();
 
   const response = await fetch(
-    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${locale}`,
+    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${lang}`,
     {
       method: "PUT",
       headers: {

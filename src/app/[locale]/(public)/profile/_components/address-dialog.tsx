@@ -42,6 +42,7 @@ const MapWithControls = ({
   onMapClick: (event: MapMouseEvent) => void;
 }) => {
   const map = useMap();
+  const t = useTranslations("AddressDialog.map");
 
   const handleCurrentLocation = useCallback(() => {
     if (!map) return;
@@ -69,17 +70,16 @@ const MapWithControls = ({
         },
         (error) => {
           console.error("Geolocation error:", error);
-          let errorMessage = "Error: The Geolocation service failed.";
+          let errorMessage = t("errors.geolocationFailed");
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              errorMessage =
-                "Error: Location permission denied. Please enable location access.";
+              errorMessage = t("errors.permissionDenied");
               break;
             case error.POSITION_UNAVAILABLE:
-              errorMessage = "Error: Location information unavailable.";
+              errorMessage = t("errors.positionUnavailable");
               break;
             case error.TIMEOUT:
-              errorMessage = "Error: Location request timed out.";
+              errorMessage = t("errors.timeout");
               break;
           }
           alert(errorMessage);
@@ -87,7 +87,7 @@ const MapWithControls = ({
         options
       );
     } else {
-      alert("Error: Your browser doesn't support geolocation.");
+      alert(t("errors.geolocationNotSupported"));
     }
   }, [map, onLocationUpdate]);
 
@@ -99,16 +99,14 @@ const MapWithControls = ({
           onClick={handleCurrentLocation}
           className="bg-white shadow-md"
         >
-          Use my current location
+          {t("useCurrentLocation")}
         </Button>
         {selectedPosition && (
           <div className="bg-white p-2 rounded shadow-md text-xs">
-            <p className="font-semibold">Selected Location:</p>
+            <p className="font-semibold">{t("selectedLocation")}:</p>
             <p>Lat: {selectedPosition.lat.toFixed(6)}</p>
             <p>Lng: {selectedPosition.lng.toFixed(6)}</p>
-            <p className="text-gray-500 mt-1">
-              Click anywhere on the map to move the marker
-            </p>
+            <p className="text-gray-500 mt-1">{t("clickToMove")}</p>
           </div>
         )}
       </div>
@@ -178,13 +176,13 @@ export const AddressDialog = ({
     if (selectedPosition) {
       setShowForm(true);
     } else {
-      alert("Please select a location on the map first");
+      alert(t("errors.selectLocationFirst"));
     }
   };
 
   const handleFormSubmit = async (formData: any) => {
     if (!session?.token) {
-      alert("Please login to save addresses");
+      alert(t("errors.loginRequired"));
       return;
     }
 
@@ -236,7 +234,7 @@ export const AddressDialog = ({
             <BellIcon />
           </AlertIcon>
           <AlertTitle>
-            Address {isEditing ? "updated" : "saved"} successfully
+            {isEditing ? t("toast.addressUpdated") : t("toast.addressSaved")}
           </AlertTitle>
         </Alert>
       ));
@@ -258,9 +256,9 @@ export const AddressDialog = ({
           <AlertTitle>
             {error instanceof Error
               ? error.message
-              : `Failed to ${
-                  isEditing ? "update" : "save"
-                } address. Please try again.`}
+              : isEditing
+              ? t("toast.updateFailed")
+              : t("toast.saveFailed")}
           </AlertTitle>
         </Alert>
       ));
@@ -290,8 +288,8 @@ export const AddressDialog = ({
           <DialogTitle>{isEditing ? t("edit") : t("addNew")}</DialogTitle>
           <DialogDescription>
             {showForm
-              ? "Fill in the address details below."
-              : "Click on the map to select a location or use your current location."}
+              ? t("description.fillDetails")
+              : t("description.selectLocation")}
           </DialogDescription>
         </DialogHeader>
 
@@ -317,13 +315,15 @@ export const AddressDialog = ({
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button onClick={() => setOpen(false)}>
+                {t("buttons.cancel")}
+              </Button>
               <Button
                 type="submit"
                 onClick={handleSave}
                 disabled={!selectedPosition}
               >
-                Next
+                {t("buttons.next")}
               </Button>
             </DialogFooter>
           </>

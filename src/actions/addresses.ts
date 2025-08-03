@@ -1,15 +1,12 @@
-import { getLocale } from "next-intl/server";
 import { Address } from "../types";
 import { ActionResponse } from "./orders";
 
 export const getAddresses = async (
   token: string,
-  lang: "en" | "ar"
+  lang: string
 ): Promise<ActionResponse<Address[]>> => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses?lang=${lang}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -46,13 +43,11 @@ export interface SaveAddressData {
 
 export const saveAddress = async (
   token: string,
-  lang: "en" | "ar",
+  lang: string,
   addressData: SaveAddressData
 ): Promise<ActionResponse<Address>> => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses?lang=${lang}`,
     {
       method: "POST",
       headers: {
@@ -82,13 +77,11 @@ export const saveAddress = async (
 
 export const deleteAddress = async (
   token: string,
-  lang: "en" | "ar",
+  lang: string,
   addressId: number
 ): Promise<ActionResponse<null>> => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}?lang=${lang}`,
     {
       method: "DELETE",
       headers: {
@@ -116,14 +109,12 @@ export const deleteAddress = async (
 
 export const updateAddress = async (
   token: string,
-  lang: "en" | "ar",
+  lang: string,
   addressId: number,
   addressData: SaveAddressData
 ): Promise<ActionResponse<Address>> => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}?lang=${lang}`,
     {
       method: "PUT",
       headers: {

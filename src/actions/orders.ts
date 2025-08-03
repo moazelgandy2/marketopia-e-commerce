@@ -1,4 +1,3 @@
-import { getLocale } from "next-intl/server";
 import { OrderType } from "../types/order";
 
 export interface ActionResponse<T> {
@@ -8,12 +7,10 @@ export interface ActionResponse<T> {
 }
 export const getOrders = async (
   token: string,
-  lang: "en" | "ar"
+  lang: string
 ): Promise<ActionResponse<OrderType[]>> => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/orders?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/orders?lang=${lang}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,12 +37,11 @@ export const getOrders = async (
 export const getOrderById = async (
   orderId: string,
   token: string,
-  lang: "en" | "ar"
+  lang: string
 ): Promise<ActionResponse<OrderType>> => {
   try {
-    const locale = await getLocale();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}?lang=${locale}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}?lang=${lang}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

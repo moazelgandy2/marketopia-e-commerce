@@ -6,14 +6,11 @@ import {
   PaginatedCategoriesApiResponse,
   CategoryWithChildrenApiResponse,
 } from "@/types";
-import { getLocale } from "next-intl/server";
 
-export async function getCategories(): Promise<Category[]> {
+export async function getCategories(lang: string): Promise<Category[]> {
   try {
-    const locale = await getLocale();
-
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/home/categories?lang=${locale}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/home/categories?lang=${lang}`,
       {
         method: "GET",
         headers: {
@@ -41,7 +38,10 @@ export async function getCategories(): Promise<Category[]> {
   }
 }
 
-export async function getParentCategories(page: number = 1): Promise<{
+export async function getParentCategories(
+  page: number = 1,
+  lang: string
+): Promise<{
   categories: Category[];
   pagination: {
     current_page: number;
@@ -53,10 +53,8 @@ export async function getParentCategories(page: number = 1): Promise<{
   };
 }> {
   try {
-    const locale = await getLocale();
-
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/parent?page=${page}&lang=${locale}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/parent?page=${page}&lang=${lang}`,
       {
         method: "GET",
         headers: {
@@ -97,13 +95,12 @@ export async function getParentCategories(page: number = 1): Promise<{
 }
 
 export async function getCategoryWithChildren(
-  categoryId: number
+  categoryId: number,
+  lang: string
 ): Promise<Category> {
   try {
-    const locale = await getLocale();
-
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/children/${categoryId}?lang=${locale}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/children/${categoryId}?lang=${lang}`,
       {
         method: "GET",
         headers: {

@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProfileHeader } from "./_components/profile-header";
 import { OrdersTab } from "./_components/orders-tab";
 import { AddressesTab } from "./_components/addresses-tab";
-import { WishlistTab } from "./_components/wishlist-tab";
+
 import { AccountTab } from "./_components/account-tab";
 import { Package, MapPin, Heart, User, ShoppingBag } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -71,13 +71,7 @@ export default function ProfilePage() {
                     {t("tabs.addresses")}
                   </span>
                 </TabsTrigger>
-                <TabsTrigger
-                  value="wishlist"
-                  className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md dark:data-[state=active]:bg-slate-600 transition-all duration-200"
-                >
-                  <Heart className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t("tabs.wishlist")}</span>
-                </TabsTrigger>
+
                 <TabsTrigger
                   value="account"
                   className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md dark:data-[state=active]:bg-slate-600 transition-all duration-200"
@@ -101,12 +95,7 @@ export default function ProfilePage() {
               >
                 <AddressesTab />
               </TabsContent>
-              <TabsContent
-                value="wishlist"
-                className="mt-0"
-              >
-                <WishlistTab />
-              </TabsContent>
+
               <TabsContent
                 value="account"
                 className="mt-0"

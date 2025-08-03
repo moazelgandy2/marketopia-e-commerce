@@ -1,4 +1,3 @@
-import { getLocale } from "next-intl/server";
 import { Wishlist } from "../types";
 import { ActionResponse } from "./orders";
 
@@ -6,10 +5,8 @@ export const getWishlists = async (
   token: string,
   lang: "en" | "ar"
 ): Promise<ActionResponse<Wishlist[]>> => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/wishlists?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/wishlists?lang=${lang}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,10 +35,8 @@ export const deleteWishlistItem = async (
   token: string,
   lang: "en" | "ar"
 ) => {
-  const locale = await getLocale();
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/wishlists/${id}?lang=${locale}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/wishlists/${id}?lang=${lang}`,
     {
       method: "DELETE",
       headers: {

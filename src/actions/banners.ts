@@ -1,14 +1,11 @@
 "use server";
 
 import { Banner, BannersApiResponse } from "@/types";
-import { getLocale } from "next-intl/server";
 
-export async function getBanners(): Promise<Banner[]> {
+export async function getBanners(lang: string): Promise<Banner[]> {
   try {
-    const locale = await getLocale();
-
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/home/banners?lang=${locale}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/home/banners?lang=${lang}`,
       {
         method: "GET",
         headers: {

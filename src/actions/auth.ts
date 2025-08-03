@@ -2,16 +2,14 @@
 
 import { createSession, destroySession, getSession } from "@/lib/session";
 import { LoginResponseType, LoginType, RegisterType } from "@/types";
-import { getLocale } from "next-intl/server";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
-export async function loginAction(values: LoginType) {
+export async function loginAction(values: LoginType, lang: string) {
   try {
     const { identifier, password } = values;
-    const locale = await getLocale();
 
-    const response = await fetch(`${baseUrl}/auth/login?lang=${locale}`, {
+    const response = await fetch(`${baseUrl}/auth/login?lang=${lang}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,11 +40,9 @@ export async function loginAction(values: LoginType) {
   }
 }
 
-export async function registerAction(values: RegisterType) {
+export async function registerAction(values: RegisterType, lang: string) {
   try {
-    const locale = await getLocale();
-
-    const response = await fetch(`${baseUrl}/auth/register?lang=${locale}`, {
+    const response = await fetch(`${baseUrl}/auth/register?lang=${lang}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -106,12 +102,14 @@ export async function logoutAction() {
   }
 }
 
-export async function updateProfileAction(token: string, formData: FormData) {
+export async function updateProfileAction(
+  token: string,
+  formData: FormData,
+  lang: string
+) {
   try {
-    const locale = await getLocale();
-
     const updateResponse = await fetch(
-      `${baseUrl}/auth/profile/update?lang=${locale}`,
+      `${baseUrl}/auth/profile/update?lang=${lang}`,
       {
         method: "POST",
         headers: {

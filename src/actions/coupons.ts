@@ -2,23 +2,21 @@
 
 import { CouponApiResponse, ApplyCouponResponse } from "@/types";
 import { getSession } from "@/lib/session";
-import { getLocale } from "next-intl/server";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const validateCoupon = async (
   couponCode: string,
-  lang: string = "en"
+  lang: string
 ): Promise<CouponApiResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
     throw new Error("Authentication required");
   }
-  const locale = await getLocale();
 
   const response = await fetch(
-    `${API_BASE_URL}/api/coupons/${couponCode}?lang=${locale}`,
+    `${API_BASE_URL}/api/coupons/${couponCode}?lang=${lang}`,
     {
       method: "GET",
       headers: {
@@ -44,17 +42,16 @@ export const validateCoupon = async (
 
 export const applyCouponToCart = async (
   couponCode: string,
-  lang: string = "en"
+  lang: string
 ): Promise<ApplyCouponResponse> => {
   const session = await getSession();
 
   if (!session?.token) {
     throw new Error("Authentication required");
   }
-  const locale = await getLocale();
 
   const response = await fetch(
-    `${API_BASE_URL}/api/coupons/${couponCode}?lang=${locale}`,
+    `${API_BASE_URL}/api/coupons/${couponCode}?lang=${lang}`,
     {
       method: "GET",
       headers: {

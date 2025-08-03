@@ -20,11 +20,11 @@ export const useCart = () => {
 
 export const useDeleteCartItem = () => {
   const queryClient = useQueryClient();
+  const locale = useLocale();
 
   return useMutation<DeleteCartItemResponse, Error, number>({
-    mutationFn: deleteCartItem,
+    mutationFn: (cartItemId) => deleteCartItem(cartItemId, locale),
     onSuccess: () => {
-      // Invalidate and refetch cart data after successful deletion
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });

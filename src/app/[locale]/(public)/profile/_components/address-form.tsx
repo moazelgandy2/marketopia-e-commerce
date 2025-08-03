@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useConfigData } from "@/hooks/use-config";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Address } from "@/types";
+import { useTranslations } from "next-intl";
 
 interface AddressFormData {
   name: string;
@@ -33,6 +34,7 @@ export const AddressForm = ({
   initialData,
 }: AddressFormProps) => {
   const { config, cities, isLoading: citiesLoading } = useConfigData();
+  const t = useTranslations("AddressForm");
 
   const [formData, setFormData] = useState<AddressFormData>({
     name: "",
@@ -82,7 +84,7 @@ export const AddressForm = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.city_id === 0) {
-      alert("Please select a city");
+      alert(t("validation.selectCity"));
       return;
     }
     onSubmit(formData);
@@ -107,7 +109,7 @@ export const AddressForm = ({
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="name">Address Name</Label>
+          <Label htmlFor="name">{t("fields.addressName")}</Label>
           <select
             id="name"
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -115,19 +117,19 @@ export const AddressForm = ({
             onChange={(e) => handleInputChange("name", e.target.value)}
             required
           >
-            <option value="">Select address type</option>
-            <option value="home">Home</option>
-            <option value="work">Work</option>
-            <option value="other">Other</option>
+            <option value="">{t("fields.selectType")}</option>
+            <option value="home">{t("addressTypes.home")}</option>
+            <option value="work">{t("addressTypes.work")}</option>
+            <option value="other">{t("addressTypes.other")}</option>
           </select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label htmlFor="phone">{t("fields.phoneNumber")}</Label>
           <Input
             id="phone"
             type="tel"
-            placeholder="e.g., 01114773472"
+            placeholder={t("fields.phonePlaceholder")}
             value={formData.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
             required
@@ -136,10 +138,10 @@ export const AddressForm = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">Address Details</Label>
+        <Label htmlFor="address">{t("fields.addressDetails")}</Label>
         <Input
           id="address"
-          placeholder="Street address, building number, etc."
+          placeholder={t("fields.addressPlaceholder")}
           value={formData.address}
           onChange={(e) => handleInputChange("address", e.target.value)}
           required
@@ -147,7 +149,7 @@ export const AddressForm = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="city">City</Label>
+        <Label htmlFor="city">{t("fields.city")}</Label>
         {citiesLoading ? (
           <Skeleton className="h-10 w-full" />
         ) : (
@@ -160,7 +162,7 @@ export const AddressForm = ({
             }
             required
           >
-            <option value={0}>Select a city</option>
+            <option value={0}>{t("fields.selectCity")}</option>
             {cities.map((city: any) => (
               <option
                 key={city.id}
@@ -227,10 +229,10 @@ export const AddressForm = ({
                 htmlFor="is_default"
                 className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
-                Set as default address
+                {t("fields.setAsDefault")}
               </Label>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                This address will be used as your primary shipping address
+                {t("fields.defaultDescription")}
               </p>
             </div>
           </div>
@@ -268,13 +270,13 @@ export const AddressForm = ({
           variant="outline"
           onClick={onCancel}
         >
-          Cancel
+          {t("buttons.cancel")}
         </Button>
         <Button
           type="submit"
           disabled={isLoading || !selectedPosition}
         >
-          {isLoading ? "Saving..." : "Save Address"}
+          {isLoading ? t("buttons.saving") : t("buttons.saveAddress")}
         </Button>
       </div>
     </form>

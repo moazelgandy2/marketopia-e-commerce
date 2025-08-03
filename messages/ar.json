@@ -172,6 +172,68 @@
       "couponApplyFailed": "فشل في تطبيق الكوبون"
     }
   },
+  "ProfileIcon": {
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "AddressDialog": {
+    "map": {
+      "useCurrentLocation": "استخدم موقعي الحالي",
+      "selectedLocation": "الموقع المحدد",
+      "clickToMove": "انقر في أي مكان على الخريطة لتحريك العلامة",
+      "errors": {
+        "geolocationFailed": "خطأ: فشل في خدمة تحديد الموقع.",
+        "permissionDenied": "خطأ: تم رفض إذن الموقع. يرجى تفعيل الوصول للموقع.",
+        "positionUnavailable": "خطأ: معلومات الموقع غير متاحة.",
+        "timeout": "خطأ: انتهت مهلة طلب الموقع.",
+        "geolocationNotSupported": "خطأ: متصفحك لا يدعم تحديد الموقع.",
+        "selectLocationFirst": "يرجى تحديد موقع على الخريطة أولاً",
+        "loginRequired": "يرجى تسجيل الدخول لحفظ العناوين"
+      }
+    },
+    "description": {
+      "fillDetails": "املأ تفاصيل العنوان أدناه.",
+      "selectLocation": "انقر على الخريطة لتحديد موقع أو استخدم موقعك الحالي."
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "next": "التالي"
+    },
+    "toast": {
+      "addressSaved": "تم حفظ العنوان بنجاح",
+      "addressUpdated": "تم تحديث العنوان بنجاح",
+      "saveFailed": "فشل في حفظ العنوان. يرجى المحاولة مرة أخرى.",
+      "updateFailed": "فشل في تحديث العنوان. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "AddressForm": {
+    "fields": {
+      "addressName": "اسم العنوان",
+      "selectType": "اختر نوع العنوان",
+      "phoneNumber": "رقم الهاتف",
+      "phonePlaceholder": "مثال: 01114773472",
+      "addressDetails": "تفاصيل العنوان",
+      "addressPlaceholder": "عنوان الشارع، رقم المبنى، إلخ.",
+      "city": "المدينة",
+      "selectCity": "اختر مدينة",
+      "setAsDefault": "تعيين كعنوان افتراضي",
+      "defaultDescription": "سيتم استخدام هذا العنوان كعنوان الشحن الأساسي"
+    },
+    "addressTypes": {
+      "home": "المنزل",
+      "work": "العمل",
+      "other": "أخرى"
+    },
+    "validation": {
+      "selectCity": "يرجى اختيار مدينة"
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "saving": "جاري الحفظ...",
+      "saveAddress": "حفظ العنوان"
+    }
+  },
   "CategoriesPage": {
     "title": "تصفح جميع الفئات",
     "subtitle": "اكتشف منتجات مذهلة عبر جميع الفئات المنتقاة بعناية",

@@ -172,6 +172,68 @@
       "couponApplyFailed": "Failed to apply coupon"
     }
   },
+  "ProfileIcon": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "AddressDialog": {
+    "map": {
+      "useCurrentLocation": "Use my current location",
+      "selectedLocation": "Selected Location",
+      "clickToMove": "Click anywhere on the map to move the marker",
+      "errors": {
+        "geolocationFailed": "Error: The Geolocation service failed.",
+        "permissionDenied": "Error: Location permission denied. Please enable location access.",
+        "positionUnavailable": "Error: Location information unavailable.",
+        "timeout": "Error: Location request timed out.",
+        "geolocationNotSupported": "Error: Your browser doesn't support geolocation.",
+        "selectLocationFirst": "Please select a location on the map first",
+        "loginRequired": "Please login to save addresses"
+      }
+    },
+    "description": {
+      "fillDetails": "Fill in the address details below.",
+      "selectLocation": "Click on the map to select a location or use your current location."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "next": "Next"
+    },
+    "toast": {
+      "addressSaved": "Address saved successfully",
+      "addressUpdated": "Address updated successfully",
+      "saveFailed": "Failed to save address. Please try again.",
+      "updateFailed": "Failed to update address. Please try again."
+    }
+  },
+  "AddressForm": {
+    "fields": {
+      "addressName": "Address Name",
+      "selectType": "Select address type",
+      "phoneNumber": "Phone Number",
+      "phonePlaceholder": "e.g., 01114773472",
+      "addressDetails": "Address Details",
+      "addressPlaceholder": "Street address, building number, etc.",
+      "city": "City",
+      "selectCity": "Select a city",
+      "setAsDefault": "Set as default address",
+      "defaultDescription": "This address will be used as your primary shipping address"
+    },
+    "addressTypes": {
+      "home": "Home",
+      "work": "Work",
+      "other": "Other"
+    },
+    "validation": {
+      "selectCity": "Please select a city"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saveAddress": "Save Address"
+    }
+  },
   "CategoriesPage": {
     "title": "Browse All Categories",
     "subtitle": "Discover amazing products across all our carefully curated categories",

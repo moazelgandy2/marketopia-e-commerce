@@ -1,14 +1,11 @@
 "use server";
 
 import { Brand, BrandsApiResponse } from "@/types";
-import { getLocale } from "next-intl/server";
 
-export async function getBrands(): Promise<Brand[]> {
+export async function getBrands(lang: string): Promise<Brand[]> {
   try {
-    const locale = await getLocale();
-
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/home/brands?lang=${locale}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/home/brands?lang=${lang}`,
       {
         method: "GET",
         headers: {

@@ -1,3 +1,4 @@
+import { getLocale } from "next-intl/server";
 import { Address } from "../types";
 import { ActionResponse } from "./orders";
 
@@ -5,8 +6,10 @@ export const getAddresses = async (
   token: string,
   lang: "en" | "ar"
 ): Promise<ActionResponse<Address[]>> => {
+  const locale = await getLocale();
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses?lang=${locale}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -46,8 +49,10 @@ export const saveAddress = async (
   lang: "en" | "ar",
   addressData: SaveAddressData
 ): Promise<ActionResponse<Address>> => {
+  const locale = await getLocale();
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses?lang=${locale}`,
     {
       method: "POST",
       headers: {
@@ -80,8 +85,10 @@ export const deleteAddress = async (
   lang: "en" | "ar",
   addressId: number
 ): Promise<ActionResponse<null>> => {
+  const locale = await getLocale();
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}?lang=${locale}`,
     {
       method: "DELETE",
       headers: {
@@ -113,8 +120,10 @@ export const updateAddress = async (
   addressId: number,
   addressData: SaveAddressData
 ): Promise<ActionResponse<Address>> => {
+  const locale = await getLocale();
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/addresses/${addressId}?lang=${locale}`,
     {
       method: "PUT",
       headers: {

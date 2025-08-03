@@ -2,6 +2,7 @@
 
 import { CartApiResponse, DeleteCartItemResponse } from "@/types";
 import { getSession } from "@/lib/session";
+import { getLocale } from "next-intl/server";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,8 +14,9 @@ export const getCart = async (
   if (!session?.token) {
     throw new Error("Authentication required");
   }
+  const locale = await getLocale();
 
-  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${lang}`, {
+  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${locale}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -37,14 +39,18 @@ export const deleteCartItem = async (
   if (!session?.token) {
     throw new Error("Authentication required");
   }
+  const locale = await getLocale();
 
-  const response = await fetch(`${API_BASE_URL}/api/carts/${cartItemId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session.token}`,
-    },
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${locale}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.token}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to delete cart item");
@@ -64,8 +70,9 @@ export const addToCart = async (
   if (!session?.token) {
     throw new Error("Authentication required");
   }
+  const locale = await getLocale();
 
-  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${lang}`, {
+  const response = await fetch(`${API_BASE_URL}/api/carts?lang=${locale}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,9 +107,10 @@ export const updateCartItemQuantity = async (
   if (!session?.token) {
     throw new Error("Authentication required");
   }
+  const locale = await getLocale();
 
   const response = await fetch(
-    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${lang}`,
+    `${API_BASE_URL}/api/carts/${cartItemId}?lang=${locale}`,
     {
       method: "PUT",
       headers: {

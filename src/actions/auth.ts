@@ -2,13 +2,16 @@
 
 import { createSession, destroySession, getSession } from "@/lib/session";
 import { LoginResponseType, LoginType, RegisterType } from "@/types";
+import { getLocale } from "next-intl/server";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
 export async function loginAction(values: LoginType) {
   try {
     const { identifier, password } = values;
-    const response = await fetch(`${baseUrl}/auth/login`, {
+    const locale = await getLocale();
+
+    const response = await fetch(`${baseUrl}/auth/login?lang=${locale}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +44,9 @@ export async function loginAction(values: LoginType) {
 
 export async function registerAction(values: RegisterType) {
   try {
-    const response = await fetch(`${baseUrl}/auth/register`, {
+    const locale = await getLocale();
+
+    const response = await fetch(`${baseUrl}/auth/register?lang=${locale}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,13 +108,18 @@ export async function logoutAction() {
 
 export async function updateProfileAction(token: string, formData: FormData) {
   try {
-    const updateResponse = await fetch(`${baseUrl}/auth/profile/update`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    const locale = await getLocale();
+
+    const updateResponse = await fetch(
+      `${baseUrl}/auth/profile/update?lang=${locale}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
 
     const updateData = await updateResponse.json();
     if (!updateResponse.ok) {
@@ -117,7 +127,6 @@ export async function updateProfileAction(token: string, formData: FormData) {
       throw new Error(`Update profile failed: ${updateData.message}`);
     }
 
-    // After a successful update, fetch the latest user profile
     const profileResponse = await fetch(`${baseUrl}/auth/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -130,7 +139,6 @@ export async function updateProfileAction(token: string, formData: FormData) {
       throw new Error("Failed to fetch updated profile");
     }
 
-    // Re-create the session with the updated user data and original token
     const session = await createSession(profileData.data, token);
     if (!session) {
       throw new Error("Session update failed");

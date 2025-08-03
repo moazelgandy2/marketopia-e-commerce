@@ -5,6 +5,7 @@ import { Search, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 type SearchResult = {
   id: number;
@@ -19,6 +20,7 @@ export function SearchInput({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const t = useTranslations("Search");
 
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ export function SearchInput({ className }: { className?: string }) {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
         <input
           type="text"
-          placeholder="Search products..."
+          placeholder={t("placeholder")}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -170,16 +172,16 @@ export function SearchInput({ className }: { className?: string }) {
           {loading && (
             <div className="flex items-center gap-3 px-4 py-3">
               <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
-              <span className="text-sm text-slate-500">Searching...</span>
+              <span className="text-sm text-slate-500">{t("searching")}</span>
             </div>
           )}
 
           {!loading && results.length === 0 && query.trim() && (
             <div className="px-4 py-8 text-center">
               <Search className="h-8 w-8 mx-auto text-slate-300 mb-2" />
-              <p className="text-sm text-slate-500 mb-1">No products found</p>
+              <p className="text-sm text-slate-500 mb-1">{t("noResults")}</p>
               <p className="text-xs text-slate-400">
-                Try searching with different keywords
+                {t("tryDifferentKeywords")}
               </p>
             </div>
           )}

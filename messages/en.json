@@ -363,6 +363,37 @@
       "button": "View All Orders"
     }
   },
+  "Header": {
+    "login": "Login",
+    "cart": "Cart",
+    "toggleSearch": "Toggle search"
+  },
+  "Search": {
+    "placeholder": "Search products...",
+    "searching": "Searching...",
+    "noResults": "No products found",
+    "tryDifferentKeywords": "Try searching with different keywords"
+  },
+  "Footer": {
+    "followUs": "Follow Us",
+    "getTheApp": "Get the App",
+    "downloadOn": "Download on the",
+    "appStore": "App Store",
+    "getItOn": "Get it on",
+    "googlePlay": "Google Play",
+    "chatOnWhatsApp": "Chat on WhatsApp",
+    "support": "Support",
+    "allRightsReserved": "All rights reserved.",
+    "madeWithLove": "Made with ❤️",
+    "deliveryAvailable": "Delivery Available",
+    "links": {
+      "aboutUs": "About Us",
+      "termsConditions": "Terms & Conditions",
+      "privacyPolicy": "Privacy Policy",
+      "refundPolicy": "Refund Policy",
+      "contactUs": "Contact Us"
+    }
+  },
   "ProductsPage": {
     "title": {
       "search": "Search results for",

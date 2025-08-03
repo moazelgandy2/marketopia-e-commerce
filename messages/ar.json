@@ -363,6 +363,37 @@
       "button": "عرض جميع الطلبات"
     }
   },
+  "Header": {
+    "login": "تسجيل الدخول",
+    "cart": "السلة",
+    "toggleSearch": "تبديل البحث"
+  },
+  "Search": {
+    "placeholder": "البحث عن المنتجات...",
+    "searching": "جاري البحث...",
+    "noResults": "لم يتم العثور على منتجات",
+    "tryDifferentKeywords": "جرب البحث بكلمات مختلفة"
+  },
+  "Footer": {
+    "followUs": "تابعنا",
+    "getTheApp": "حمل التطبيق",
+    "downloadOn": "حمل من",
+    "appStore": "آب ستور",
+    "getItOn": "احصل عليه من",
+    "googlePlay": "جوجل بلاي",
+    "chatOnWhatsApp": "تحدث عبر واتساب",
+    "support": "الدعم",
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "madeWithLove": "صنع بـ ❤️",
+    "deliveryAvailable": "التوصيل متاح",
+    "links": {
+      "aboutUs": "من نحن",
+      "termsConditions": "الشروط والأحكام",
+      "privacyPolicy": "سياسة الخصوصية",
+      "refundPolicy": "سياسة الاسترداد",
+      "contactUs": "اتصل بنا"
+    }
+  },
   "ProductsPage": {
     "title": {
       "search": "نتائج البحث عن",

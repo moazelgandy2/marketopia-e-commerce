@@ -4,6 +4,7 @@ import {
   PaginatedProductsApiResponse,
   ProductDetailApiResponse,
 } from "@/types/product";
+import { getLocale } from "next-intl/server";
 
 export async function getProductsByCategory(
   categoryId: number,
@@ -11,8 +12,10 @@ export async function getProductsByCategory(
   lang: string
 ) {
   try {
+    const locale = await getLocale();
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/category/${categoryId}?page=${page}&lang=${lang}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/category/${categoryId}?page=${page}&lang=${locale}`,
       {
         method: "GET",
         headers: {

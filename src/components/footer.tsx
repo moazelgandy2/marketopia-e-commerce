@@ -13,9 +13,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useConfigData } from "@/hooks/use-config";
+import { useTranslations } from "next-intl";
 
 export const Footer = () => {
   const { config, isLoading } = useConfigData();
+  const t = useTranslations("Footer");
 
   if (isLoading || !config) {
     return (
@@ -42,11 +44,11 @@ export const Footer = () => {
   ].filter((link) => link.url && link.url !== "https://www.twitter.com");
 
   const legalLinks = [
-    { label: "About Us", url: config.about_us },
-    { label: "Terms & Conditions", url: config.terms_and_conditions },
-    { label: "Privacy Policy", url: config.privacy_policy },
-    { label: "Refund Policy", url: config.refund_policy },
-    { label: "Contact Us", url: config.contact_us },
+    { label: t("links.aboutUs"), url: config.about_us },
+    { label: t("links.termsConditions"), url: config.terms_and_conditions },
+    { label: t("links.privacyPolicy"), url: config.privacy_policy },
+    { label: t("links.refundPolicy"), url: config.refund_policy },
+    { label: t("links.contactUs"), url: config.contact_us },
   ].filter((link) => link.url);
 
   return (
@@ -74,7 +76,7 @@ export const Footer = () => {
             {socialLinks.length > 0 && (
               <div>
                 <h3 className="text-sm font-medium text-white/90 mb-3">
-                  Follow Us
+                  {t("followUs")}
                 </h3>
                 <div className="flex gap-3">
                   {socialLinks.map(({ icon: Icon, url, name }) => (
@@ -95,7 +97,9 @@ export const Footer = () => {
 
           {/* App Downloads */}
           <div className="space-y-6">
-            <h3 className="text-sm font-medium text-white/90">Get the App</h3>
+            <h3 className="text-sm font-medium text-white/90">
+              {t("getTheApp")}
+            </h3>
             <div className="space-y-3">
               {config.ios_app_url && (
                 <Link
@@ -106,9 +110,11 @@ export const Footer = () => {
                 >
                   <Apple className="w-6 h-6 text-white" />
                   <div>
-                    <div className="text-xs text-white/80">Download on the</div>
+                    <div className="text-xs text-white/80">
+                      {t("downloadOn")}
+                    </div>
                     <div className="text-sm font-medium text-white">
-                      App Store
+                      {t("appStore")}
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-white/70 ml-auto" />
@@ -124,9 +130,9 @@ export const Footer = () => {
                 >
                   <Smartphone className="w-6 h-6 text-white" />
                   <div>
-                    <div className="text-xs text-white/80">Get it on</div>
+                    <div className="text-xs text-white/80">{t("getItOn")}</div>
                     <div className="text-sm font-medium text-white">
-                      Google Play
+                      {t("googlePlay")}
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-white/70 ml-auto" />
@@ -144,7 +150,7 @@ export const Footer = () => {
                   className="flex items-center gap-3 p-3 rounded-lg bg-white hover:bg-white/90 transition-colors text-[#941DFB]"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  <span className="font-medium">Chat on WhatsApp</span>
+                  <span className="font-medium">{t("chatOnWhatsApp")}</span>
                   <ExternalLink className="w-4 h-4 ml-auto" />
                 </Link>
               </div>
@@ -154,7 +160,9 @@ export const Footer = () => {
           {/* Legal Links */}
           {legalLinks.length > 0 && (
             <div className="space-y-6">
-              <h3 className="text-sm font-medium text-white/90">Support</h3>
+              <h3 className="text-sm font-medium text-white/90">
+                {t("support")}
+              </h3>
               <ul className="space-y-2">
                 {legalLinks.map((link) => (
                   <li key={link.label}>
@@ -178,13 +186,13 @@ export const Footer = () => {
         <div className="mt-12 pt-6 border-t border-white/20">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-xs text-white/80">
-              © {new Date().getFullYear()} Narmer. All rights reserved.
+              © {new Date().getFullYear()} Narmer. {t("allRightsReserved")}
             </p>
             <div className="flex items-center gap-4 text-xs text-white/80">
-              <span>Made with ❤️</span>
+              <span>{t("madeWithLove")}</span>
               {config.deliveryman && (
                 <span className="px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-xs font-medium">
-                  Delivery Available
+                  {t("deliveryAvailable")}
                 </span>
               )}
             </div>

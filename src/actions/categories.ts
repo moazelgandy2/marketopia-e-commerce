@@ -6,11 +6,14 @@ import {
   PaginatedCategoriesApiResponse,
   CategoryWithChildrenApiResponse,
 } from "@/types";
+import { getLocale } from "next-intl/server";
 
 export async function getCategories(): Promise<Category[]> {
   try {
+    const locale = await getLocale();
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/home/categories`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/home/categories?lang=${locale}`,
       {
         method: "GET",
         headers: {
@@ -50,8 +53,10 @@ export async function getParentCategories(page: number = 1): Promise<{
   };
 }> {
   try {
+    const locale = await getLocale();
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/parent?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/parent?page=${page}&lang=${locale}`,
       {
         method: "GET",
         headers: {
@@ -95,8 +100,10 @@ export async function getCategoryWithChildren(
   categoryId: number
 ): Promise<Category> {
   try {
+    const locale = await getLocale();
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/children/${categoryId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/children/${categoryId}?lang=${locale}`,
       {
         method: "GET",
         headers: {

@@ -1,11 +1,14 @@
 "use server";
 
 import { BestSelling, BestSellingApiResponse } from "@/types";
+import { getLocale } from "next-intl/server";
 
 export async function getBestSelling(): Promise<BestSelling[]> {
   try {
+    const locale = await getLocale();
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/home/products`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/home/products?lang=${locale}`,
       {
         method: "GET",
         headers: {

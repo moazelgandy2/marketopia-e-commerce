@@ -7,16 +7,17 @@ import { useAuth } from "@/hooks/use-auth";
 import { ProfileIcon } from "@/components/profile-icon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SearchInput } from "../search-input";
 import { useCart } from "@/hooks/use-cart";
 import { LocaleSwitcherDropdown } from "@/components/locale-switcher";
+import { useTranslations } from "next-intl";
 
 export const Header = () => {
   const { session } = useAuth();
   const { data: cartData } = useCart();
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const t = useTranslations("Header");
 
   const cartItemsCount = cartData?.data?.items?.length || 0;
 
@@ -68,7 +69,7 @@ export const Header = () => {
                 className="flex items-center space-x-1"
               >
                 <UserIcon className="h-5 w-5" />
-                <span className="font-medium">Login</span>
+                <span className="font-medium">{t("login")}</span>
               </Link>
             </Button>
           )}
@@ -84,7 +85,7 @@ export const Header = () => {
               className="flex items-center space-x-1 relative"
             >
               <ShoppingCart className="h-5 w-5" />
-              <span className="font-medium">Cart</span>
+              <span className="font-medium">{t("cart")}</span>
               {cartItemsCount > 0 && (
                 <Badge
                   variant="destructive"
@@ -136,7 +137,7 @@ export const Header = () => {
             variant="ghost"
             size="icon"
             className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
-            aria-label="Toggle search"
+            aria-label={t("toggleSearch")}
             onClick={() => setShowMobileSearch((s) => !s)}
           >
             <Search className="h-5 w-5" />
@@ -155,7 +156,7 @@ export const Header = () => {
             >
               <Link
                 href="/auth/login"
-                aria-label="Login"
+                aria-label={t("login")}
               >
                 <UserIcon className="h-5 w-5" />
               </Link>
@@ -170,7 +171,7 @@ export const Header = () => {
           >
             <Link
               href="/cart"
-              aria-label="Cart"
+              aria-label={t("cart")}
               className="relative"
             >
               <ShoppingCart className="h-5 w-5" />

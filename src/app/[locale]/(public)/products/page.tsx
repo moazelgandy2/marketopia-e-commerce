@@ -3,8 +3,10 @@
 import ProductsList from "@/components/elements/products-list";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { useTranslations } from "next-intl";
 
 function ProductsContent() {
+  const t = useTranslations("ProductsPage");
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
 
@@ -18,13 +20,15 @@ function ProductsContent() {
               <h1 className="text-2xl font-bold text-gray-900">
                 {search ? (
                   <>
-                    Search results for{" "}
+                    {t("title.search")}{" "}
                     <span className="text-purple-600">"{search}"</span>
                   </>
                 ) : (
                   <>
-                    Grab the best deal on{" "}
-                    <span className="text-purple-600">Products</span>
+                    {t("title.default")}{" "}
+                    <span className="text-purple-600">
+                      {t("title.products")}
+                    </span>
                   </>
                 )}
               </h1>

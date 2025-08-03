@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface ProductsSearchProps {
   onSearch: (search: string) => void;
@@ -13,10 +14,12 @@ interface ProductsSearchProps {
 
 export default function ProductsSearch({
   onSearch,
-  placeholder = "Search products...",
+  placeholder,
   initialValue = "",
 }: ProductsSearchProps) {
+  const t = useTranslations("ProductsPage.search");
   const [searchValue, setSearchValue] = useState(initialValue);
+  const defaultPlaceholder = placeholder || t("placeholder");
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -38,7 +41,7 @@ export default function ProductsSearch({
           type="text"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          placeholder={placeholder}
+          placeholder={defaultPlaceholder}
           className="pl-12 pr-12 h-12 bg-white border-gray-200 rounded-full focus:border-purple-500 focus:ring-purple-500 shadow-sm"
         />
         {searchValue && (

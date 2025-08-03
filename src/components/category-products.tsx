@@ -28,7 +28,7 @@ import {
   Grid2X2,
 } from "lucide-react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface CategoryProductsProps {
   categoryId: number;
@@ -43,14 +43,15 @@ export default function CategoryProducts({
   const [sortBy, setSortBy] = useState<"price" | "name" | "newest">("newest");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+  const [priceRange, _] = useState<[number, number]>([0, 10000]);
+  const locale = useLocale();
 
   const {
     data: productsData,
     isLoading: productsLoading,
     isError: productsError,
     error: productsErrorMessage,
-  } = useProductsByCategory(categoryId, page);
+  } = useProductsByCategory(categoryId, page, locale);
 
   const { data: categoryData, isLoading: categoryLoading } =
     useCategoryWithChildren(categoryId);

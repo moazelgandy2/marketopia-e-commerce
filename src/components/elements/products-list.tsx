@@ -7,6 +7,7 @@ import ProductsSearch from "@/components/elements/products-search";
 import Pagination from "@/components/elements/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ProductsListProps {
   initialSearch?: string;
@@ -19,18 +20,21 @@ export default function ProductsList({
   initialPage = 1,
   perPage = 6,
 }: ProductsListProps) {
+  const t = useTranslations("ProductsPage");
   const [search, setSearch] = useState(initialSearch);
   const [currentPage, setCurrentPage] = useState(initialPage);
+  const locale = useLocale();
 
   const { data, isLoading, error, isFetching } = useProducts(
     search,
     currentPage,
-    perPage
+    perPage,
+    locale
   );
 
   const handleSearch = useCallback((searchValue: string) => {
     setSearch(searchValue);
-    setCurrentPage(1); // Reset to first page on search
+    setCurrentPage(1);
   }, []);
 
   const handlePageChange = useCallback((page: number) => {
@@ -54,13 +58,15 @@ export default function ProductsList({
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <ProductsSearch
           onSearch={handleSearch}
-          placeholder="Search products..."
+          placeholder={t("search.placeholder")}
           initialValue={search}
         />
 
         {data && (
           <div className="text-sm text-gray-600">
-            {data.total} product{data.total !== 1 ? "s" : ""} found
+            {data.total}{" "}
+            {data.total === 1 ? t("results.found") : t("results.foundPlural")}{" "}
+            {t("results.foundText")}
           </div>
         )}
       </div>
@@ -70,9 +76,7 @@ export default function ProductsList({
         <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-center space-x-2">
           <AlertCircle className="h-4 w-4 text-red-600" />
           <div className="text-red-800">
-            {error instanceof Error
-              ? error.message
-              : "Failed to fetch products"}
+            {error instanceof Error ? error.message : t("error")}
           </div>
         </div>
       )}
@@ -108,12 +112,10 @@ export default function ProductsList({
             ) : (
               <div className="text-center py-12">
                 <div className="text-gray-500 text-lg mb-2">
-                  No products found
+                  {t("noProducts.title")}
                 </div>
                 {search && (
-                  <p className="text-gray-400">
-                    Try adjusting your search terms or browse all products
-                  </p>
+                  <p className="text-gray-400">{t("noProducts.subtitle")}</p>
                 )}
               </div>
             )}

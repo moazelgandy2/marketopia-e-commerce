@@ -362,5 +362,54 @@
       "description": "The order you're looking for doesn't exist or you don't have permission to view it.",
       "button": "View All Orders"
     }
+  },
+  "ProductsPage": {
+    "title": {
+      "search": "Search results for",
+      "default": "Grab the best deal on",
+      "products": "Products"
+    },
+    "search": {
+      "placeholder": "Search products..."
+    },
+    "results": {
+      "found": "product",
+      "foundPlural": "products",
+      "foundText": "found"
+    },
+    "noProducts": {
+      "title": "No products found",
+      "subtitle": "Try adjusting your search terms or browse all products"
+    },
+    "error": "Failed to fetch products",
+    "loading": "Loading products..."
+  },
+  "ProductCard": {
+    "discount": "OFF",
+    "inCart": "in cart",
+    "save": "Save",
+    "addToCart": "Add to Cart",
+    "updateCart": "Update",
+    "adding": "Adding...",
+    "updating": "Updating...",
+    "outOfStock": "Out of Stock",
+    "toasts": {
+      "cannotAdd": "Cannot add to cart",
+      "onlyAvailable": "Only {available} items available. You already have {inCart} in your cart.",
+      "cartUpdated": "Cart updated successfully!",
+      "quantityUpdated": "{productName} quantity updated to {quantity} item{plural}.",
+      "productAdded": "Product added to cart successfully!",
+      "addedToCart": "{productName} has been added to your cart.",
+      "addFailed": "Failed to add product to cart",
+      "tryAgain": "Please try again later."
+    }
+  },
+  "Pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results": "results"
   }
 }

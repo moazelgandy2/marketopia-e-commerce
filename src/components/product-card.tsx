@@ -12,10 +12,11 @@ import {
 } from "@/hooks/use-cart";
 import { getProductById } from "@/actions/products";
 import { toast } from "sonner";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const t = useTranslations("ProductCard");
   const addToCartMutation = useAddToCart();
   const updateCartItemMutation = useUpdateCartItemQuantity();
   const { data: cartData } = useCart();
@@ -97,8 +98,11 @@ export default function ProductCard({ product }: { product: Product }) {
         const newQuantity = existingCartItem.quantity + 1;
 
         if (newQuantity > product.quantity) {
-          toast.error("Cannot add to cart", {
-            description: `Only ${product.quantity} items available. You already have ${existingCartItem.quantity} in your cart.`,
+          toast.error(t("toasts.cannotAdd"), {
+            description: t("toasts.onlyAvailable", {
+              available: product.quantity,
+              inCart: existingCartItem.quantity,
+            }),
           });
           return;
         }
@@ -108,12 +112,12 @@ export default function ProductCard({ product }: { product: Product }) {
           quantity: newQuantity,
         });
 
-        toast.success("Cart updated successfully!", {
-          description: `${
-            product.name
-          } quantity updated to ${newQuantity} item${
-            newQuantity > 1 ? "s" : ""
-          }.`,
+        toast.success(t("toasts.cartUpdated"), {
+          description: t("toasts.quantityUpdated", {
+            productName: product.name,
+            quantity: newQuantity,
+            plural: newQuantity > 1 ? "s" : "",
+          }),
         });
       } else {
         console.log("Sending to cart:", {
@@ -128,15 +132,15 @@ export default function ProductCard({ product }: { product: Product }) {
           product_attribute_value_ids: defaultAttributeValues,
         });
 
-        toast.success("Product added to cart successfully!", {
-          description: `${product.name} has been added to your cart.`,
+        toast.success(t("toasts.productAdded"), {
+          description: t("toasts.addedToCart", { productName: product.name }),
         });
       }
     } catch (error) {
       console.error("Add to cart error:", error);
-      toast.error("Failed to add product to cart", {
+      toast.error(t("toasts.addFailed"), {
         description:
-          error instanceof Error ? error.message : "Please try again later.",
+          error instanceof Error ? error.message : t("toasts.tryAgain"),
       });
     }
   };
@@ -150,7 +154,8 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="relative overflow-hidden bg-gray-50 rounded-t-2xl">
           {discount && (
             <div className="absolute top-3 left-3 z-10 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold">
-              {discount}%<div className="text-[10px] font-normal">OFF</div>
+              {discount}%
+              <div className="text-[10px] font-normal">{t("discount")}</div>
             </div>
           )}
           {existingCartItemSimple && (
@@ -186,7 +191,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
             {product.discount_price && (
               <p className="text-xs font-medium text-green-600">
-                Save -{" "}
+                {t("save")} -{" "}
                 {(
                   parseFloat(product.price) - parseFloat(product.discount_price)
                 ).toLocaleString()}{" "}
@@ -213,13 +218,15 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="truncate">
             {addToCartMutation.isPending || updateCartItemMutation.isPending
               ? existingCartItemSimple
-                ? "Updating..."
-                : "Adding..."
+                ? t("updating")
+                : t("adding")
               : product.quantity <= 0
-              ? "Out of Stock"
+              ? t("outOfStock")
               : existingCartItemSimple
-              ? `Update (${existingCartItemSimple.quantity} in cart)`
-              : "Add to Cart"}
+              ? `${t("updateCart")} (${existingCartItemSimple.quantity} ${t(
+                  "inCart"
+                )})`
+              : t("addToCart")}
           </span>
         </Button>
       </CardFooter>

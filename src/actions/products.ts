@@ -7,11 +7,12 @@ import {
 
 export async function getProductsByCategory(
   categoryId: number,
-  page: number = 1
+  page: number = 1,
+  lang: string
 ) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/category/${categoryId}?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/category/${categoryId}?page=${page}&lang=${lang}`,
       {
         method: "GET",
         headers: {
@@ -42,7 +43,8 @@ export async function getProductsByCategory(
 export async function getProducts(
   search: string = "",
   page: number = 1,
-  perPage: number = 6
+  perPage: number = 6,
+  lang: string
 ) {
   try {
     const searchParams = new URLSearchParams({
@@ -57,7 +59,7 @@ export async function getProducts(
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_API_URL
-      }/api/products?${searchParams.toString()}`,
+      }/api/products?${searchParams.toString()}&lang=${lang}`,
       {
         method: "GET",
         headers: {

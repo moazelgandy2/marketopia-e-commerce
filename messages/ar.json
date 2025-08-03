@@ -362,5 +362,54 @@
       "description": "الطلب الذي تبحث عنه غير موجود أو ليس لديك إذن لعرضه.",
       "button": "عرض جميع الطلبات"
     }
+  },
+  "ProductsPage": {
+    "title": {
+      "search": "نتائج البحث عن",
+      "default": "احصل على أفضل صفقة على",
+      "products": "المنتجات"
+    },
+    "search": {
+      "placeholder": "البحث عن منتجات..."
+    },
+    "results": {
+      "found": "منتج",
+      "foundPlural": "منتجات",
+      "foundText": "تم العثور عليها"
+    },
+    "noProducts": {
+      "title": "لم يتم العثور على منتجات",
+      "subtitle": "جرب تعديل مصطلحات البحث أو تصفح جميع المنتجات"
+    },
+    "error": "فشل في جلب المنتجات",
+    "loading": "جاري تحميل المنتجات..."
+  },
+  "ProductCard": {
+    "discount": "خصم",
+    "inCart": "في السلة",
+    "save": "وفر",
+    "addToCart": "أضف إلى السلة",
+    "updateCart": "تحديث",
+    "adding": "جاري الإضافة...",
+    "updating": "جاري التحديث...",
+    "outOfStock": "نفدت الكمية",
+    "toasts": {
+      "cannotAdd": "لا يمكن إضافة إلى السلة",
+      "onlyAvailable": "متوفر فقط {available} عنصر. لديك بالفعل {inCart} في سلتك.",
+      "cartUpdated": "تم تحديث السلة بنجاح!",
+      "quantityUpdated": "تم تحديث كمية {productName} إلى {quantity} عنصر{plural}.",
+      "productAdded": "تم إضافة المنتج إلى السلة بنجاح!",
+      "addedToCart": "تم إضافة {productName} إلى سلتك.",
+      "addFailed": "فشل في إضافة المنتج إلى السلة",
+      "tryAgain": "يرجى المحاولة مرة أخرى لاحقاً."
+    }
+  },
+  "Pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "showing": "عرض",
+    "to": "إلى",
+    "of": "من",
+    "results": "نتيجة"
   }
 }

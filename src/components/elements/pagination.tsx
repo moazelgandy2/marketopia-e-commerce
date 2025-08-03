@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PaginationProps {
   currentPage: number;
@@ -21,6 +22,8 @@ export default function Pagination({
   showingTo,
   total,
 }: PaginationProps) {
+  const t = useTranslations("Pagination");
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -65,7 +68,7 @@ export default function Pagination({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Previous
+          {t("previous")}
         </Button>
         <Button
           variant="outline"
@@ -73,16 +76,16 @@ export default function Pagination({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
-          Next
+          {t("next")}
         </Button>
       </div>
 
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">{showingFrom}</span> to{" "}
-            <span className="font-medium">{showingTo}</span> of{" "}
-            <span className="font-medium">{total}</span> results
+            {t("showing")} <span className="font-medium">{showingFrom}</span>{" "}
+            {t("to")} <span className="font-medium">{showingTo}</span> {t("of")}{" "}
+            <span className="font-medium">{total}</span> {t("results")}
           </p>
         </div>
 
@@ -95,7 +98,7 @@ export default function Pagination({
             className="flex items-center"
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
-            Previous
+            {t("previous")}
           </Button>
 
           <div className="flex items-center space-x-1">
@@ -124,7 +127,7 @@ export default function Pagination({
             disabled={currentPage === totalPages}
             className="flex items-center"
           >
-            Next
+            {t("next")}
             <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         </div>

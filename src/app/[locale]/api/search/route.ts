@@ -1,16 +1,18 @@
 import { getProducts } from "@/actions/products";
+import { getLocale } from "next-intl/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("q");
+    const locale = await getLocale();
 
     if (!query || query.trim().length < 2) {
       return NextResponse.json([]);
     }
 
-    const productsData = await getProducts(query.trim(), 1, 5);
+    const productsData = await getProducts(query.trim(), 1, 5, locale);
 
     const searchResults = productsData.data.map((product) => ({
       id: product.id,

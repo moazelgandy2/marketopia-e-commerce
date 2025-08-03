@@ -1,10 +1,12 @@
 import { registerAction } from "@/actions/auth";
 import { UserRoleType } from "@/types";
+import { getLocale } from "next-intl/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const locale = await getLocale();
     const { name, email, phone, password, confirmPassword } = body;
     const values = {
       name,
@@ -15,7 +17,7 @@ export async function POST(request: NextRequest) {
       user_type: UserRoleType.USER,
       fcm_token: undefined,
     };
-    const session = await registerAction(values);
+    const session = await registerAction(values, locale);
 
     return NextResponse.json({
       message: "Data received successfully",

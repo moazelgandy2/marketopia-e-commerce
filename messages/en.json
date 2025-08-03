@@ -130,5 +130,169 @@
     "termsAndPrivacy": "By signing up, you agree to our {terms} and {privacy}",
     "terms": "Terms",
     "privacy": "Privacy"
+  },
+  "CartPage": {
+    "title": "Shopping Cart",
+    "emptyCart": {
+      "title": "Your cart is empty",
+      "subtitle": "Looks like you haven't added any items to your cart yet.",
+      "startShopping": "Start Shopping"
+    },
+    "orderSummary": "Order Summary",
+    "proceedToCheckout": "Proceed to Checkout",
+    "continueShopping": "Continue Shopping",
+    "needHelp": {
+      "text": "Need help with your order?",
+      "linkText": "Contact Support"
+    },
+    "viewOrders": {
+      "text": "Want to check your previous orders?",
+      "linkText": "View Order History"
+    }
+  },
+  "CategoriesPage": {
+    "title": "Browse All Categories",
+    "subtitle": "Discover amazing products across all our carefully curated categories",
+    "breadcrumb": "All Categories",
+    "home": "Home",
+    "searchPlaceholder": "Search categories...",
+    "sortAZ": "Sort A-Z",
+    "sortZA": "Sort Z-A",
+    "showingText": "Showing {from} - {to} of {total} categories",
+    "errorState": {
+      "title": "Failed to Load Categories",
+      "message": "Something went wrong",
+      "tryAgain": "Try Again"
+    },
+    "productDescription": "Explore our collection of {categoryName} products",
+    "noCategories": {
+      "title": "No Categories Found",
+      "subtitle": "No categories match \"{searchTerm}\". Try a different search term.",
+      "noResults": "No categories are available at the moment.",
+      "clearSearch": "Clear Search"
+    },
+    "browseCategory": "Browse Category",
+    "popular": "Popular",
+    "backToHome": "Back to Home",
+    "helpfulLinks": {
+      "needHelp": {
+        "text": "Need help finding what you're looking for?",
+        "linkText": "Contact Support"
+      },
+      "viewProducts": {
+        "text": "Want to see all products?",
+        "linkText": "View All Products"
+      }
+    }
+  },
+  "CategoryPage": {
+    "home": "Home",
+    "breadcrumb": "Categories",
+    "backToCategories": "Back to Categories",
+    "sortBy": "Sort",
+    "sortOptions": {
+      "price": "Price",
+      "name": "Name",
+      "newest": "Newest"
+    },
+    "sortOrder": {
+      "lowToHigh": "Low to High",
+      "highToLow": "High to Low"
+    },
+    "viewMode": {
+      "grid": "Grid",
+      "list": "List"
+    },
+    "clearFilters": "Clear all filters",
+    "activeFilters": "Active filters:",
+    "clearSortFilter": "Clear sort filter",
+    "noProducts": {
+      "title": "No Products Found",
+      "subtitle": "This category doesn't have any products yet.",
+      "browseOther": "Browse Other Categories",
+      "noMatching": "No matching products"
+    },
+    "errorState": {
+      "title": "Something went wrong",
+      "subtitle": "Failed to load category products",
+      "retry": "Try again"
+    },
+    "helpfulLinks": {
+      "needHelp": {
+        "text": "Need help with this category?",
+        "linkText": "Contact Support"
+      },
+      "viewAll": {
+        "text": "Want to see all categories?",
+        "linkText": "View All Categories"
+      }
+    }
+  },
+  "CheckoutPage": {
+    "title": "Checkout",
+    "back": "Back",
+    "emptyCart": {
+      "title": "Your cart is empty",
+      "subtitle": "Add some items to your cart before checkout.",
+      "startShopping": "Start Shopping"
+    },
+    "deliveryAddress": "Delivery Address",
+    "addNewAddress": "+ Add New Address",
+    "noAddresses": {
+      "title": "No addresses found",
+      "addAddress": "Add Delivery Address"
+    },
+    "default": "Default",
+    "deliveryArea": "Delivery Area",
+    "selectDeliveryArea": "Select the delivery area for fee calculation",
+    "selectAreaPlaceholder": "Select delivery area",
+    "noAreasAvailable": "No areas available for this city",
+    "areaSelected": "Area selected:",
+    "paymentMethod": "Payment Method",
+    "paymentMethods": {
+      "cash": {
+        "title": "Cash on Delivery",
+        "description": "Pay when you receive your order"
+      },
+      "visa": {
+        "title": "Credit/Debit Card",
+        "description": "Pay securely online - you'll be redirected to complete payment"
+      },
+      "wallet": {
+        "title": "Digital Wallet",
+        "description": "Pay with your digital wallet"
+      }
+    },
+    "onlinePaymentInfo": {
+      "title": "Online Payment Selected",
+      "description": "After clicking \"Proceed to Payment\", you'll be redirected to a secure payment page to complete your transaction with your credit/debit card."
+    },
+    "orderNotes": "Order Notes (Optional)",
+    "orderNotesPlaceholder": "Add any special instructions for your order...",
+    "orderSummary": "Order Summary",
+    "quantity": "Qty:",
+    "subtotal": "Subtotal:",
+    "productDiscount": "Product Discount:",
+    "couponDiscount": "Coupon Discount:",
+    "couponApplied": "Coupon Applied",
+    "deliveryFee": "Delivery Fee:",
+    "free": "Free",
+    "total": "Total:",
+    "buttons": {
+      "creatingOrder": "Creating Order...",
+      "placingOrder": "Placing Order...",
+      "proceedToPayment": "Proceed to Payment",
+      "placeOrder": "Place Order"
+    },
+    "termsConditions": "By placing your order, you agree to our Terms & Conditions",
+    "validation": {
+      "selectAddress": "Please select a delivery address",
+      "selectArea": "Please select a delivery area"
+    },
+    "orderProcessing": {
+      "creating": "Creating order and preparing payment...",
+      "redirecting": "You will be redirected to complete your payment.",
+      "processing": "Processing your order..."
+    }
   }
 }

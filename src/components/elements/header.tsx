@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SearchInput } from "../search-input";
 import { useCart } from "@/hooks/use-cart";
+import { LocaleSwitcherDropdown } from "@/components/locale-switcher";
 
 export const Header = () => {
   const { session } = useAuth();
@@ -45,7 +46,12 @@ export const Header = () => {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
+          {/* Locale Switcher */}
+          <div className="w-32">
+            <LocaleSwitcherDropdown />
+          </div>
+
           {session ? (
             <div className="transition-transform hover:scale-105">
               <ProfileIcon />
@@ -120,7 +126,12 @@ export const Header = () => {
         )}
 
         {/* Right: Icons */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
+          {/* Mobile Locale Switcher - Compact */}
+          <div className="w-20">
+            <LocaleSwitcherDropdown />
+          </div>
+
           <Button
             variant="ghost"
             size="icon"

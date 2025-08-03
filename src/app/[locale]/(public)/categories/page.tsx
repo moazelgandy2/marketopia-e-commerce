@@ -18,11 +18,15 @@ import {
   Filter,
   SortAsc,
   SortDesc,
+  HeadphonesIcon,
+  ShoppingBag,
 } from "lucide-react";
 import { useParentCategories } from "@/hooks/use-categories";
 import { Category } from "@/types";
+import { useTranslations } from "next-intl";
 
 export default function AllCategoriesPage() {
+  const t = useTranslations("CategoriesPage");
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -65,19 +69,19 @@ export default function AllCategoriesPage() {
                 <Package className="w-8 h-8 mx-auto" />
               </div>
               <h3 className="text-lg font-semibold text-red-800 mb-2">
-                Failed to Load Categories
+                {t("errorState.title")}
               </h3>
               <p className="text-red-600 text-sm mb-4">
                 {error instanceof Error
                   ? error.message
-                  : "Something went wrong"}
+                  : t("errorState.message")}
               </p>
               <Button
                 onClick={() => window.location.reload()}
                 variant="outline"
                 className="border-red-200 text-red-600 hover:bg-red-50"
               >
-                Try Again
+                {t("errorState.tryAgain")}
               </Button>
             </div>
           </div>
@@ -96,25 +100,27 @@ export default function AllCategoriesPage() {
             className="hover:text-primary transition-colors flex items-center group"
           >
             <Home className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
-            Home
+            {t("home")}
           </Link>
           <ArrowRight className="w-4 h-4" />
-          <span className="font-medium text-gray-900">All Categories</span>
+          <span className="font-medium text-gray-900">{t("breadcrumb")}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
-            Browse All Categories
+            {t("title")}
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Discover amazing products across all our carefully curated
-            categories
+            {t("subtitle")}
           </p>
           {data?.pagination && (
             <div className="mt-4 text-sm text-gray-500">
-              Showing {data.pagination.from} - {data.pagination.to} of{" "}
-              {data.pagination.total} categories
+              {t("showingText", {
+                from: data.pagination.from,
+                to: data.pagination.to,
+                total: data.pagination.total,
+              })}
             </div>
           )}
         </div>
@@ -126,7 +132,7 @@ export default function AllCategoriesPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 type="text"
-                placeholder="Search categories..."
+                placeholder={t("searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 border-gray-200 focus:border-primary/50 focus:ring-primary/20"
@@ -142,7 +148,7 @@ export default function AllCategoriesPage() {
               ) : (
                 <SortDesc className="w-4 h-4" />
               )}
-              Sort {sortOrder === "asc" ? "A-Z" : "Z-A"}
+              {sortOrder === "asc" ? t("sortAZ") : t("sortZA")}
             </Button>
           </div>
         </div>
@@ -210,7 +216,7 @@ export default function AllCategoriesPage() {
                           variant="secondary"
                           className="bg-yellow-500/90 text-white border-0 shadow-md"
                         >
-                          Popular
+                          {t("popular")}
                         </Badge>
                       )}
                     </div>
@@ -222,12 +228,13 @@ export default function AllCategoriesPage() {
                       {category.name}
                     </h3>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      Explore our collection of {category.name.toLowerCase()}{" "}
-                      products
+                      {t("productDescription", {
+                        categoryName: category.name.toLowerCase(),
+                      })}
                     </p>
                     <Link href={`/categories/${category.id}`}>
                       <Button className="w-full group-hover:bg-primary group-hover:text-white transition-all duration-300 bg-gray-50 text-gray-700 hover:bg-primary border-0">
-                        Browse Category
+                        {t("browseCategory")}
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
@@ -241,19 +248,19 @@ export default function AllCategoriesPage() {
             <div className="bg-white rounded-xl shadow-sm border p-8 max-w-md mx-auto">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                No Categories Found
+                {t("noCategories.title")}
               </h3>
               <p className="text-gray-600 mb-4">
                 {searchTerm
-                  ? `No categories match "${searchTerm}". Try a different search term.`
-                  : "No categories are available at the moment."}
+                  ? t("noCategories.subtitle", { searchTerm })
+                  : t("noCategories.noResults")}
               </p>
               {searchTerm && (
                 <Button
                   onClick={() => setSearchTerm("")}
                   variant="outline"
                 >
-                  Clear Search
+                  {t("noCategories.clearSearch")}
                 </Button>
               )}
             </div>
@@ -275,16 +282,51 @@ export default function AllCategoriesPage() {
         )}
 
         {/* Back to Home */}
-        <div className="text-center">
+        <div className="text-center mb-8">
           <Link href="/">
             <Button
               variant="outline"
               className="flex items-center gap-2 mx-auto bg-white hover:bg-gray-50 border-gray-200 shadow-sm"
             >
               <Home className="w-4 h-4" />
-              Back to Home
+              {t("backToHome")}
             </Button>
           </Link>
+        </div>
+
+        {/* Helpful Navigation Links */}
+        <div className="bg-white rounded-xl shadow-sm border p-6 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">
+                {t("helpfulLinks.needHelp.text")}
+              </p>
+              <Link href="/contact">
+                <Button
+                  variant="ghost"
+                  className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                >
+                  <HeadphonesIcon className="h-4 w-4 mr-1" />
+                  {t("helpfulLinks.needHelp.linkText")}
+                </Button>
+              </Link>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">
+                {t("helpfulLinks.viewProducts.text")}
+              </p>
+              <Link href="/products">
+                <Button
+                  variant="ghost"
+                  className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                >
+                  <ShoppingBag className="h-4 w-4 mr-1" />
+                  {t("helpfulLinks.viewProducts.linkText")}
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

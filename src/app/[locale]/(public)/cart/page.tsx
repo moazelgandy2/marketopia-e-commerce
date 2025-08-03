@@ -26,13 +26,17 @@ import {
   BellIcon,
   Tag,
   CheckCircle,
+  HeadphonesIcon,
+  ClipboardList,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function CartPage() {
+  const t = useTranslations("CartPage");
   const { data: cartData, isLoading, error } = useCart();
   const deleteCartItemMutation = useDeleteCartItem();
   const updateQuantityMutation = useUpdateCartItemQuantity();
@@ -241,7 +245,7 @@ export default function CartPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+        <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {[1, 2, 3].map((i) => (
@@ -291,16 +295,15 @@ export default function CartPage() {
   if (!cartData?.data?.items?.length) {
     return (
       <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
         <div className="text-center py-16">
           <ShoppingBag className="mx-auto h-24 w-24 text-gray-400 mb-4" />
           <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            Your cart is empty
+            {t("emptyCart.title")}
           </h2>
-          <p className="text-gray-600 mb-6">
-            Looks like you haven't added any items to your cart yet.
-          </p>
+          <p className="text-gray-600 mb-6">{t("emptyCart.subtitle")}</p>
           <Link href="/products">
-            <Button>Start Shopping</Button>
+            <Button>{t("emptyCart.startShopping")}</Button>
           </Link>
         </div>
       </div>
@@ -311,7 +314,7 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -440,7 +443,7 @@ export default function CartPage() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
+              <CardTitle>{t("orderSummary")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -543,7 +546,7 @@ export default function CartPage() {
                     className="w-full my-2"
                     size="lg"
                   >
-                    Proceed to Checkout
+                    {t("proceedToCheckout")}
                   </Button>
                 </Link>
 
@@ -555,9 +558,42 @@ export default function CartPage() {
                     variant="outline"
                     className="w-full"
                   >
-                    Continue Shopping
+                    {t("continueShopping")}
                   </Button>
                 </Link>
+
+                {/* Navigation Help Section */}
+                <div className="mt-6 pt-4 border-t space-y-3">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-2">
+                      {t("needHelp.text")}
+                    </p>
+                    <Link href="/contact">
+                      <Button
+                        variant="ghost"
+                        className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                      >
+                        <HeadphonesIcon className="h-4 w-4 mr-1" />
+                        {t("needHelp.linkText")}
+                      </Button>
+                    </Link>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-2">
+                      {t("viewOrders.text")}
+                    </p>
+                    <Link href="/orders">
+                      <Button
+                        variant="ghost"
+                        className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                      >
+                        <ClipboardList className="h-4 w-4 mr-1" />
+                        {t("viewOrders.linkText")}
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -18,12 +18,23 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  // Load messages for the locale
+  let messages;
+  try {
+    messages = (await import(`../../../messages/${locale}.json`)).default;
+  } catch (error) {
+    notFound();
+  }
+
   return (
     <html lang={locale}>
       <body>
         <ReactQueryProvider>
           <ReactQueryDevtools initialIsOpen={false} />
-          <NextIntlClientProvider>
+          <NextIntlClientProvider
+            locale={locale}
+            messages={messages}
+          >
             <Toaster
               position="top-right"
               richColors

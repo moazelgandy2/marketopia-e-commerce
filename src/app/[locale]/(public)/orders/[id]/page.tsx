@@ -202,10 +202,9 @@ export default function OrderDetailsPage() {
   const formatPrice = (price: string | number) => {
     const numPrice = typeof price === "string" ? parseFloat(price) : price;
 
-    // Dynamic currency based on locale
     const currencyMap: Record<string, string> = {
-      en: "USD",
-      ar: "EGP", // Egyptian Pound for Arabic locale
+      en: "EGP",
+      ar: "EGP",
     };
 
     const currency = currencyMap[locale] || "USD";
@@ -218,7 +217,6 @@ export default function OrderDetailsPage() {
   };
 
   const copyTrackingNumber = () => {
-    // Use order ID as tracking number if no specific tracking number exists in API
     const trackingNumber =
       order?.tracking_number || `MKT-${orderId.toUpperCase()}`;
     navigator.clipboard.writeText(trackingNumber);

@@ -35,6 +35,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { CartItem, CartProductAttributeValue } from "@/types";
+import { useTranslations } from "next-intl";
 
 interface CheckoutData {
   address_id: number | null;
@@ -85,6 +86,7 @@ const submitOrder = async (orderData: CheckoutData): Promise<OrderResponse> => {
 };
 
 export default function CheckoutPage() {
+  const t = useTranslations("CheckoutPage");
   const { data: cartData, isLoading: isCartLoading } = useCart();
   const { addresses, isAddressesLoading } = useAddresses();
   const { config, cities, isLoading: isConfigLoading } = useConfigData();
@@ -194,7 +196,7 @@ export default function CheckoutPage() {
   const handleSubmitOrder = async () => {
     // Validate required fields
     if (!checkoutData.address_id) {
-      toast.error("Please select a delivery address");
+      toast.error(t("validation.selectAddress"));
       return;
     }
 
@@ -204,17 +206,17 @@ export default function CheckoutPage() {
       config?.delivery_fee_type === "area" &&
       !checkoutData.area_id
     ) {
-      toast.error("Please select a delivery area");
+      toast.error(t("validation.selectArea"));
       return;
     }
 
     if (checkoutData.payment_method === "visa") {
-      toast.loading("Creating order and preparing payment...", {
-        description: "You will be redirected to complete your payment.",
+      toast.loading(t("orderProcessing.creating"), {
+        description: t("orderProcessing.redirecting"),
         id: "order-processing",
       });
     } else {
-      toast.loading("Processing your order...", {
+      toast.loading(t("orderProcessing.processing"), {
         id: "order-processing",
       });
     }
@@ -274,13 +276,11 @@ export default function CheckoutPage() {
         <div className="text-center py-16">
           <ShoppingBag className="mx-auto h-24 w-24 text-gray-400 mb-4" />
           <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            Your cart is empty
+            {t("emptyCart.title")}
           </h2>
-          <p className="text-gray-600 mb-6">
-            Add some items to your cart before checkout.
-          </p>
+          <p className="text-gray-600 mb-6">{t("emptyCart.subtitle")}</p>
           <Link href="/products">
-            <Button>Start Shopping</Button>
+            <Button>{t("emptyCart.startShopping")}</Button>
           </Link>
         </div>
       </div>
@@ -301,9 +301,9 @@ export default function CheckoutPage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back
+            {t("back")}
           </Button>
-          <h1 className="text-3xl font-bold">Checkout</h1>
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -314,7 +314,7 @@ export default function CheckoutPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MapPin className="h-5 w-5" />
-                  Delivery Address
+                  {t("deliveryAddress")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -344,7 +344,7 @@ export default function CheckoutPage() {
                                   variant="secondary"
                                   className="text-xs"
                                 >
-                                  Default
+                                  {t("default")}
                                 </Badge>
                               )}
                             </div>
@@ -367,16 +367,18 @@ export default function CheckoutPage() {
                         variant="outline"
                         className="w-full"
                       >
-                        + Add New Address
+                        {t("addNewAddress")}
                       </Button>
                     </Link>
                   </div>
                 ) : (
                   <div className="text-center py-6">
                     <MapPin className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                    <p className="text-gray-600 mb-4">No addresses found</p>
+                    <p className="text-gray-600 mb-4">
+                      {t("noAddresses.title")}
+                    </p>
                     <Link href="/profile?tab=addresses">
-                      <Button>Add Delivery Address</Button>
+                      <Button>{t("noAddresses.addAddress")}</Button>
                     </Link>
                   </div>
                 )}
@@ -391,13 +393,13 @@ export default function CheckoutPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Truck className="h-5 w-5" />
-                      Delivery Area
+                      {t("deliveryArea")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <p className="text-sm text-gray-600">
-                        Select the delivery area for fee calculation
+                        {t("selectDeliveryArea")}
                       </p>
 
                       <Select
@@ -410,7 +412,9 @@ export default function CheckoutPage() {
                         }
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select delivery area" />
+                          <SelectValue
+                            placeholder={t("selectAreaPlaceholder")}
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {cities
@@ -432,7 +436,7 @@ export default function CheckoutPage() {
                               value=""
                               disabled
                             >
-                              No areas available for this city
+                              {t("noAreasAvailable")}
                             </SelectItem>
                           )}
                         </SelectContent>
@@ -443,7 +447,7 @@ export default function CheckoutPage() {
                           <div className="flex items-center gap-2">
                             <CheckCircle className="h-4 w-4 text-blue-600" />
                             <span className="text-sm font-medium text-blue-800">
-                              Area selected:{" "}
+                              {t("areaSelected")}{" "}
                               {
                                 cities
                                   .find((city) => city.id === selectedCityId)
@@ -454,7 +458,7 @@ export default function CheckoutPage() {
                             </span>
                           </div>
                           <p className="text-xs text-blue-600 mt-1">
-                            Delivery fee:{" "}
+                            {t("deliveryFee")}{" "}
                             {formatPrice(
                               cities
                                 .find((city) => city.id === selectedCityId)
@@ -475,7 +479,7 @@ export default function CheckoutPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5" />
-                  Payment Method
+                  {t("paymentMethod")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -497,9 +501,11 @@ export default function CheckoutPage() {
                       <div className="flex items-center gap-3">
                         <Banknote className="h-5 w-5 text-gray-600" />
                         <div>
-                          <h3 className="font-medium">Cash on Delivery</h3>
+                          <h3 className="font-medium">
+                            {t("paymentMethods.cash.title")}
+                          </h3>
                           <p className="text-sm text-gray-500">
-                            Pay when you receive your order
+                            {t("paymentMethods.cash.description")}
                           </p>
                         </div>
                       </div>
@@ -526,10 +532,11 @@ export default function CheckoutPage() {
                       <div className="flex items-center gap-3">
                         <CreditCard className="h-5 w-5 text-gray-600" />
                         <div>
-                          <h3 className="font-medium">Credit/Debit Card</h3>
+                          <h3 className="font-medium">
+                            {t("paymentMethods.visa.title")}
+                          </h3>
                           <p className="text-sm text-gray-500">
-                            Pay securely online - you'll be redirected to
-                            complete payment
+                            {t("paymentMethods.visa.description")}
                           </p>
                         </div>
                       </div>
@@ -556,9 +563,11 @@ export default function CheckoutPage() {
                       <div className="flex items-center gap-3">
                         <Wallet2 className="h-5 w-5 text-gray-600" />
                         <div>
-                          <h3 className="font-medium">Digital Wallet</h3>
+                          <h3 className="font-medium">
+                            {t("paymentMethods.wallet.title")}
+                          </h3>
                           <p className="text-sm text-gray-500">
-                            Pay with your digital wallet
+                            {t("paymentMethods.wallet.description")}
                           </p>
                         </div>
                       </div>
@@ -576,12 +585,10 @@ export default function CheckoutPage() {
                       <CreditCard className="h-4 w-4 text-blue-600 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium text-blue-800">
-                          Online Payment Selected
+                          {t("onlinePaymentInfo.title")}
                         </p>
                         <p className="text-xs text-blue-600 mt-1">
-                          After clicking "Proceed to Payment", you'll be
-                          redirected to a secure payment page to complete your
-                          transaction with your credit/debit card.
+                          {t("onlinePaymentInfo.description")}
                         </p>
                       </div>
                     </div>
@@ -593,11 +600,11 @@ export default function CheckoutPage() {
             {/* Order Notes */}
             <Card>
               <CardHeader>
-                <CardTitle>Order Notes (Optional)</CardTitle>
+                <CardTitle>{t("orderNotes")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <Textarea
-                  placeholder="Add any special instructions for your order..."
+                  placeholder={t("orderNotesPlaceholder")}
                   value={checkoutData.notes}
                   onChange={(e) =>
                     setCheckoutData((prev) => ({
@@ -615,7 +622,7 @@ export default function CheckoutPage() {
           <div>
             <Card className="sticky top-6">
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle>{t("orderSummary")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -639,7 +646,7 @@ export default function CheckoutPage() {
                           </h4>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-sm text-gray-500">
-                              Qty: {item.quantity}
+                              {t("quantity")} {item.quantity}
                             </span>
                             <span className="text-sm font-medium">
                               {formatPrice(getItemTotalPrice(item))}
@@ -653,20 +660,20 @@ export default function CheckoutPage() {
                   {/* Pricing */}
                   <div className="space-y-2 pt-4 border-t">
                     <div className="flex justify-between">
-                      <span>Subtotal:</span>
+                      <span>{t("subtotal")}</span>
                       <span>{formatPrice(pricing.total_price)}</span>
                     </div>
 
                     {pricing.discount > 0 && (
                       <div className="flex justify-between text-green-600">
-                        <span>Product Discount:</span>
+                        <span>{t("productDiscount")}</span>
                         <span>-{formatPrice(pricing.discount)}</span>
                       </div>
                     )}
 
                     {pricing.coupon_discount && pricing.coupon_discount > 0 && (
                       <div className="flex justify-between text-green-600">
-                        <span>Coupon Discount:</span>
+                        <span>{t("couponDiscount")}</span>
                         <span>-{formatPrice(pricing.coupon_discount)}</span>
                       </div>
                     )}
@@ -676,14 +683,14 @@ export default function CheckoutPage() {
                         <div className="flex items-center gap-2">
                           <CheckCircle className="h-4 w-4 text-green-600" />
                           <span className="text-sm font-medium text-green-800">
-                            Coupon Applied
+                            {t("couponApplied")}
                           </span>
                         </div>
                       </div>
                     )}
 
                     <div className="flex justify-between">
-                      <span>Delivery Fee:</span>
+                      <span>{t("deliveryFee")}</span>
                       {config?.deliveryman &&
                       config?.delivery_fee_type === "area" &&
                       checkoutData.area_id ? (
@@ -698,14 +705,14 @@ export default function CheckoutPage() {
                           )}
                         </span>
                       ) : (
-                        <span className="text-green-600">Free</span>
+                        <span className="text-green-600">{t("free")}</span>
                       )}
                     </div>
 
                     <hr />
 
                     <div className="flex justify-between text-lg font-semibold">
-                      <span>Total:</span>
+                      <span>{t("total")}</span>
                       <span>
                         {formatPrice(
                           pricing.total_price_after_discount +
@@ -739,20 +746,20 @@ export default function CheckoutPage() {
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         {checkoutData.payment_method === "visa"
-                          ? "Creating Order..."
-                          : "Placing Order..."}
+                          ? t("buttons.creatingOrder")
+                          : t("buttons.placingOrder")}
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
                         {checkoutData.payment_method === "visa" ? (
                           <>
                             <CreditCard className="h-4 w-4" />
-                            Proceed to Payment
+                            {t("buttons.proceedToPayment")}
                           </>
                         ) : (
                           <>
                             <Truck className="h-4 w-4" />
-                            Place Order
+                            {t("buttons.placeOrder")}
                           </>
                         )}
                       </div>
@@ -760,7 +767,7 @@ export default function CheckoutPage() {
                   </Button>
 
                   <p className="text-xs text-gray-500 text-center">
-                    By placing your order, you agree to our Terms & Conditions
+                    {t("termsConditions")}
                   </p>
                 </div>
               </CardContent>

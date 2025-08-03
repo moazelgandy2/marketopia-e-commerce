@@ -24,8 +24,11 @@ import {
   Home,
   Package,
   AlertCircle,
+  HeadphonesIcon,
+  Grid2X2,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface CategoryProductsProps {
   categoryId: number;
@@ -34,6 +37,7 @@ interface CategoryProductsProps {
 export default function CategoryProducts({
   categoryId,
 }: CategoryProductsProps) {
+  const t = useTranslations("CategoryPage");
   const [page, setPage] = useState(1);
 
   const [sortBy, setSortBy] = useState<"price" | "name" | "newest">("newest");
@@ -51,13 +55,10 @@ export default function CategoryProducts({
   const { data: categoryData, isLoading: categoryLoading } =
     useCategoryWithChildren(categoryId);
 
-  // Client-side filtering and sorting of products
-
   const filteredAndSortedProducts = useMemo(() => {
     if (!productsData?.data) return [];
 
     let filtered = productsData.data.filter((product: Product) => {
-      // Price range filter
       const price = product.discount_price
         ? parseFloat(product.discount_price)
         : parseFloat(product.price);
@@ -115,14 +116,14 @@ export default function CategoryProducts({
         className="hover:text-primary transition-colors flex items-center"
       >
         <Home className="w-4 h-4 mr-1" />
-        Home
+        {t("home")}
       </Link>
       <ArrowRight className="w-4 h-4" />
       <Link
         href="/categories"
         className="hover:text-primary transition-colors"
       >
-        Categories
+        {t("breadcrumb")}
       </Link>
       {categoryData && (
         <>
@@ -207,12 +208,12 @@ export default function CategoryProducts({
                 className="flex items-center gap-2"
               >
                 <Filter className="w-4 h-4" />
-                Sort:{" "}
+                {t("sortBy")}:{" "}
                 {sortBy === "price"
-                  ? "Price"
+                  ? t("sortOptions.price")
                   : sortBy === "name"
-                  ? "Name"
-                  : "Newest"}
+                  ? t("sortOptions.name")
+                  : t("sortOptions.newest")}
               </Button>
 
               <Button
@@ -228,7 +229,9 @@ export default function CategoryProducts({
                 ) : (
                   <SortDesc className="w-4 h-4" />
                 )}
-                {sortOrder === "asc" ? "Low to High" : "High to Low"}
+                {sortOrder === "asc"
+                  ? t("sortOrder.lowToHigh")
+                  : t("sortOrder.highToLow")}
               </Button>
             </div>
 
@@ -241,7 +244,7 @@ export default function CategoryProducts({
                 className="flex items-center gap-2 h-8"
               >
                 <Grid3X3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Grid</span>
+                <span className="hidden sm:inline">{t("viewMode.grid")}</span>
               </Button>
               <Button
                 variant={viewMode === "list" ? "primary" : "ghost"}
@@ -250,7 +253,7 @@ export default function CategoryProducts({
                 className="flex items-center gap-2 h-8"
               >
                 <List className="w-4 h-4" />
-                <span className="hidden sm:inline">List</span>
+                <span className="hidden sm:inline">{t("viewMode.list")}</span>
               </Button>
             </div>
           </div>
@@ -258,27 +261,33 @@ export default function CategoryProducts({
           {/* Active Filters */}
           {(sortBy !== "newest" || sortOrder !== "asc") && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-sm text-gray-600">Active filters:</span>
+              <span className="text-sm text-gray-600">
+                {t("activeFilters")}
+              </span>
 
               {(sortBy !== "newest" || sortOrder !== "asc") && (
                 <Badge
                   variant="secondary"
                   className="flex items-center gap-1"
                 >
-                  Sort:{" "}
+                  {t("sortBy")}:{" "}
                   {sortBy === "price"
-                    ? "Price"
+                    ? t("sortOptions.price")
                     : sortBy === "name"
-                    ? "Name"
-                    : "Newest"}{" "}
-                  ({sortOrder === "asc" ? "Low to High" : "High to Low"})
+                    ? t("sortOptions.name")
+                    : t("sortOptions.newest")}{" "}
+                  (
+                  {sortOrder === "asc"
+                    ? t("sortOrder.lowToHigh")
+                    : t("sortOrder.highToLow")}
+                  )
                   <button
                     onClick={() => {
                       setSortBy("newest");
                       setSortOrder("asc");
                     }}
                     className="ml-1 hover:text-red-500 text-lg leading-none"
-                    aria-label="Clear sort filter"
+                    aria-label={t("clearSortFilter")}
                   >
                     ×
                   </button>
@@ -314,9 +323,10 @@ export default function CategoryProducts({
         </div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">
           {hasOriginalData && isFiltered
-            ? "No matching products"
-            : "No products found"}
+            ? t("noProducts.noMatching")
+            : t("noProducts.title")}
         </h3>
+        <p className="text-gray-600 mb-6">{t("noProducts.subtitle")}</p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           {isFiltered && (
@@ -329,11 +339,11 @@ export default function CategoryProducts({
               className="flex items-center gap-2"
             >
               <Filter className="w-4 h-4" />
-              Clear all filters
+              {t("clearFilters")}
             </Button>
           )}
           <Link href="/categories">
-            <Button variant="primary">Browse all categories</Button>
+            <Button variant="primary">{t("noProducts.browseOther")}</Button>
           </Link>
         </div>
       </div>
@@ -347,17 +357,16 @@ export default function CategoryProducts({
         <AlertCircle className="w-full h-full" />
       </div>
       <h3 className="text-xl font-semibold text-gray-900 mb-2">
-        Something went wrong
+        {t("errorState.title")}
       </h3>
       <p className="text-gray-600 mb-6">
-        {productsErrorMessage?.message ||
-          "Unable to load products. Please try again."}
+        {productsErrorMessage?.message || t("errorState.subtitle")}
       </p>
       <Button
         variant="primary"
         onClick={() => window.location.reload()}
       >
-        Try again
+        {t("errorState.retry")}
       </Button>
     </div>
   );
@@ -497,6 +506,54 @@ export default function CategoryProducts({
             <EnhancedPagination />
           </>
         )}
+
+        {/* Navigation Section */}
+        <div className="mt-12 bg-white rounded-xl shadow-sm border p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">
+                {t("helpfulLinks.needHelp.text")}
+              </p>
+              <Link href="/contact">
+                <Button
+                  variant="ghost"
+                  className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                >
+                  <HeadphonesIcon className="h-4 w-4 mr-1" />
+                  {t("helpfulLinks.needHelp.linkText")}
+                </Button>
+              </Link>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">
+                {t("helpfulLinks.viewAll.text")}
+              </p>
+              <Link href="/categories">
+                <Button
+                  variant="ghost"
+                  className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                >
+                  <Grid2X2 className="h-4 w-4 mr-1" />
+                  {t("helpfulLinks.viewAll.linkText")}
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Back to Categories Button */}
+          <div className="text-center mt-6 pt-4 border-t">
+            <Link href="/categories">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 mx-auto bg-gray-50 hover:bg-gray-100"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                {t("backToCategories")}
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

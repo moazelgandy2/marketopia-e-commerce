@@ -2,10 +2,15 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { authMiddleware } from "./lib/auth-middleware";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { SessionType } from "@/types";
+
+const protectedRoutes = ["/profile", "/cart", "/orders", "/checkout"];
+const publicRoutes = ["/auth"];
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (
@@ -16,37 +21,46 @@ export default function middleware(req: NextRequest) {
     return;
   }
 
-  const hasLocale = routing.locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  const pathWithoutLocale = pathname.replace(/^\/(?:ar|en)(?:\/|$)/, "/");
+
+  const isProtectedRoute = protectedRoutes.some(
+    (route) =>
+      pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
   );
 
-  const isProtectedRoute = ["/profile", "/cart", "/orders", "/checkout"].some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  const isPublicRoute = publicRoutes.some(
+    (route) =>
+      pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
   );
 
-  const isProtectedRouteWithLocale = routing.locales.some((locale) =>
-    ["/profile", "/cart", "/orders", "/checkout"].some(
-      (route) =>
-        pathname === `/${locale}${route}` ||
-        pathname.startsWith(`/${locale}${route}/`)
-    )
-  );
+  // Get session from cookies
+  const cookie = (await cookies()).get("session")?.value;
+  const session: SessionType = cookie ? JSON.parse(cookie) : null;
 
-  if (isProtectedRoute && !hasLocale) {
-    const intlResponse = intlMiddleware(req);
-
-    if (intlResponse && intlResponse.status === 307) {
-      return intlResponse;
-    }
+  if (isProtectedRoute && !session?.token) {
+    const locale = pathname.match(/^\/(ar|en)(?:\/|$)/)
+      ? pathname.split("/")[1]
+      : routing.defaultLocale;
+    const authPath = `/${locale}/auth`;
+    return NextResponse.redirect(new URL(authPath, req.url));
   }
 
-  if (isProtectedRouteWithLocale) {
-    return (authMiddleware as any)(req);
+  if (isPublicRoute && session?.token) {
+    const locale = pathname.match(/^\/(ar|en)(?:\/|$)/)
+      ? pathname.split("/")[1]
+      : routing.defaultLocale;
+    const homePath = `/${locale}`;
+    return NextResponse.redirect(new URL(homePath, req.url));
   }
 
   return intlMiddleware(req);
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/",
+    "/(ar|en)/:path*",
+    "/api/:path*",
+    "/((?!_next|_vercel|.*\\..*).*)",
+  ],
 };

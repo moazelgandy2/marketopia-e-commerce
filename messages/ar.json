@@ -130,5 +130,169 @@
     "termsAndPrivacy": "بالتسجيل، أنت توافق على {terms} و {privacy} الخاصة بنا",
     "terms": "الشروط",
     "privacy": "الخصوصية"
+  },
+  "CartPage": {
+    "title": "سلة التسوق",
+    "emptyCart": {
+      "title": "سلة التسوق فارغة",
+      "subtitle": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد.",
+      "startShopping": "ابدأ التسوق"
+    },
+    "orderSummary": "ملخص الطلب",
+    "proceedToCheckout": "المتابعة للدفع",
+    "continueShopping": "متابعة التسوق",
+    "needHelp": {
+      "text": "تحتاج مساعدة مع طلبك؟",
+      "linkText": "اتصل بالدعم"
+    },
+    "viewOrders": {
+      "text": "تريد التحقق من طلباتك السابقة؟",
+      "linkText": "عرض تاريخ الطلبات"
+    }
+  },
+  "CategoriesPage": {
+    "title": "تصفح جميع الفئات",
+    "subtitle": "اكتشف منتجات مذهلة عبر جميع الفئات المنتقاة بعناية",
+    "breadcrumb": "جميع الفئات",
+    "home": "الرئيسية",
+    "searchPlaceholder": "البحث في الفئات...",
+    "sortAZ": "ترتيب أ-ي",
+    "sortZA": "ترتيب ي-أ",
+    "showingText": "عرض {from} - {to} من {total} فئة",
+    "errorState": {
+      "title": "فشل في تحميل الفئات",
+      "message": "حدث خطأ ما",
+      "tryAgain": "حاول مرة أخرى"
+    },
+    "productDescription": "استكشف مجموعتنا من منتجات {categoryName}",
+    "noCategories": {
+      "title": "لم يتم العثور على فئات",
+      "subtitle": "لا توجد فئات تطابق \"{searchTerm}\". جرب مصطلح بحث مختلف.",
+      "noResults": "لا توجد فئات متاحة في الوقت الحالي.",
+      "clearSearch": "مسح البحث"
+    },
+    "browseCategory": "تصفح الفئة",
+    "popular": "شائع",
+    "backToHome": "العودة للرئيسية",
+    "helpfulLinks": {
+      "needHelp": {
+        "text": "تحتاج مساعدة في العثور على ما تبحث عنه؟",
+        "linkText": "اتصل بالدعم"
+      },
+      "viewProducts": {
+        "text": "تريد رؤية جميع المنتجات؟",
+        "linkText": "عرض جميع المنتجات"
+      }
+    }
+  },
+  "CategoryPage": {
+    "home": "الرئيسية",
+    "breadcrumb": "الفئات",
+    "backToCategories": "العودة للفئات",
+    "sortBy": "ترتيب",
+    "sortOptions": {
+      "price": "السعر",
+      "name": "الاسم",
+      "newest": "الأحدث"
+    },
+    "sortOrder": {
+      "lowToHigh": "من الأقل للأعلى",
+      "highToLow": "من الأعلى للأقل"
+    },
+    "viewMode": {
+      "grid": "شبكة",
+      "list": "قائمة"
+    },
+    "clearFilters": "مسح جميع المرشحات",
+    "activeFilters": "المرشحات النشطة:",
+    "clearSortFilter": "مسح مرشح الترتيب",
+    "noProducts": {
+      "title": "لم يتم العثور على منتجات",
+      "subtitle": "هذه الفئة لا تحتوي على أي منتجات بعد.",
+      "browseOther": "تصفح فئات أخرى",
+      "noMatching": "لا توجد منتجات مطابقة"
+    },
+    "errorState": {
+      "title": "حدث خطأ ما",
+      "subtitle": "فشل في تحميل منتجات الفئة",
+      "retry": "حاول مرة أخرى"
+    },
+    "helpfulLinks": {
+      "needHelp": {
+        "text": "تحتاج مساعدة مع هذه الفئة؟",
+        "linkText": "اتصل بالدعم"
+      },
+      "viewAll": {
+        "text": "تريد رؤية جميع الفئات؟",
+        "linkText": "عرض جميع الفئات"
+      }
+    }
+  },
+  "CheckoutPage": {
+    "title": "إتمام الطلب",
+    "back": "رجوع",
+    "emptyCart": {
+      "title": "سلة التسوق فارغة",
+      "subtitle": "أضف بعض المنتجات إلى سلة التسوق قبل إتمام الطلب.",
+      "startShopping": "ابدأ التسوق"
+    },
+    "deliveryAddress": "عنوان التوصيل",
+    "addNewAddress": "+ إضافة عنوان جديد",
+    "noAddresses": {
+      "title": "لم يتم العثور على عناوين",
+      "addAddress": "إضافة عنوان توصيل"
+    },
+    "default": "افتراضي",
+    "deliveryArea": "منطقة التوصيل",
+    "selectDeliveryArea": "حدد منطقة التوصيل لحساب رسوم التوصيل",
+    "selectAreaPlaceholder": "اختر منطقة التوصيل",
+    "noAreasAvailable": "لا توجد مناطق متاحة لهذه المدينة",
+    "areaSelected": "المنطقة المختارة:",
+    "paymentMethod": "طريقة الدفع",
+    "paymentMethods": {
+      "cash": {
+        "title": "الدفع عند الاستلام",
+        "description": "ادفع عند استلام طلبك"
+      },
+      "visa": {
+        "title": "بطاقة ائتمان/خصم",
+        "description": "ادفع بأمان عبر الإنترنت - سيتم توجيهك لإتمام الدفع"
+      },
+      "wallet": {
+        "title": "المحفظة الرقمية",
+        "description": "ادفع باستخدام محفظتك الرقمية"
+      }
+    },
+    "onlinePaymentInfo": {
+      "title": "تم اختيار الدفع الإلكتروني",
+      "description": "بعد النقر على \"متابعة الدفع\"، سيتم توجيهك إلى صفحة دفع آمنة لإتمام المعاملة ببطاقتك الائتمانية/الخصم."
+    },
+    "orderNotes": "ملاحظات الطلب (اختيارية)",
+    "orderNotesPlaceholder": "أضف أي تعليمات خاصة لطلبك...",
+    "orderSummary": "ملخص الطلب",
+    "quantity": "الكمية:",
+    "subtotal": "المجموع الفرعي:",
+    "productDiscount": "خصم المنتج:",
+    "couponDiscount": "خصم الكوبون:",
+    "couponApplied": "تم تطبيق الكوبون",
+    "deliveryFee": "رسوم التوصيل:",
+    "free": "مجاني",
+    "total": "المجموع:",
+    "buttons": {
+      "creatingOrder": "جاري إنشاء الطلب...",
+      "placingOrder": "جاري تقديم الطلب...",
+      "proceedToPayment": "متابعة الدفع",
+      "placeOrder": "تقديم الطلب"
+    },
+    "termsConditions": "بتقديم طلبك، أنت توافق على الشروط والأحكام الخاصة بنا",
+    "validation": {
+      "selectAddress": "يرجى اختيار عنوان التوصيل",
+      "selectArea": "يرجى اختيار منطقة التوصيل"
+    },
+    "orderProcessing": {
+      "creating": "جاري إنشاء الطلب وتحضير الدفع...",
+      "redirecting": "سيتم توجيهك لإتمام الدفع.",
+      "processing": "جاري معالجة طلبك..."
+    }
   }
 }

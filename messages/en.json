@@ -138,7 +138,19 @@
       "subtitle": "Looks like you haven't added any items to your cart yet.",
       "startShopping": "Start Shopping"
     },
+    "errors": {
+      "loadCartFailed": "Failed to load cart. Please try again later."
+    },
+    "itemTotal": "Item Total:",
     "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "productDiscount": "Product Discount",
+    "discountCode": "Discount Code",
+    "removeCoupon": "Remove",
+    "couponDiscount": "Coupon Discount",
+    "enterCouponCode": "Enter coupon code",
+    "apply": "Apply",
+    "total": "Total",
     "proceedToCheckout": "Proceed to Checkout",
     "continueShopping": "Continue Shopping",
     "needHelp": {
@@ -148,6 +160,16 @@
     "viewOrders": {
       "text": "Want to check your previous orders?",
       "linkText": "View Order History"
+    },
+    "toast": {
+      "itemRemoved": "Item removed from cart successfully",
+      "itemRemoveFailed": "Failed to remove item from cart. Please try again.",
+      "quantityUpdated": "Quantity updated successfully",
+      "quantityUpdateFailed": "Failed to update quantity",
+      "enterCouponCode": "Please enter a coupon code",
+      "couponApplied": "Coupon \"{code}\" applied successfully!",
+      "couponDiscount": "You get {discount}",
+      "couponApplyFailed": "Failed to apply coupon"
     }
   },
   "CategoriesPage": {

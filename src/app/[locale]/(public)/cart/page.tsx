@@ -62,7 +62,7 @@ export default function CartPage() {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Item removed from cart successfully</AlertTitle>
+          <AlertTitle>{t("toast.itemRemoved")}</AlertTitle>
         </Alert>
       ));
     } catch (error) {
@@ -75,9 +75,7 @@ export default function CartPage() {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>
-            Failed to remove item from cart. Please try again.
-          </AlertTitle>
+          <AlertTitle>{t("toast.itemRemoveFailed")}</AlertTitle>
         </Alert>
       ));
     }
@@ -106,7 +104,7 @@ export default function CartPage() {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Quantity updated successfully</AlertTitle>
+          <AlertTitle>{t("toast.quantityUpdated")}</AlertTitle>
         </Alert>
       ));
     } catch (error) {
@@ -119,7 +117,7 @@ export default function CartPage() {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Failed to update quantity</AlertTitle>
+          <AlertTitle>{t("toast.quantityUpdateFailed")}</AlertTitle>
         </Alert>
       ));
     } finally {
@@ -142,14 +140,13 @@ export default function CartPage() {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Please enter a coupon code</AlertTitle>
+          <AlertTitle>{t("toast.enterCouponCode")}</AlertTitle>
         </Alert>
       ));
       return;
     }
 
     try {
-      // Validate the coupon
       const validationResult = await validateCouponMutation.mutateAsync(
         couponCode
       );
@@ -162,7 +159,6 @@ export default function CartPage() {
         });
         setCouponCode("");
 
-        // Create discount display text
         const discountText =
           validationResult.data.discount_type === "percentage"
             ? `${validationResult.data.discount_value}% off`
@@ -178,9 +174,9 @@ export default function CartPage() {
               <CheckCircle />
             </AlertIcon>
             <AlertTitle>
-              Coupon "{validationResult.data.code}" applied successfully!
+              {t("toast.couponApplied", { code: validationResult.data.code })}
               <span className="block text-sm font-normal text-green-700 mt-1">
-                You get {discountText}
+                {t("toast.couponDiscount", { discount: discountText })}
               </span>
             </AlertTitle>
           </Alert>
@@ -196,13 +192,14 @@ export default function CartPage() {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>{error.message || "Failed to apply coupon"}</AlertTitle>
+          <AlertTitle>
+            {error.message || t("toast.couponApplyFailed")}
+          </AlertTitle>
         </Alert>
       ));
     }
   };
 
-  // Calculate coupon discount
   const calculateCouponDiscount = () => {
     if (!appliedCoupon || !cartData?.data?.pricing) return 0;
 
@@ -284,9 +281,7 @@ export default function CartPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <Alert variant="destructive">
-          <AlertDescription>
-            Failed to load cart. Please try again later.
-          </AlertDescription>
+          <AlertDescription>{t("errors.loadCartFailed")}</AlertDescription>
         </Alert>
       </div>
     );
@@ -426,7 +421,7 @@ export default function CartPage() {
                     {/* Item Total */}
                     <div className="mt-2 text-right">
                       <span className="text-sm text-gray-600">
-                        Item Total:{" "}
+                        {t("itemTotal")}{" "}
                         <span className="font-semibold">
                           {formatPrice(getItemTotalPrice(item))}
                         </span>
@@ -448,13 +443,13 @@ export default function CartPage() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span>Subtotal:</span>
+                  <span>{t("subtotal")}:</span>
                   <span>{formatPrice(pricing.total_price)}</span>
                 </div>
 
                 {pricing.discount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>Product Discount:</span>
+                    <span>{t("productDiscount")}:</span>
                     <span>-{formatPrice(pricing.discount)}</span>
                   </div>
                 )}
@@ -463,7 +458,7 @@ export default function CartPage() {
                 <div className="border-t pt-4">
                   <div className="flex items-center gap-2 mb-3">
                     <Tag className="h-4 w-4 text-purple-600" />
-                    <span className="font-medium">Discount Code</span>
+                    <span className="font-medium">{t("discountCode")}</span>
                   </div>
 
                   {appliedCoupon || pricing.applied_coupon ? (
@@ -481,17 +476,16 @@ export default function CartPage() {
                           size="sm"
                           onClick={() => {
                             setAppliedCoupon(null);
-                            // TODO: Add remove coupon API call
                           }}
                           className="text-green-600 hover:text-green-700 h-6 px-2"
                         >
-                          Remove
+                          {t("removeCoupon")}
                         </Button>
                       </div>
 
                       {(couponDiscount > 0 || pricing.coupon_discount) && (
                         <div className="flex justify-between text-green-600">
-                          <span>Coupon Discount:</span>
+                          <span>{t("couponDiscount")}:</span>
                           <span>
                             -
                             {formatPrice(
@@ -505,7 +499,7 @@ export default function CartPage() {
                     <div className="flex gap-2">
                       <Input
                         type="text"
-                        placeholder="Enter coupon code"
+                        placeholder={t("enterCouponCode")}
                         value={couponCode}
                         onChange={(e) =>
                           setCouponCode(e.target.value.toUpperCase())
@@ -524,7 +518,7 @@ export default function CartPage() {
                         }
                         className="bg-purple-600 hover:bg-purple-700"
                       >
-                        {validateCouponMutation.isPending ? "..." : "Apply"}
+                        {validateCouponMutation.isPending ? "..." : t("apply")}
                       </Button>
                     </div>
                   )}
@@ -533,7 +527,7 @@ export default function CartPage() {
                 <hr />
 
                 <div className="flex justify-between text-lg font-semibold">
-                  <span>Total:</span>
+                  <span>{t("total")}:</span>
                   <span>
                     {formatPrice(
                       finalTotal || pricing.total_price_after_discount

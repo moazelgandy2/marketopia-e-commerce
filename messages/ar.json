@@ -138,7 +138,19 @@
       "subtitle": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد.",
       "startShopping": "ابدأ التسوق"
     },
+    "errors": {
+      "loadCartFailed": "فشل في تحميل سلة التسوق. يرجى المحاولة مرة أخرى لاحقاً."
+    },
+    "itemTotal": "إجمالي الصنف:",
     "orderSummary": "ملخص الطلب",
+    "subtotal": "المجموع الفرعي",
+    "productDiscount": "خصم المنتج",
+    "discountCode": "رمز الخصم",
+    "removeCoupon": "إزالة",
+    "couponDiscount": "خصم الكوبون",
+    "enterCouponCode": "أدخل رمز الكوبون",
+    "apply": "تطبيق",
+    "total": "الإجمالي",
     "proceedToCheckout": "المتابعة للدفع",
     "continueShopping": "متابعة التسوق",
     "needHelp": {
@@ -148,6 +160,16 @@
     "viewOrders": {
       "text": "تريد التحقق من طلباتك السابقة؟",
       "linkText": "عرض تاريخ الطلبات"
+    },
+    "toast": {
+      "itemRemoved": "تم حذف الصنف من سلة التسوق بنجاح",
+      "itemRemoveFailed": "فشل في حذف الصنف من سلة التسوق. يرجى المحاولة مرة أخرى.",
+      "quantityUpdated": "تم تحديث الكمية بنجاح",
+      "quantityUpdateFailed": "فشل في تحديث الكمية",
+      "enterCouponCode": "يرجى إدخال رمز الكوبون",
+      "couponApplied": "تم تطبيق الكوبون \"{code}\" بنجاح!",
+      "couponDiscount": "ستحصل على {discount}",
+      "couponApplyFailed": "فشل في تطبيق الكوبون"
     }
   },
   "CategoriesPage": {

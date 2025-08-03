@@ -26,7 +26,7 @@ import {
   SaveAddressData,
 } from "@/actions/addresses";
 import { useAuth } from "@/hooks/use-auth";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Alert, AlertIcon, AlertTitle } from "@/components/ui/alert";
@@ -152,6 +152,7 @@ export const AddressDialog = ({
   const { session } = useAuth();
   const locale = useLocale();
   const queryClient = useQueryClient();
+  const t = useTranslations("ProfilePage.addresses");
 
   useEffect(() => {
     if (!open) {
@@ -280,15 +281,13 @@ export const AddressDialog = ({
       <DialogTrigger asChild>
         {children || (
           <Button size="sm">
-            <Plus className="h-4 w-4 mr-1" /> Add
+            <Plus className="h-4 w-4 mr-1" /> {t("addNew")}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>
-            {isEditing ? "Edit Address" : "Add Address"}
-          </DialogTitle>
+          <DialogTitle>{isEditing ? t("edit") : t("addNew")}</DialogTitle>
           <DialogDescription>
             {showForm
               ? "Fill in the address details below."

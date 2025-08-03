@@ -15,10 +15,12 @@ import { useUpdateProfile } from "@/hooks/use-update-profile";
 import Image from "next/image";
 import { useRef } from "react";
 import { Camera, User, Mail, Phone, Lock, Save, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const AccountTab = () => {
   const { form, onSubmit, isPending } = useUpdateProfile();
   const { session } = useAuth();
+  const t = useTranslations("ProfilePage.account");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const image = form.watch("image");
 
@@ -33,11 +35,9 @@ export const AccountTab = () => {
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Account Settings
+          {t("title")}
         </h2>
-        <p className="text-slate-600 dark:text-slate-400">
-          Manage your personal information and security
-        </p>
+        <p className="text-slate-600 dark:text-slate-400">{t("subtitle")}</p>
       </div>
 
       <Form {...form}>
@@ -51,7 +51,7 @@ export const AccountTab = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Camera className="w-5 h-5" />
-                  Profile Picture
+                  {t("profilePicture.title")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">

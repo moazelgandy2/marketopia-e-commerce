@@ -18,6 +18,7 @@ import {
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const statusColors: Record<OrderStatus, string> = {
   pending:
@@ -49,6 +50,7 @@ const statusIcons: Record<OrderStatus, any> = {
 export const OrdersTab = () => {
   const { orders, isOrdersLoading, isOrdersError } = useOrders();
   const router = useRouter();
+  const t = useTranslations("ProfilePage.orders");
 
   const viewOrderDetails = (orderId: string) => {
     router.push(`/orders/${orderId}`);
@@ -59,11 +61,9 @@ export const OrdersTab = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Order History
+            {t("title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400">
-            Track and manage your orders
-          </p>
+          <p className="text-slate-600 dark:text-slate-400">{t("subtitle")}</p>
         </div>
         {orders && (
           <div className="text-right">
@@ -71,7 +71,7 @@ export const OrdersTab = () => {
               {orders.length}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">
-              Total Orders
+              {t("totalOrders")}
             </div>
           </div>
         )}
@@ -106,11 +106,10 @@ export const OrdersTab = () => {
             <CardContent className="p-8 text-center">
               <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2">
-                Failed to load orders
+                {t("error.title")}
               </h3>
               <p className="text-red-600 dark:text-red-400">
-                Please try refreshing the page or contact support if the problem
-                persists.
+                {t("error.subtitle")}
               </p>
             </CardContent>
           </Card>
@@ -119,10 +118,10 @@ export const OrdersTab = () => {
             <CardContent className="p-12 text-center">
               <Package className="w-16 h-16 text-slate-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                No orders yet
+                {t("empty.title")}
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-6">
-                When you place your first order, it will appear here.
+              <p className="text-slate-600 dark:text-slate-400">
+                {t("empty.subtitle")}
               </p>
             </CardContent>
           </Card>
@@ -144,7 +143,7 @@ export const OrdersTab = () => {
                         </div>
                         <div>
                           <h3 className="font-bold text-slate-900 dark:text-white">
-                            Order #{o.id}
+                            {t("orderNumber")} #{o.id}
                           </h3>
                           <p className="text-sm text-slate-600 dark:text-slate-400">
                             {format(new Date(o.created_at), "PPP")}
@@ -160,7 +159,7 @@ export const OrdersTab = () => {
                           )}
                         >
                           <StatusIcon className="w-3 h-3 mr-1" />
-                          {o.status.replace("_", " ")}
+                          {t(`status.${o.status}`)}
                         </Badge>
                         <Button
                           variant="outline"
@@ -168,7 +167,7 @@ export const OrdersTab = () => {
                           onClick={() => viewOrderDetails(o.id.toString())}
                         >
                           <Eye className="w-4 h-4 mr-1" />
-                          View
+                          {t("view")}
                         </Button>
                       </div>
                     </div>
@@ -186,8 +185,8 @@ export const OrdersTab = () => {
                           </div>
                           <div className="text-xs text-slate-600 dark:text-slate-400">
                             {o.payment_status === "paid"
-                              ? "✓ Paid"
-                              : "⏳ Unpaid"}
+                              ? t("payment.paid")
+                              : t("payment.unpaid")}
                           </div>
                         </div>
                       </div>
@@ -196,10 +195,10 @@ export const OrdersTab = () => {
                         <MapPin className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                         <div>
                           <div className="text-sm font-medium text-slate-900 dark:text-white">
-                            {o.address?.name ?? "No address"}
+                            {o.address?.name ?? t("noAddress")}
                           </div>
                           <div className="text-xs text-slate-600 dark:text-slate-400">
-                            Delivery address
+                            {t("deliveryAddress")}
                           </div>
                         </div>
                       </div>
@@ -208,7 +207,7 @@ export const OrdersTab = () => {
                     {/* Order Items */}
                     <div className="space-y-3">
                       <h4 className="font-medium text-slate-900 dark:text-white">
-                        Order Items
+                        {t("orderItems")}
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                         {o.order_details.map((d) => (
@@ -237,7 +236,7 @@ export const OrdersTab = () => {
                                 {d.product.name}
                               </div>
                               <div className="text-xs text-slate-600 dark:text-slate-400">
-                                ${d.price} each
+                                ${d.price} {t("each")}
                               </div>
                             </div>
                           </div>
@@ -248,7 +247,7 @@ export const OrdersTab = () => {
                     {/* Total */}
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-slate-600 dark:text-slate-400">
-                        Order Total
+                        {t("orderTotal")}
                       </span>
                       <span className="text-xl font-bold text-slate-900 dark:text-white">
                         ${o.total}

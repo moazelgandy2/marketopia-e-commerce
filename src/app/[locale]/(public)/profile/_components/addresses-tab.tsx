@@ -1,20 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useAddresses } from "@/hooks/use-addresses";
 import { Address } from "@/types";
-import { Plus, Trash2, MapPin, Phone, Edit, Home, Star } from "lucide-react";
+import { Trash2, MapPin, Phone, Edit, Star } from "lucide-react";
 import { AddressDialog } from "./address-dialog";
-import { AddressesSkeleton } from "./address-skeleton";
 import { AddressEmptyState } from "./address-empty-state";
 import { AddressErrorState } from "./address-error-state";
-import {
-  deleteAddress,
-  updateAddress,
-  SaveAddressData,
-} from "@/actions/addresses";
+import { deleteAddress, updateAddress } from "@/actions/addresses";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -38,6 +33,7 @@ export const AddressesTab = () => {
   const { session } = useAuth();
   const locale = useLocale();
   const queryClient = useQueryClient();
+  const t = useTranslations("ProfilePage.addresses");
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [settingDefaultId, setSettingDefaultId] = useState<number | null>(null);
   const [addressDialogOpen, setAddressDialogOpen] = useState(false);
@@ -54,7 +50,7 @@ export const AddressesTab = () => {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Please login to set default address</AlertTitle>
+          <AlertTitle>{t("toast.loginRequired")}</AlertTitle>
         </Alert>
       ));
       return;
@@ -95,7 +91,7 @@ export const AddressesTab = () => {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Address set as default successfully</AlertTitle>
+          <AlertTitle>{t("toast.setDefaultSuccess")}</AlertTitle>
         </Alert>
       ));
     } catch (error) {
@@ -112,7 +108,7 @@ export const AddressesTab = () => {
           <AlertTitle>
             {error instanceof Error
               ? error.message
-              : "Failed to set default address. Please try again."}
+              : t("toast.setDefaultError")}
           </AlertTitle>
         </Alert>
       ));
@@ -136,7 +132,7 @@ export const AddressesTab = () => {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Please login to delete addresses</AlertTitle>
+          <AlertTitle>{t("toast.loginRequired")}</AlertTitle>
         </Alert>
       ));
       return;
@@ -166,7 +162,7 @@ export const AddressesTab = () => {
           <AlertIcon>
             <BellIcon />
           </AlertIcon>
-          <AlertTitle>Address deleted successfully</AlertTitle>
+          <AlertTitle>{t("toast.deleteSuccess")}</AlertTitle>
         </Alert>
       ));
     } catch (error) {
@@ -181,9 +177,7 @@ export const AddressesTab = () => {
             <BellIcon />
           </AlertIcon>
           <AlertTitle>
-            {error instanceof Error
-              ? error.message
-              : "Failed to delete address. Please try again."}
+            {error instanceof Error ? error.message : t("toast.deleteError")}
           </AlertTitle>
         </Alert>
       ));
@@ -206,10 +200,10 @@ export const AddressesTab = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-            Addresses
+            {t("title")}
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Manage your delivery addresses
+            {t("subtitle")}
           </p>
         </div>
         <AddressDialog />
@@ -260,7 +254,7 @@ export const AddressesTab = () => {
                 <div className="absolute top-3 right-3">
                   <div className="flex items-center gap-1 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full text-xs font-medium">
                     <Star className="w-3 h-3" />
-                    Default
+                    {t("default")}
                   </div>
                 </div>
               )}
@@ -314,7 +308,7 @@ export const AddressesTab = () => {
                         ) : (
                           <>
                             <Star className="w-3 h-3 mr-1" />
-                            Set Default
+                            {t("setDefault")}
                           </>
                         )}
                       </Button>
@@ -327,7 +321,7 @@ export const AddressesTab = () => {
                       className="h-8 px-3 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-700"
                     >
                       <Edit className="w-3 h-3 mr-1" />
-                      Edit
+                      {t("edit")}
                     </Button>
 
                     <AlertDialog>
@@ -343,26 +337,29 @@ export const AddressesTab = () => {
                           ) : (
                             <>
                               <Trash2 className="w-3 h-3 mr-1" />
-                              Delete
+                              {t("delete")}
                             </>
                           )}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Address</AlertDialogTitle>
+                          <AlertDialogTitle>
+                            {t("deleteConfirm.title")}
+                          </AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete "{address.name}"?
-                            This action cannot be undone.
+                            {t("deleteConfirm.description")}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>
+                            {t("deleteConfirm.cancel")}
+                          </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDeleteAddress(address.id)}
                             className="bg-red-600 hover:bg-red-700"
                           >
-                            Delete
+                            {t("deleteConfirm.delete")}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

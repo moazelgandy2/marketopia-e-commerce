@@ -7,11 +7,13 @@ import { Calendar, Mail, Shield, Verified, Camera } from "lucide-react";
 import { useOrders } from "@/hooks/use-orders";
 import { useWishlists } from "@/hooks/use-wishlists";
 import { useAddresses } from "@/hooks/use-addresses";
+import { useTranslations } from "next-intl";
 
 export const ProfileHeader = ({ user }: { user: UserType }) => {
   const { orders, isOrdersLoading } = useOrders();
   const { wishlists, isWishlistsLoading } = useWishlists();
   const { addresses, isAddressesLoading } = useAddresses();
+  const t = useTranslations("ProfilePage.header");
 
   const ordersCount = isOrdersLoading ? "..." : orders?.length || 0;
   const wishlistsCount = isWishlistsLoading ? "..." : wishlists?.length || 0;
@@ -100,7 +102,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
                   className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1"
                 >
                   <Calendar className="w-3 h-3 mr-1" />
-                  Member since 2024
+                  {t("memberSince")}
                 </Badge>
               </div>
             </div>
@@ -112,7 +114,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
                   {ordersCount}
                 </div>
                 <div className="text-xs text-blue-600/70 dark:text-blue-400/70">
-                  Orders
+                  {t("stats.orders")}
                 </div>
               </div>
               <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 rounded-xl border border-purple-200 dark:border-purple-800">
@@ -120,7 +122,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
                   {wishlistsCount}
                 </div>
                 <div className="text-xs text-purple-600/70 dark:text-purple-400/70">
-                  Wishlist
+                  {t("stats.wishlist")}
                 </div>
               </div>
               <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 rounded-xl border border-green-200 dark:border-green-800">
@@ -128,7 +130,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
                   {addressesCount}
                 </div>
                 <div className="text-xs text-green-600/70 dark:text-green-400/70">
-                  Addresses
+                  {t("stats.addresses")}
                 </div>
               </div>
             </div>

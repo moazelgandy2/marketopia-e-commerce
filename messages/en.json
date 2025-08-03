@@ -411,5 +411,136 @@
     "to": "to",
     "of": "of",
     "results": "results"
+  },
+  "ProfilePage": {
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "profile": "Profile"
+    },
+    "tabs": {
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "wishlist": "Wishlist",
+      "account": "Account"
+    },
+    "header": {
+      "memberSince": "Member since 2024",
+      "stats": {
+        "orders": "Orders",
+        "wishlist": "Wishlist",
+        "addresses": "Addresses"
+      }
+    },
+    "orders": {
+      "title": "Order History",
+      "subtitle": "Track and manage your orders",
+      "totalOrders": "Total Orders",
+      "orderNumber": "Order",
+      "view": "View",
+      "orderItems": "Order Items",
+      "orderTotal": "Order Total",
+      "deliveryAddress": "Delivery address",
+      "noAddress": "No address",
+      "each": "each",
+      "status": {
+        "pending": "pending",
+        "confirmed": "confirmed",
+        "preparing": "preparing",
+        "ready": "ready",
+        "on_delivery": "on delivery",
+        "delivered": "delivered",
+        "cancelled": "cancelled"
+      },
+      "payment": {
+        "paid": "✓ Paid",
+        "unpaid": "⏳ Unpaid"
+      },
+      "empty": {
+        "title": "No orders yet",
+        "subtitle": "When you place your first order, it will appear here."
+      },
+      "error": {
+        "title": "Failed to load orders",
+        "subtitle": "Please try refreshing the page or contact support if the problem persists."
+      }
+    },
+    "addresses": {
+      "title": "My Addresses",
+      "subtitle": "Manage your delivery addresses",
+      "addNew": "Add New Address",
+      "setDefault": "Set as Default",
+      "edit": "Edit",
+      "delete": "Delete",
+      "default": "Default",
+      "toast": {
+        "loginRequired": "Please login to manage addresses",
+        "setDefaultSuccess": "Address set as default successfully",
+        "setDefaultError": "Failed to set default address. Please try again.",
+        "deleteSuccess": "Address deleted successfully",
+        "deleteError": "Failed to delete address. Please try again."
+      },
+      "deleteConfirm": {
+        "title": "Delete Address",
+        "description": "Are you sure you want to delete this address? This action cannot be undone.",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "empty": {
+        "title": "No addresses found",
+        "subtitle": "Add your first delivery address to get started.",
+        "addFirst": "Add Your First Address"
+      },
+      "error": {
+        "title": "Failed to load addresses",
+        "subtitle": "Please try refreshing the page or contact support if the problem persists."
+      }
+    },
+    "wishlist": {
+      "title": "My Wishlist",
+      "subtitle": "Items you've saved for later",
+      "savedItems": "Saved Items",
+      "addToCart": "Add to Cart",
+      "removeFromWishlist": "Remove from Wishlist",
+      "empty": {
+        "title": "Your wishlist is empty",
+        "subtitle": "Save items you love for later and they'll appear here.",
+        "browseProducts": "Browse Products"
+      },
+      "error": {
+        "title": "Failed to load wishlist",
+        "subtitle": "Please try refreshing the page or contact support if the problem persists."
+      }
+    },
+    "account": {
+      "title": "Account Settings",
+      "subtitle": "Manage your personal information and security",
+      "profilePicture": {
+        "title": "Profile Picture",
+        "subtitle": "Update your profile picture",
+        "upload": "Upload New Image",
+        "remove": "Remove Image",
+        "dragDrop": "Drag & drop or click to upload",
+        "fileTypes": "PNG, JPG up to 5MB"
+      },
+      "personalInfo": {
+        "title": "Personal Information",
+        "subtitle": "Update your personal details"
+      },
+      "security": {
+        "title": "Security",
+        "subtitle": "Change your password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password",
+        "changePassword": "Change Password"
+      },
+      "form": {
+        "name": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "save": "Save Changes",
+        "saving": "Saving..."
+      }
+    }
   }
 }

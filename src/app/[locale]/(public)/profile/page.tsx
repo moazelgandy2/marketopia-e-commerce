@@ -9,9 +9,11 @@ import { AddressesTab } from "./_components/addresses-tab";
 import { WishlistTab } from "./_components/wishlist-tab";
 import { AccountTab } from "./_components/account-tab";
 import { Package, MapPin, Heart, User, ShoppingBag } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function ProfilePage() {
   const { session } = useAuth();
+  const t = useTranslations("ProfilePage");
 
   if (!session)
     return (
@@ -37,10 +39,10 @@ export default function ProfilePage() {
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
           <ShoppingBag className="w-4 h-4" />
-          <span>Dashboard</span>
+          <span>{t("breadcrumb.dashboard")}</span>
           <span>/</span>
           <span className="text-slate-900 dark:text-slate-100 font-medium">
-            Profile
+            {t("breadcrumb.profile")}
           </span>
         </div>
 
@@ -58,28 +60,30 @@ export default function ProfilePage() {
                   className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md dark:data-[state=active]:bg-slate-600 transition-all duration-200"
                 >
                   <Package className="w-4 h-4" />
-                  <span className="hidden sm:inline">Orders</span>
+                  <span className="hidden sm:inline">{t("tabs.orders")}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="addresses"
                   className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md dark:data-[state=active]:bg-slate-600 transition-all duration-200"
                 >
                   <MapPin className="w-4 h-4" />
-                  <span className="hidden sm:inline">Addresses</span>
+                  <span className="hidden sm:inline">
+                    {t("tabs.addresses")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="wishlist"
                   className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md dark:data-[state=active]:bg-slate-600 transition-all duration-200"
                 >
                   <Heart className="w-4 h-4" />
-                  <span className="hidden sm:inline">Wishlist</span>
+                  <span className="hidden sm:inline">{t("tabs.wishlist")}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="account"
                   className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md dark:data-[state=active]:bg-slate-600 transition-all duration-200"
                 >
                   <User className="w-4 h-4" />
-                  <span className="hidden sm:inline">Account</span>
+                  <span className="hidden sm:inline">{t("tabs.account")}</span>
                 </TabsTrigger>
               </TabsList>
             </div>

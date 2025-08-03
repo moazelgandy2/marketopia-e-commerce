@@ -5,6 +5,7 @@ import { useWishlists } from "@/hooks/use-wishlists";
 import { Wishlist } from "@/types";
 import { Heart, Trash2, ShoppingCart, Star, HeartOff } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export const WishlistTab = () => {
   const {
@@ -14,6 +15,7 @@ export const WishlistTab = () => {
     deleteItem,
     isDeleting,
   } = useWishlists();
+  const t = useTranslations("ProfilePage.wishlist");
 
   return (
     <div className="space-y-6">
@@ -21,11 +23,9 @@ export const WishlistTab = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            My Wishlist
+            {t("title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400">
-            Items you've saved for later
-          </p>
+          <p className="text-slate-600 dark:text-slate-400">{t("subtitle")}</p>
         </div>
         {wishlists && (
           <div className="text-right">
@@ -33,7 +33,7 @@ export const WishlistTab = () => {
               {wishlists.length}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">
-              Saved Items
+              {t("savedItems")}
             </div>
           </div>
         )}
@@ -184,7 +184,7 @@ export const WishlistTab = () => {
                     size="sm"
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Add to Cart
+                    {t("addToCart")}
                   </Button>
 
                   <Button
@@ -202,7 +202,7 @@ export const WishlistTab = () => {
                     ) : (
                       <>
                         <Heart className="w-4 h-4 mr-2" />
-                        Remove
+                        {t("removeFromWishlist")}
                       </>
                     )}
                   </Button>

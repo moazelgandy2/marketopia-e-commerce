@@ -92,7 +92,8 @@ export const TopCategories = () => {
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-            Shop From <span className="text-purple-600">Top Categories</span>
+            {t("subtitle")}{" "}
+            <span className="text-purple-600">{t("title")}</span>
           </h2>
           <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
         </div>
@@ -113,7 +114,7 @@ export const TopCategories = () => {
         <button
           onClick={scrollLeft}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors duration-200 hidden md:flex items-center justify-center"
-          aria-label="Scroll left"
+          aria-label={t("scrollLeft")}
         >
           <ChevronLeft className="w-5 h-5 text-gray-600" />
         </button>
@@ -122,7 +123,7 @@ export const TopCategories = () => {
         <button
           onClick={scrollRight}
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors duration-200 hidden md:flex items-center justify-center"
-          aria-label="Scroll right"
+          aria-label={t("scrollRight")}
         >
           <ChevronRight className="w-5 h-5 text-gray-600" />
         </button>

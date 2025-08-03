@@ -101,7 +101,7 @@ export const ElectronicsBrands = () => {
           <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
         </div>
         <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base">
-          View All
+          {t("viewAll")}
           <span>→</span>
         </button>
       </div>

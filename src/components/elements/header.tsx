@@ -73,29 +73,30 @@ export const Header = () => {
               </Link>
             </Button>
           )}
-
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
-          >
-            <Link
-              href="/cart"
-              className="flex items-center space-x-1 relative"
+          {session && (
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              <ShoppingCart className="h-5 w-5" />
-              <span className="font-medium">{t("cart")}</span>
-              {cartItemsCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
-                >
-                  {cartItemsCount}
-                </Badge>
-              )}
-            </Link>
-          </Button>
+              <Link
+                href="/cart"
+                className="flex items-center space-x-1 relative"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span className="font-medium">{t("cart")}</span>
+                {cartItemsCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
+                  >
+                    {cartItemsCount}
+                  </Badge>
+                )}
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
 
@@ -132,7 +133,6 @@ export const Header = () => {
           <div className="w-20">
             <LocaleSwitcherDropdown />
           </div>
-
           <Button
             variant="ghost"
             size="icon"
@@ -142,7 +142,6 @@ export const Header = () => {
           >
             <Search className="h-5 w-5" />
           </Button>
-
           {session ? (
             <div className="transition-transform hover:scale-105">
               <ProfileIcon />
@@ -162,29 +161,30 @@ export const Header = () => {
               </Link>
             </Button>
           )}
-
-          <Button
-            asChild
-            variant="ghost"
-            size="icon"
-            className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
-          >
-            <Link
-              href="/cart"
-              aria-label={t("cart")}
-              className="relative"
+          {session && (
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              <ShoppingCart className="h-5 w-5" />
-              {cartItemsCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
-                >
-                  {cartItemsCount}
-                </Badge>
-              )}
-            </Link>
-          </Button>
+              <Link
+                href="/cart"
+                aria-label={t("cart")}
+                className="relative"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cartItemsCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
+                  >
+                    {cartItemsCount}
+                  </Badge>
+                )}
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

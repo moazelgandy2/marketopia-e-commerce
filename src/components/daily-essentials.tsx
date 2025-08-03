@@ -5,43 +5,43 @@ import { useTranslations } from "next-intl";
 
 const essentials = [
   {
-    name: "Daily Essentials",
-    discount: "UP to 50% OFF",
+    nameKey: "dailyEssentials",
+    discountKey: "discount",
     image: "🛍️",
     bgColor: "bg-purple-100",
     borderColor: "border-purple-300",
   },
   {
-    name: "Vegetables",
-    discount: "UP to 50% OFF",
+    nameKey: "vegetables",
+    discountKey: "discount",
     image: "🥬",
     bgColor: "bg-green-50",
     borderColor: "border-green-200",
   },
   {
-    name: "Fruits",
-    discount: "UP to 50% OFF",
+    nameKey: "fruits",
+    discountKey: "discount",
     image: "🍎",
     bgColor: "bg-red-50",
     borderColor: "border-red-200",
   },
   {
-    name: "Strawberry",
-    discount: "UP to 50% OFF",
+    nameKey: "strawberry",
+    discountKey: "discount",
     image: "🍓",
     bgColor: "bg-pink-50",
     borderColor: "border-pink-200",
   },
   {
-    name: "Mango",
-    discount: "UP to 50% OFF",
+    nameKey: "mango",
+    discountKey: "discount",
     image: "🥭",
     bgColor: "bg-yellow-50",
     borderColor: "border-yellow-200",
   },
   {
-    name: "Cherry",
-    discount: "UP to 50% OFF",
+    nameKey: "cherry",
+    discountKey: "discount",
     image: "🍒",
     bgColor: "bg-red-50",
     borderColor: "border-red-300",
@@ -56,7 +56,9 @@ export const DailyEssentials = () => {
     setSelectedItems((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
-    console.log(`Selected essential: ${essentials[index].name}`);
+    console.log(
+      `Selected essential: ${t(`items.${essentials[index].nameKey}`)}`
+    );
   };
 
   return (
@@ -96,10 +98,10 @@ export const DailyEssentials = () => {
                   : "text-gray-800 group-hover:text-purple-600"
               }`}
             >
-              {item.name}
+              {t(`items.${item.nameKey}`)}
             </h3>
             <p className="text-xs md:text-sm font-medium text-green-600">
-              {item.discount}
+              {t(`items.${item.discountKey}`)}
             </p>
           </div>
         ))}
@@ -109,7 +111,9 @@ export const DailyEssentials = () => {
         <div className="mt-4 md:mt-6 p-3 md:p-4 bg-purple-50 rounded-lg">
           <p className="text-purple-700 font-medium text-sm md:text-base">
             {t("selectedItems")}:{" "}
-            {selectedItems.map((i) => essentials[i].name).join(", ")}
+            {selectedItems
+              .map((i) => t(`items.${essentials[i].nameKey}`))
+              .join(", ")}
           </p>
         </div>
       )}

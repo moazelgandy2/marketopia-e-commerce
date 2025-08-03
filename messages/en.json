@@ -12,7 +12,7 @@
       "goTo": "Go to {name}"
     },
     "bestDeals": {
-      "title": "Best Deals on Electronics",
+      "title": "Best Deals",
       "subtitle": "Amazing deals on top brands",
       "viewAll": "View All",
       "tryAgain": "Try Again",
@@ -29,7 +29,9 @@
       "viewAll": "View All",
       "failedToLoad": "Failed to load categories",
       "tryAgain": "Try Again",
-      "noCategories": "No categories available."
+      "noCategories": "No categories available.",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "brands": {
       "title": "Popular Brands",
@@ -45,7 +47,16 @@
         "part2": "Essentials"
       },
       "viewAll": "View All",
-      "selectedItems": "Selected items"
+      "selectedItems": "Selected items",
+      "items": {
+        "dailyEssentials": "Daily Essentials",
+        "vegetables": "Vegetables",
+        "fruits": "Fruits",
+        "strawberry": "Strawberry",
+        "mango": "Mango",
+        "cherry": "Cherry",
+        "discount": "UP to 50% OFF"
+      }
     }
   },
   "LoginPage": {

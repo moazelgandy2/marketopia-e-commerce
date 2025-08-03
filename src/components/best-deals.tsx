@@ -14,6 +14,7 @@ import { useBestSelling } from "@/hooks/use-best-selling";
 import { BestSelling } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export const SmartphoneDeals = () => {
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
@@ -116,10 +117,15 @@ export const SmartphoneDeals = () => {
           </h2>
           <div className="w-12 md:w-16 h-1 bg-purple-600 rounded"></div>
         </div>
-        <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 text-sm">
-          {t("viewAll")}
-          <span>→</span>
-        </button>
+        <Link href={"/products"}>
+          <Button
+            variant={"outline"}
+            className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 text-sm"
+          >
+            {t("viewAll")}
+            <span>→</span>
+          </Button>
+        </Link>
       </div>
 
       <Carousel

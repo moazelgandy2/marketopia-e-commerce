@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Share2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export const OrderHeader = ({
   orderId,
@@ -13,6 +14,9 @@ export const OrderHeader = ({
   createdAt: string;
   shareOrder: () => void;
 }) => {
+  const t = useTranslations("OrderDetails.header");
+  const params = useParams();
+  const locale = params.locale as string;
   const router = useRouter();
   return (
     <div className="flex items-center justify-between mb-8">
@@ -24,19 +28,22 @@ export const OrderHeader = ({
           className="flex items-center gap-2 hover:bg-white"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          {t("back")}
         </Button>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Order #{orderId.slice(-8).toUpperCase()}
+            {t("orderNumber")} #{orderId.slice(-8).toUpperCase()}
           </h1>
           <p className="text-sm text-gray-500">
-            Placed on{" "}
-            {new Date(createdAt).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {t("placedOn")}{" "}
+            {new Date(createdAt).toLocaleDateString(
+              locale === "ar" ? "ar-EG" : "en-US",
+              {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }
+            )}
           </p>
         </div>
       </div>
@@ -47,7 +54,7 @@ export const OrderHeader = ({
         className="hidden sm:flex items-center gap-2"
       >
         <Share2 className="h-4 w-4" />
-        Share
+        {t("share")}
       </Button>
     </div>
   );

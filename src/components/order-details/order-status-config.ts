@@ -5,7 +5,7 @@ import { OrderStatus } from "@/types/order";
 
 interface StatusConfig {
   key: OrderStatus;
-  label: string;
+  labelKey: string;
   icon: LucideIcon;
   color: string;
 }
@@ -16,37 +16,37 @@ export const getOrderStatusConfig = (
   const baseStatuses: StatusConfig[] = [
     {
       key: OrderStatus.PENDING,
-      label: "Order Placed",
+      labelKey: "pending",
       icon: CheckCircle,
       color: "blue",
     },
     {
       key: OrderStatus.CONFIRMED,
-      label: "Order Confirmed",
+      labelKey: "confirmed",
       icon: CheckCircle,
       color: "green",
     },
     {
       key: OrderStatus.PREPARING,
-      label: "Preparing Order",
+      labelKey: "preparing",
       icon: Package,
       color: "orange",
     },
     {
       key: OrderStatus.READY,
-      label: "Ready for Pickup/Delivery",
+      labelKey: "ready",
       icon: Package,
       color: "yellow",
     },
     {
       key: OrderStatus.ON_DELIVERY,
-      label: "Out for Delivery",
+      labelKey: "on_delivery",
       icon: Truck,
       color: "blue",
     },
     {
       key: OrderStatus.DELIVERED,
-      label: "Delivered",
+      labelKey: "delivered",
       icon: CheckCircle,
       color: "green",
     },
@@ -56,13 +56,13 @@ export const getOrderStatusConfig = (
     return [
       {
         key: OrderStatus.PENDING,
-        label: "Order Placed",
+        labelKey: "pending",
         icon: CheckCircle,
         color: "blue",
       },
       {
         key: OrderStatus.CANCELLED,
-        label: "Order Cancelled",
+        labelKey: "cancelled",
         icon: Package,
         color: "red",
       },

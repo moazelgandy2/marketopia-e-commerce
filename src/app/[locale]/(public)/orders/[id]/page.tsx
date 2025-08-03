@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useOrder } from "@/hooks/use-orders";
 import { OrderHeader } from "@/components/order-details/order-header";
 import { OrderStatusCard } from "@/components/order-details/order-status-card";
@@ -18,6 +19,7 @@ import { Address } from "@/types/address";
 import { Coupon } from "@/types/coupon";
 
 export default function OrderDetailsPage() {
+  const t = useTranslations("OrderDetails");
   const params = useParams();
   const orderId = params.id as string;
   const locale = params.locale as string;
@@ -52,8 +54,8 @@ export default function OrderDetailsPage() {
   const shareOrder = () => {
     if (navigator.share) {
       navigator.share({
-        title: `Order #${orderId}`,
-        text: `Check out my order from Narmer!`,
+        title: `${t("header.shareTitle")} #${orderId}`,
+        text: t("header.shareText"),
         url: window.location.href,
       });
     }

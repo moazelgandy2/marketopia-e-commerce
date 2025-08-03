@@ -294,5 +294,73 @@
       "redirecting": "You will be redirected to complete your payment.",
       "processing": "Processing your order..."
     }
+  },
+  "OrderDetails": {
+    "header": {
+      "back": "Back",
+      "orderNumber": "Order",
+      "placedOn": "Placed on",
+      "share": "Share",
+      "shareTitle": "Order",
+      "shareText": "Check out my order from Narmer!"
+    },
+    "status": {
+      "title": "Order Status",
+      "currentStatus": "Current Status",
+      "orderCancelled": "Order Cancelled",
+      "cancelledOn": "Cancelled on",
+      "reason": "Reason",
+      "labels": {
+        "pending": "Order Placed",
+        "confirmed": "Order Confirmed",
+        "preparing": "Preparing Order",
+        "ready": "Ready for Pickup/Delivery",
+        "on_delivery": "Out for Delivery",
+        "delivered": "Delivered",
+        "cancelled": "Order Cancelled"
+      }
+    },
+    "summary": {
+      "title": "Order Summary",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "delivery": "Delivery",
+      "free": "Free",
+      "total": "Total"
+    },
+    "delivery": {
+      "title": "Delivery Address"
+    },
+    "payment": {
+      "title": "Payment",
+      "method": "Method",
+      "status": "Status",
+      "methods": {
+        "visa": "Credit Card",
+        "cash": "Cash on Delivery",
+        "wallet": "Digital Wallet"
+      },
+      "statuses": {
+        "paid": "Paid",
+        "pending": "Pending"
+      }
+    },
+    "coupon": {
+      "title": "Coupon Applied",
+      "off": "off"
+    },
+    "notes": {
+      "title": "Order Notes"
+    },
+    "items": {
+      "title": "Order Items",
+      "noItems": "No items found in this order",
+      "unknownProduct": "Unknown Product"
+    },
+    "notFound": {
+      "title": "Order Not Found",
+      "description": "The order you're looking for doesn't exist or you don't have permission to view it.",
+      "button": "View All Orders"
+    }
   }
 }

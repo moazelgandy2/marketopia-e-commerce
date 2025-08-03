@@ -85,8 +85,10 @@ export async function getProducts(
   }
 }
 
-export async function getProductById(id: string, lang: string = "en") {
+export async function getProductById(id: string, lang: string) {
   try {
+    console.log("Fetching product by ID:", id, "Language:", lang);
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}?lang=${lang}`,
       {

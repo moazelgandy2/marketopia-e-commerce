@@ -294,5 +294,73 @@
       "redirecting": "سيتم توجيهك لإتمام الدفع.",
       "processing": "جاري معالجة طلبك..."
     }
+  },
+  "OrderDetails": {
+    "header": {
+      "back": "رجوع",
+      "orderNumber": "طلب",
+      "placedOn": "تم تقديمه في",
+      "share": "مشاركة",
+      "shareTitle": "طلب",
+      "shareText": "شاهد طلبي من نارمر!"
+    },
+    "status": {
+      "title": "حالة الطلب",
+      "currentStatus": "الحالة الحالية",
+      "orderCancelled": "تم إلغاء الطلب",
+      "cancelledOn": "تم إلغاؤه في",
+      "reason": "السبب",
+      "labels": {
+        "pending": "تم تقديم الطلب",
+        "confirmed": "تم تأكيد الطلب",
+        "preparing": "جاري تحضير الطلب",
+        "ready": "جاهز للاستلام/التوصيل",
+        "on_delivery": "في الطريق للتوصيل",
+        "delivered": "تم التسليم",
+        "cancelled": "تم إلغاء الطلب"
+      }
+    },
+    "summary": {
+      "title": "ملخص الطلب",
+      "subtotal": "المجموع الفرعي",
+      "discount": "خصم",
+      "delivery": "التوصيل",
+      "free": "مجاني",
+      "total": "المجموع"
+    },
+    "delivery": {
+      "title": "عنوان التوصيل"
+    },
+    "payment": {
+      "title": "الدفع",
+      "method": "الطريقة",
+      "status": "الحالة",
+      "methods": {
+        "visa": "بطاقة ائتمان",
+        "cash": "دفع عند الاستلام",
+        "wallet": "محفظة رقمية"
+      },
+      "statuses": {
+        "paid": "مدفوع",
+        "pending": "في الانتظار"
+      }
+    },
+    "coupon": {
+      "title": "تم تطبيق الكوبون",
+      "off": "خصم"
+    },
+    "notes": {
+      "title": "ملاحظات الطلب"
+    },
+    "items": {
+      "title": "عناصر الطلب",
+      "noItems": "لم يتم العثور على عناصر في هذا الطلب",
+      "unknownProduct": "منتج غير معروف"
+    },
+    "notFound": {
+      "title": "الطلب غير موجود",
+      "description": "الطلب الذي تبحث عنه غير موجود أو ليس لديك إذن لعرضه.",
+      "button": "عرض جميع الطلبات"
+    }
   }
 }

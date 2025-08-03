@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { OrderType as Order, OrderStatus } from "@/types/order";
 import { getOrderStatusConfig } from "./order-status-config";
 import { CheckCircle, Copy, Package, Truck } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 export const OrderStatusCard = ({
   order,
@@ -13,6 +15,9 @@ export const OrderStatusCard = ({
   order: Order;
   trackingNumber: string;
 }) => {
+  const t = useTranslations("OrderDetails.status");
+  const params = useParams();
+  const locale = params.locale as string;
   const orderStatuses = getOrderStatusConfig(order.status);
   const currentStatusIndex = orderStatuses.findIndex(
     (s) => s.key === order.status
@@ -27,7 +32,7 @@ export const OrderStatusCard = ({
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
-              Order Status
+              {t("title")}
             </h2>
             <Badge
               variant={
@@ -55,8 +60,7 @@ export const OrderStatusCard = ({
                   : ""
               }`}
             >
-              {order.status.charAt(0).toUpperCase() +
-                order.status.slice(1).replace("_", " ")}
+              {t(`labels.${order.status}`)}
             </Badge>
           </div>
         </div>
@@ -90,11 +94,11 @@ export const OrderStatusCard = ({
                           isCompleted ? "text-gray-900" : "text-gray-500"
                         }`}
                       >
-                        {status.label}
+                        {t(`labels.${status.key}`)}
                       </h3>
                       {isCurrent && (
                         <p className="text-sm text-blue-600 font-medium">
-                          Current Status
+                          {t("currentStatus")}
                         </p>
                       )}
                     </div>
@@ -116,19 +120,22 @@ export const OrderStatusCard = ({
                   </div>
                   <div>
                     <h4 className="font-medium text-red-900 text-sm">
-                      Order Cancelled
+                      {t("orderCancelled")}
                     </h4>
                     <p className="text-red-700 text-xs mt-1">
-                      Cancelled on
-                      {new Date(order.updated_at).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
+                      {t("cancelledOn")}{" "}
+                      {new Date(order.updated_at).toLocaleDateString(
+                        locale === "ar" ? "ar-EG" : "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }
+                      )}
                     </p>
                     {order.notes && (
                       <p className="text-red-600 text-xs mt-1">
-                        Reason: {order.notes}
+                        {t("reason")}: {order.notes}
                       </p>
                     )}
                   </div>

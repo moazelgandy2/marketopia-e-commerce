@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProductById } from "@/hooks/use-products";
 import { OrderItemType } from "@/types/order";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 export const OrderItem = ({
   item,
@@ -12,9 +14,12 @@ export const OrderItem = ({
   item: OrderItemType;
   formatPrice: (price: string | number) => string;
 }) => {
+  const t = useTranslations("OrderDetails.items");
+  const params = useParams();
+  const locale = params.locale as string;
   const { data: productData, isLoading: isProductLoading } = useProductById(
     item.product_id.toString(),
-    "en"
+    locale
   );
 
   const getImageUrl = () => {
@@ -67,7 +72,7 @@ export const OrderItem = ({
       </div>
       <div className="flex-1 min-w-0">
         <h4 className="font-semibold text-gray-900 text-sm leading-tight">
-          {productData?.name || "Unknown Product"}
+          {productData?.name || t("unknownProduct")}
         </h4>
         {productData?.description && (
           <p className="text-xs text-gray-500 mt-1 line-clamp-2">

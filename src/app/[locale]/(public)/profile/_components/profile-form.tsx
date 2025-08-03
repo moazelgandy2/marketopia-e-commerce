@@ -51,7 +51,7 @@ export function ProfileForm({ user }: Props) {
           alt={user.name}
           width={96}
           height={96}
-          className="rounded-full border-4 border-purple-300 dark:border-purple-600"
+          className="rounded-full border-4 border-slate-300 dark:border-slate-600"
         />
         <div>
           <h2 className="text-xl font-semibold">{user.name}</h2>

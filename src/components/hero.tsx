@@ -28,7 +28,6 @@ export const HeroBanner = () => {
     setCurrentSlide(index);
   };
 
-  // Loading state
   if (isLoading) {
     return (
       <section className="relative">
@@ -63,7 +62,6 @@ export const HeroBanner = () => {
     );
   }
 
-  // No banners state
   if (!banners || banners.length === 0) {
     return (
       <section className="relative">

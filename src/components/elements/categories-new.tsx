@@ -155,7 +155,7 @@ export function CategoryNav() {
               <NavigationMenuList className="flex items-center space-x-3">
                 {/* All Categories Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium text-xs md:text-sm shadow-md hover:shadow-lg transform hover:scale-102 border-0 h-9 px-4 rounded-full">
+                  <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-slate-600 text-white hover:from-blue-700 hover:to-slate-700 transition-all duration-300 font-medium text-xs md:text-sm shadow-md hover:shadow-lg transform hover:scale-102 border-0 h-9 px-4 rounded-full">
                     <Grid3X3 className="h-3.5 w-3.5 mr-1.5" />
                     {t("allCategories")}
                   </NavigationMenuTrigger>
@@ -267,7 +267,7 @@ export function CategoryNav() {
                     className="flex items-center space-x-3 p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
+                    <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-slate-100 rounded-full flex items-center justify-center">
                       {getCategoryIcon(category.name)}
                     </div>
                     <span className="font-medium text-sm text-gray-800">
@@ -280,7 +280,7 @@ export function CategoryNav() {
                 className="flex items-center space-x-3 p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-blue-600 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
+                <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-slate-100 rounded-full flex items-center justify-center">
                   <Eye className="h-3.5 w-3.5" />
                 </div>
                 <span>{t("viewAllCategories")}</span>
@@ -316,7 +316,7 @@ function ModernCategoryLink({
         className="group flex items-center space-x-2.5 p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
       >
         <div className="relative flex-shrink-0">
-          <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-200 group-hover:scale-105">
+          <div className="w-7 h-7 bg-gradient-to-r from-blue-100 to-slate-100 rounded-full flex items-center justify-center group-hover:from-blue-200 group-hover:to-slate-200 transition-all duration-200 group-hover:scale-105">
             {image ? (
               <div className="w-4.5 h-4.5 relative overflow-hidden rounded-full">
                 <Image

@@ -46,7 +46,7 @@ export function ProfileIcon() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-9 w-9 rounded-full p-0 ring-2 ring-offset-2 ring-transparent hover:ring-purple-500 transition-all"
+          className="relative h-9 w-9 rounded-full p-0 ring-2 ring-offset-2 ring-transparent hover:ring-slate-500 transition-all"
         >
           <img
             src={
@@ -74,7 +74,7 @@ export function ProfileIcon() {
                 : "/images/default-avatar.jpg"
             }
             alt={user.name}
-            className="h-10 w-10 rounded-full object-cover ring-2 ring-purple-300"
+            className="h-10 w-10 rounded-full object-cover ring-2 ring-slate-300"
           />
           <div>
             <p className="font-semibold text-sm">{user.name}</p>

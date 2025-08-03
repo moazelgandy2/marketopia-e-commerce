@@ -21,7 +21,7 @@ export default async function LoginPage() {
   const t = await getTranslations("LoginPage");
 
   return (
-    <div className="h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 flex items-center justify-center">
+    <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center">
       <div className="container mx-auto px-4 py-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-4">
@@ -54,14 +54,14 @@ export default async function LoginPage() {
                   </p>
                 </div>
               ) : (
-                <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <ShoppingBag className="h-5 w-5 text-purple-600" />
+                    <ShoppingBag className="h-5 w-5 text-slate-600" />
                     <h2 className="text-base font-semibold">
                       {t("continueShopping.title")}
                     </h2>
                   </div>
-                  <p className="text-sm text-purple-700">
+                  <p className="text-sm text-slate-700">
                     {t("continueShopping.subtitle")}
                   </p>
                 </div>
@@ -93,8 +93,8 @@ export default async function LoginPage() {
                       key={title}
                       className="flex items-start gap-2"
                     >
-                      <div className="bg-purple-100 p-1.5 rounded-lg">
-                        <Icon className="h-4 w-4 text-purple-600" />
+                      <div className="bg-slate-100 p-1.5 rounded-lg">
+                        <Icon className="h-4 w-4 text-slate-600" />
                       </div>
                       <div>
                         <h4 className="font-semibold">{title}</h4>
@@ -109,7 +109,7 @@ export default async function LoginPage() {
             {/* Right Column - Login Form */}
             <div className="bg-white rounded-xl shadow border px-6 py-5">
               <div className="text-center mb-3">
-                <div className="inline-flex items-center justify-center w-10 h-10 bg-purple-600 rounded-full mb-1">
+                <div className="inline-flex items-center justify-center w-10 h-10 bg-slate-600 rounded-full mb-1">
                   <UserLock className="h-5 w-5 text-white" />
                 </div>
                 <h2 className="text-lg font-bold">{t("signIn.title")}</h2>
@@ -124,7 +124,7 @@ export default async function LoginPage() {
                   <Link href="/auth/register">
                     <Button
                       variant="ghost"
-                      className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                      className="p-0 h-auto text-slate-600 hover:text-slate-700 hover:bg-transparent font-semibold"
                     >
                       {t("noAccount.linkText")}
                     </Button>

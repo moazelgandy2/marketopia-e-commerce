@@ -157,7 +157,7 @@ export const LoginForm = () => {
           <Button
             disabled={isLoading}
             type="submit"
-            className="w-full h-7 text-xs bg-purple-600 hover:bg-purple-700"
+            className="w-full h-7 text-xs bg-slate-600 hover:bg-slate-700"
           >
             {isLoading ? t("loggingIn") : t("loginButton")}
           </Button>
@@ -169,7 +169,7 @@ export const LoginForm = () => {
           terms: (chunks) => (
             <a
               href="#"
-              className="text-purple-600 underline"
+              className="text-slate-600 underline"
             >
               {t("terms")}
             </a>
@@ -177,7 +177,7 @@ export const LoginForm = () => {
           privacy: (chunks) => (
             <a
               href="#"
-              className="text-purple-600 underline"
+              className="text-slate-600 underline"
             >
               {t("privacy")}
             </a>

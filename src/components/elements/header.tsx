@@ -122,7 +122,7 @@ export const Header = () => {
             <SearchInput />
           </div>
         ) : (
-          <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-slate-600 bg-clip-text text-transparent">
             Narmer
           </span>
         )}

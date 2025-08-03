@@ -146,14 +146,14 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <Card className="group relative w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+    <Card className="group relative w-full h-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
       <Link
-        className="block"
+        className="flex-1 flex flex-col"
         href={`/products/${product.id}`}
       >
         <div className="relative overflow-hidden bg-gray-50 rounded-t-2xl">
           {discount && (
-            <div className="absolute top-3 left-3 z-10 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold">
+            <div className="absolute top-3 left-3 z-10 bg-slate-600 text-white px-2 py-1 rounded-md text-xs font-bold">
               {discount}%
               <div className="text-[10px] font-normal">{t("discount")}</div>
             </div>
@@ -172,11 +172,11 @@ export default function ProductCard({ product }: { product: Product }) {
             width={300}
           />
         </div>
-        <div className="p-4 space-y-2">
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 leading-tight">
+        <div className="p-4 flex-1 flex flex-col">
+          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 leading-tight h-10 mb-2">
             {product.name}
           </h3>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 mt-auto">
             <div className="flex items-center gap-2">
               <span className="text-lg font-bold text-gray-900">
                 {product.discount_price
@@ -189,21 +189,24 @@ export default function ProductCard({ product }: { product: Product }) {
                 </span>
               )}
             </div>
-            {product.discount_price && (
-              <p className="text-xs font-medium text-green-600">
-                {t("save")} -{" "}
-                {(
-                  parseFloat(product.price) - parseFloat(product.discount_price)
-                ).toLocaleString()}{" "}
-                EGP
-              </p>
-            )}
+            <div className="h-4">
+              {product.discount_price && (
+                <p className="text-xs font-medium text-green-600">
+                  {t("save")} -{" "}
+                  {(
+                    parseFloat(product.price) -
+                    parseFloat(product.discount_price)
+                  ).toLocaleString()}{" "}
+                  EGP
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </Link>
 
       {/* Add to Cart Button */}
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-4 pt-0 mt-auto">
         <Button
           onClick={handleAddToCart}
           disabled={
@@ -211,7 +214,7 @@ export default function ProductCard({ product }: { product: Product }) {
             updateCartItemMutation.isPending ||
             product.quantity <= 0
           }
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+          className="w-full bg-slate-600 hover:bg-slate-700 text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
           size="sm"
         >
           <ShoppingCart className="w-4 h-4 mr-2 flex-shrink-0" />

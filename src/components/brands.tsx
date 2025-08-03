@@ -52,9 +52,9 @@ export const ElectronicsBrands = () => {
           <div>
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
               {t("subtitle")}{" "}
-              <span className="text-purple-600">{t("title")}</span>
+              <span className="text-slate-600">{t("title")}</span>
             </h2>
-            <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
+            <div className="w-16 md:w-24 h-1 bg-slate-600 rounded"></div>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
@@ -95,12 +95,11 @@ export const ElectronicsBrands = () => {
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-            {t("subtitle")}{" "}
-            <span className="text-purple-600">{t("title")}</span>
+            {t("subtitle")} <span className="text-slate-600">{t("title")}</span>
           </h2>
-          <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
+          <div className="w-16 md:w-24 h-1 bg-slate-600 rounded"></div>
         </div>
-        <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base">
+        <button className="text-slate-600 hover:text-slate-700 font-medium flex items-center gap-2 text-sm md:text-base">
           {t("viewAll")}
           <span>→</span>
         </button>
@@ -123,9 +122,9 @@ export const ElectronicsBrands = () => {
               className="pl-1  basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
             >
               <div
-                className={`bg-white border-2 border-gray-200 hover:border-purple-300 rounded-xl p-4 relative overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg h-32 ${
+                className={`bg-white border-2 border-gray-200 hover:border-slate-300 rounded-xl p-4 relative overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg h-32 ${
                   selectedBrand === index
-                    ? "ring-4 ring-purple-400 border-purple-400"
+                    ? "ring-4 ring-slate-400 border-slate-400"
                     : ""
                 }`}
                 onClick={() => handleBrandClick(index, brand)}
@@ -173,7 +172,7 @@ export const ElectronicsBrands = () => {
               key={index}
               className={`w-2 h-2 rounded-full transition-colors duration-200 ${
                 index === current
-                  ? "bg-purple-600"
+                  ? "bg-slate-600"
                   : "bg-gray-300 hover:bg-gray-400"
               }`}
               onClick={() => api?.scrollTo(index)}

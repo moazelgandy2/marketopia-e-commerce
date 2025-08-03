@@ -98,12 +98,12 @@ export default function OrderSuccessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-slate-50 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-10 left-10 w-32 h-32 bg-green-200 rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200 rounded-full opacity-20 animate-bounce delay-200"></div>
-        <div className="absolute bottom-20 left-20 w-40 h-40 bg-purple-200 rounded-full opacity-20 animate-pulse delay-500"></div>
+        <div className="absolute bottom-20 left-20 w-40 h-40 bg-slate-200 rounded-full opacity-20 animate-pulse delay-500"></div>
         <div className="absolute bottom-40 right-40 w-20 h-20 bg-yellow-200 rounded-full opacity-20 animate-bounce delay-700"></div>
       </div>
 
@@ -119,7 +119,7 @@ export default function OrderSuccessPage() {
                   : i % 4 === 1
                   ? "from-blue-400 to-blue-600"
                   : i % 4 === 2
-                  ? "from-purple-400 to-purple-600"
+                  ? "from-slate-400 to-slate-600"
                   : "from-yellow-400 to-yellow-600"
               } rounded-full animate-bounce`}
               style={{

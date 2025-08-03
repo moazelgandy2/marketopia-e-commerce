@@ -163,7 +163,7 @@ export function CategoryNav() {
               <NavigationMenuList className="flex items-center space-x-2">
                 {/* All Categories Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 border-0 h-10 px-6 rounded-lg text-sm">
+                  <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-slate-600 text-white hover:from-blue-700 hover:to-slate-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 border-0 h-10 px-6 rounded-lg text-sm">
                     <Grid3X3 className="h-4 w-4 mr-2" />
                     {t("allCategories")}
                   </NavigationMenuTrigger>
@@ -284,7 +284,7 @@ export function CategoryNav() {
                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-slate-100 rounded-lg flex items-center justify-center">
                       {getCategoryIcon(category.name)}
                     </div>
                     <span className="font-medium text-gray-900">
@@ -297,7 +297,7 @@ export function CategoryNav() {
                 className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-blue-600 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-slate-100 rounded-lg flex items-center justify-center">
                   <Eye className="h-4 w-4" />
                 </div>
                 <span>{t("viewAllCategories")}</span>
@@ -330,10 +330,10 @@ function ModernCategoryLink({
     <NavigationMenuLink asChild>
       <Link
         href={href}
-        className="group flex items-center space-x-3 p-3 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 border border-transparent hover:border-blue-200 hover:shadow-md"
+        className="group flex items-center space-x-3 p-3 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-slate-50 transition-all duration-300 border border-transparent hover:border-blue-200 hover:shadow-md"
       >
         <div className="relative">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-300">
+          <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-slate-100 rounded-lg flex items-center justify-center group-hover:from-blue-200 group-hover:to-slate-200 transition-all duration-300">
             {image ? (
               <div className="w-5 h-5 relative overflow-hidden rounded">
                 <Image
@@ -394,7 +394,7 @@ function ModernCategoryDropdown({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <NavigationMenuTrigger className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 font-medium border border-transparent hover:border-blue-200 hover:shadow-md h-10 px-4 rounded-lg text-sm">
+      <NavigationMenuTrigger className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-slate-50 transition-all duration-300 font-medium border border-transparent hover:border-blue-200 hover:shadow-md h-10 px-4 rounded-lg text-sm">
         <div className="flex items-center space-x-2">
           <div className="w-5 h-5 text-blue-600">
             {getCategoryIcon(category.name)}

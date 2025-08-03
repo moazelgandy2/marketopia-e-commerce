@@ -518,7 +518,7 @@ export default function CategoryProducts({
               <Link href="/contact">
                 <Button
                   variant="ghost"
-                  className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                  className="p-0 h-auto text-slate-600 hover:text-slate-700 hover:bg-transparent font-semibold"
                 >
                   <HeadphonesIcon className="h-4 w-4 mr-1" />
                   {t("helpfulLinks.needHelp.linkText")}
@@ -533,7 +533,7 @@ export default function CategoryProducts({
               <Link href="/categories">
                 <Button
                   variant="ghost"
-                  className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                  className="p-0 h-auto text-slate-600 hover:text-slate-700 hover:bg-transparent font-semibold"
                 >
                   <Grid2X2 className="h-4 w-4 mr-1" />
                   {t("helpfulLinks.viewAll.linkText")}

@@ -207,9 +207,9 @@ export const AddressForm = ({
 
       {/* Default Address Toggle */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg border border-blue-200 dark:border-blue-800">
+        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-slate-50 dark:from-blue-950 dark:to-slate-950 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-blue-500 to-slate-600 rounded-lg">
               <svg
                 className="w-4 h-4 text-white"
                 fill="none"
@@ -250,7 +250,7 @@ export const AddressForm = ({
               htmlFor="is_default"
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer ${
                 formData.is_default === 1
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600"
+                  ? "bg-gradient-to-r from-blue-500 to-slate-600"
                   : "bg-gray-200 dark:bg-gray-700"
               }`}
             >

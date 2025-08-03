@@ -21,18 +21,18 @@ function ProductsContent() {
                 {search ? (
                   <>
                     {t("title.search")}{" "}
-                    <span className="text-purple-600">"{search}"</span>
+                    <span className="text-slate-600">"{search}"</span>
                   </>
                 ) : (
                   <>
                     {t("title.default")}{" "}
-                    <span className="text-purple-600">
+                    <span className="text-slate-600">
                       {t("title.products")}
                     </span>
                   </>
                 )}
               </h1>
-              <div className="w-16 h-1 bg-purple-600 mt-2"></div>
+              <div className="w-16 h-1 bg-slate-600 mt-2"></div>
             </div>
           </div>
 

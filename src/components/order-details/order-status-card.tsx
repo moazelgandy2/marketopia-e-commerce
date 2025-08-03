@@ -54,7 +54,7 @@ export const OrderStatusCard = ({
                   : order.status === OrderStatus.PREPARING
                   ? "bg-orange-100 text-orange-800 border-orange-200"
                   : order.status === OrderStatus.READY
-                  ? "bg-purple-100 text-purple-800 border-purple-200"
+                  ? "bg-slate-100 text-slate-800 border-slate-200"
                   : order.status === OrderStatus.ON_DELIVERY
                   ? "bg-indigo-100 text-indigo-800 border-indigo-200"
                   : ""

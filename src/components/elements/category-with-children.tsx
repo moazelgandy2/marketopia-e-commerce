@@ -91,7 +91,7 @@ export function CategoryWithChildren({
           </button>
         )}
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-slate-500 rounded-lg flex items-center justify-center">
             <img
               src={getImageUrl(category.image)}
               alt={category.name}
@@ -111,9 +111,9 @@ export function CategoryWithChildren({
             <Link
               key={child.id}
               href={`/categories/${child.slug}`}
-              className="flex items-center space-x-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 group border border-transparent hover:border-blue-200 hover:shadow-md"
+              className="flex items-center space-x-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-slate-50 transition-all duration-200 group border border-transparent hover:border-blue-200 hover:shadow-md"
             >
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-200 flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-100 to-slate-100 rounded-lg flex items-center justify-center group-hover:from-blue-200 group-hover:to-slate-200 transition-all duration-200 flex-shrink-0">
                 <img
                   src={getImageUrl(child.image)}
                   alt={child.name}

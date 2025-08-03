@@ -354,7 +354,7 @@ export default function ProductDetailPage() {
                 {discount && (
                   <Badge
                     variant="secondary"
-                    className="absolute top-2 right-2 bg-purple-600 text-white px-2 py-1 text-xs font-bold z-10"
+                    className="absolute top-2 right-2 bg-slate-600 text-white px-2 py-1 text-xs font-bold z-10"
                   >
                     {discount}% OFF
                   </Badge>
@@ -371,7 +371,7 @@ export default function ProductDetailPage() {
                     onClick={() => setCurrentImageIndex(index)}
                     className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg border-2 overflow-hidden transition-all duration-200 ${
                       currentImageIndex === index
-                        ? "border-purple-600 shadow-md"
+                        ? "border-slate-600 shadow-md"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
@@ -487,7 +487,7 @@ export default function ProductDetailPage() {
                         <span className="text-gray-600">
                           {attrName}: {attr.attribute_value.value}
                         </span>
-                        <span className="font-medium text-purple-600">
+                        <span className="font-medium text-slate-600">
                           +{attr.price.toLocaleString()} EGP
                         </span>
                       </div>
@@ -596,7 +596,7 @@ export default function ProductDetailPage() {
                                   return newAttrs;
                                 });
                               }}
-                              className="text-xs text-purple-600 hover:text-purple-800 underline"
+                              className="text-xs text-slate-600 hover:text-slate-800 underline"
                             >
                               Clear
                             </button>
@@ -621,7 +621,7 @@ export default function ProductDetailPage() {
                               }}
                               className={`relative p-4 rounded-xl border-2 text-center transition-all duration-200 hover:scale-105 ${
                                 isSelected
-                                  ? "border-purple-600 bg-purple-50 shadow-md"
+                                  ? "border-slate-600 bg-slate-50 shadow-md"
                                   : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm"
                               }`}
                             >
@@ -630,7 +630,7 @@ export default function ProductDetailPage() {
                                 <div
                                   className={`w-8 h-8 rounded-full mx-auto mb-2 border-2 ${
                                     isSelected
-                                      ? "border-purple-600"
+                                      ? "border-slate-600"
                                       : "border-gray-300"
                                   }`}
                                   style={{
@@ -644,7 +644,7 @@ export default function ProductDetailPage() {
                               <div
                                 className={`font-medium text-sm ${
                                   isSelected
-                                    ? "text-purple-900"
+                                    ? "text-slate-900"
                                     : "text-gray-700"
                                 }`}
                               >
@@ -655,7 +655,7 @@ export default function ProductDetailPage() {
                                 <div
                                   className={`text-xs mt-1 ${
                                     isSelected
-                                      ? "text-purple-700"
+                                      ? "text-slate-700"
                                       : "text-gray-500"
                                   }`}
                                 >
@@ -665,7 +665,7 @@ export default function ProductDetailPage() {
 
                               {/* Selected indicator */}
                               {isSelected && (
-                                <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center">
+                                <div className="absolute -top-2 -right-2 w-6 h-6 bg-slate-600 rounded-full flex items-center justify-center">
                                   <svg
                                     className="w-4 h-4 text-white"
                                     fill="currentColor"
@@ -691,8 +691,8 @@ export default function ProductDetailPage() {
 
             {/* Summary of selected options */}
             {Object.keys(selectedAttributes).length > 0 && (
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                <h4 className="font-medium text-purple-900 mb-2">
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <h4 className="font-medium text-slate-900 mb-2">
                   Selected Options:
                 </h4>
                 <div className="space-y-1">
@@ -708,12 +708,12 @@ export default function ProductDetailPage() {
                           key={attrName}
                           className="flex justify-between items-center text-sm"
                         >
-                          <span className="text-purple-700">
+                          <span className="text-slate-700">
                             {attrName}:{" "}
                             <strong>{attr.attribute_value.value}</strong>
                           </span>
                           {attr.price > 0 && (
-                            <span className="text-purple-600 font-medium">
+                            <span className="text-slate-600 font-medium">
                               +{attr.price.toLocaleString()} EGP
                             </span>
                           )}
@@ -752,14 +752,14 @@ export default function ProductDetailPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="flex-1 border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-medium disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
+                  className="flex-1 border-2 border-slate-600 text-slate-600 hover:bg-slate-50 font-medium disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
                   disabled={!canAddToCart()}
                   onClick={handleAddToCart}
                 >
                   {addToCartMutation.isPending ||
                   updateCartItemMutation.isPending ? (
                     <>
-                      <div className="w-4 h-4 mr-2 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 mr-2 border-2 border-slate-600 border-t-transparent rounded-full animate-spin" />
                       {existingCartItem ? "Updating..." : "Adding..."}
                     </>
                   ) : (

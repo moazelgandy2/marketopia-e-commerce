@@ -52,7 +52,7 @@ export const Footer = () => {
   ].filter((link) => link.url);
 
   return (
-    <footer className="bg-gradient-to-r from-[#6a15b5] to-[#8238b2]/90 border-t border-[#941DFB]/20">
+    <footer className="bg-gradient-to-r from-[#191A42] to-[#1E1E2F] border-t border-[#941DFB]/20">
       <div className="container mx-auto px-4 py-12 text-white">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Brand Section */}

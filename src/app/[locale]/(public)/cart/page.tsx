@@ -457,7 +457,7 @@ export default function CartPage() {
                 {/* Coupon Section */}
                 <div className="border-t pt-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <Tag className="h-4 w-4 text-purple-600" />
+                    <Tag className="h-4 w-4 text-slate-600" />
                     <span className="font-medium">{t("discountCode")}</span>
                   </div>
 
@@ -516,7 +516,7 @@ export default function CartPage() {
                           appliedCoupon ||
                           validateCouponMutation.isPending
                         }
-                        className="bg-purple-600 hover:bg-purple-700"
+                        className="bg-slate-600 hover:bg-slate-700"
                       >
                         {validateCouponMutation.isPending ? "..." : t("apply")}
                       </Button>
@@ -565,7 +565,7 @@ export default function CartPage() {
                     <Link href="/contact">
                       <Button
                         variant="ghost"
-                        className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                        className="p-0 h-auto text-slate-600 hover:text-slate-700 hover:bg-transparent font-semibold"
                       >
                         <HeadphonesIcon className="h-4 w-4 mr-1" />
                         {t("needHelp.linkText")}
@@ -580,7 +580,7 @@ export default function CartPage() {
                     <Link href="/orders">
                       <Button
                         variant="ghost"
-                        className="p-0 h-auto text-purple-600 hover:text-purple-700 hover:bg-transparent font-semibold"
+                        className="p-0 h-auto text-slate-600 hover:text-slate-700 hover:bg-transparent font-semibold"
                       >
                         <ClipboardList className="h-4 w-4 mr-1" />
                         {t("viewOrders.linkText")}

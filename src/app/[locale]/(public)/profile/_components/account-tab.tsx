@@ -242,7 +242,7 @@ export const AccountTab = () => {
                   <Button
                     type="submit"
                     disabled={isPending}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 h-11"
+                    className="bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700 px-8 h-11"
                   >
                     {isPending ? (
                       <>

@@ -42,12 +42,15 @@ export default function ProductsList({
   }, []);
 
   const ProductSkeleton = () => (
-    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden h-full flex flex-col">
       <Skeleton className="aspect-square w-full rounded-t-2xl" />
-      <div className="p-4 space-y-2">
+      <div className="p-4 space-y-2 flex-1 flex flex-col">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-2/3" />
-        <Skeleton className="h-4 w-1/2" />
+        <div className="mt-auto space-y-2">
+          <Skeleton className="h-4 w-1/2" />
+          <Skeleton className="h-8 w-full" />
+        </div>
       </div>
     </div>
   );
@@ -83,9 +86,14 @@ export default function ProductsList({
 
       {/* Loading State */}
       {isLoading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 auto-rows-fr">
           {Array.from({ length: perPage }).map((_, index) => (
-            <ProductSkeleton key={index} />
+            <div
+              key={index}
+              className="h-full"
+            >
+              <ProductSkeleton />
+            </div>
           ))}
         </div>
       )}
@@ -96,17 +104,19 @@ export default function ProductsList({
           <div className="relative">
             {isFetching && (
               <div className="absolute inset-0 bg-white/50 z-10 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-600"></div>
               </div>
             )}
 
             {data.data.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 auto-rows-fr">
                 {data.data.map((product) => (
-                  <ProductCard
+                  <div
                     key={product.id}
-                    product={product}
-                  />
+                    className="h-full"
+                  >
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             ) : (

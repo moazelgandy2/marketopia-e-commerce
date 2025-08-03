@@ -73,9 +73,9 @@ export function ParentCategoriesList({
             className="group cursor-pointer"
             onClick={() => onCategoryClick?.(category.id)}
           >
-            <div className="p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-200 bg-white group-hover:bg-gradient-to-r group-hover:from-blue-50 group-hover:to-purple-50">
+            <div className="p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-200 bg-white group-hover:bg-gradient-to-r group-hover:from-blue-50 group-hover:to-slate-50">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-slate-500 rounded-lg flex items-center justify-center flex-shrink-0">
                   <img
                     src={category.image}
                     alt={category.name}

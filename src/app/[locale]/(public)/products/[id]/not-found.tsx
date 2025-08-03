@@ -19,7 +19,7 @@ export default function ProductNotFound() {
 
           <div className="space-y-3">
             <Link href="/products">
-              <Button className="w-full bg-purple-600 hover:bg-purple-700">
+              <Button className="w-full bg-slate-600 hover:bg-slate-700">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Products
               </Button>

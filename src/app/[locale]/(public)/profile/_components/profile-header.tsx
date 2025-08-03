@@ -22,7 +22,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
   return (
     <div className="relative">
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-2xl" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-slate-600/10 to-pink-600/10 rounded-2xl" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] [background-size:20px_20px] rounded-2xl" />
 
       <Card className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 overflow-hidden">
@@ -31,7 +31,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
             {/* Profile Image */}
             <div className="relative group">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-slate-600 rounded-2xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative bg-white dark:bg-slate-800 p-1 rounded-2xl">
                   <Image
                     src={
@@ -48,7 +48,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
               </div>
 
               {/* Camera Icon Overlay */}
-              <div className="absolute bottom-2 right-2 bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute bottom-2 right-2 bg-gradient-to-br from-blue-500 to-slate-600 p-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <Camera className="w-4 h-4 text-white" />
               </div>
             </div>
@@ -75,7 +75,7 @@ export const ProfileHeader = ({ user }: { user: UserType }) => {
               <div className="flex flex-wrap gap-3">
                 <Badge
                   variant="outline"
-                  className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 px-3 py-1"
+                  className="bg-gradient-to-r from-blue-50 to-slate-50 dark:from-blue-950 dark:to-slate-950 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 px-3 py-1"
                 >
                   <Shield className="w-3 h-3 mr-1" />
                   {user.user_type}

@@ -30,7 +30,7 @@ const statusColors: Record<OrderStatus, string> = {
   ready:
     "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-800",
   on_delivery:
-    "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800",
+    "bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-950 dark:text-slate-300 dark:border-slate-800",
   delivered:
     "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800",
   cancelled:
@@ -138,7 +138,7 @@ export const OrdersTab = () => {
                   <div className="p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+                        <div className="p-2 bg-gradient-to-br from-blue-500 to-slate-600 rounded-lg">
                           <Package className="w-5 h-5 text-white" />
                         </div>
                         <div>

@@ -8,8 +8,8 @@ const essentials = [
     nameKey: "dailyEssentials",
     discountKey: "discount",
     image: "🛍️",
-    bgColor: "bg-purple-100",
-    borderColor: "border-purple-300",
+    bgColor: "bg-slate-100",
+    borderColor: "border-slate-300",
   },
   {
     nameKey: "vegetables",
@@ -67,11 +67,11 @@ export const DailyEssentials = () => {
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
             {t("title.part1")}{" "}
-            <span className="text-purple-600">{t("title.part2")}</span>
+            <span className="text-slate-600">{t("title.part2")}</span>
           </h2>
-          <div className="w-16 md:w-24 h-1 bg-purple-600 rounded"></div>
+          <div className="w-16 md:w-24 h-1 bg-slate-600 rounded"></div>
         </div>
-        <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2 text-sm md:text-base">
+        <button className="text-slate-600 hover:text-slate-700 font-medium flex items-center gap-2 text-sm md:text-base">
           {t("viewAll")}
           <span>→</span>
         </button>
@@ -83,7 +83,7 @@ export const DailyEssentials = () => {
             key={index}
             className={`${item.bgColor} ${
               selectedItems.includes(index)
-                ? "ring-2 ring-purple-500"
+                ? "ring-2 ring-slate-500"
                 : item.borderColor
             } border-2 rounded-xl p-3 md:p-6 text-center group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105`}
             onClick={() => handleItemClick(index)}
@@ -94,8 +94,8 @@ export const DailyEssentials = () => {
             <h3
               className={`font-semibold mb-1 md:mb-2 transition-colors text-xs md:text-base ${
                 selectedItems.includes(index)
-                  ? "text-purple-600"
-                  : "text-gray-800 group-hover:text-purple-600"
+                  ? "text-slate-600"
+                  : "text-gray-800 group-hover:text-slate-600"
               }`}
             >
               {t(`items.${item.nameKey}`)}
@@ -108,8 +108,8 @@ export const DailyEssentials = () => {
       </div>
 
       {selectedItems.length > 0 && (
-        <div className="mt-4 md:mt-6 p-3 md:p-4 bg-purple-50 rounded-lg">
-          <p className="text-purple-700 font-medium text-sm md:text-base">
+        <div className="mt-4 md:mt-6 p-3 md:p-4 bg-slate-50 rounded-lg">
+          <p className="text-slate-700 font-medium text-sm md:text-base">
             {t("selectedItems")}:{" "}
             {selectedItems
               .map((i) => t(`items.${essentials[i].nameKey}`))

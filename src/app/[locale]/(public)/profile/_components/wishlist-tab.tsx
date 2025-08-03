@@ -180,7 +180,7 @@ export const WishlistTab = () => {
 
                 <div className="space-y-2">
                   <Button
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    className="w-full bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700"
                     size="sm"
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />

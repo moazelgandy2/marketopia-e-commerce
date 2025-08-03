@@ -42,7 +42,7 @@ export default function ProductsSearch({
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           placeholder={defaultPlaceholder}
-          className="pl-12 pr-12 h-12 bg-white border-gray-200 rounded-full focus:border-purple-500 focus:ring-purple-500 shadow-sm"
+          className="pl-12 pr-12 h-12 bg-white border-gray-200 rounded-full focus:border-slate-500 focus:ring-slate-500 shadow-sm"
         />
         {searchValue && (
           <Button

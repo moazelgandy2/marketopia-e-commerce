@@ -53,9 +53,9 @@ export const SmartphoneDeals = () => {
           <div>
             <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-1">
               {t("subtitle")}{" "}
-              <span className="text-purple-600">{t("title")}</span>
+              <span className="text-slate-600">{t("title")}</span>
             </h2>
-            <div className="w-12 md:w-16 h-1 bg-purple-600 rounded"></div>
+            <div className="w-12 md:w-16 h-1 bg-slate-600 rounded"></div>
           </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
@@ -112,15 +112,14 @@ export const SmartphoneDeals = () => {
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <div>
           <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-1">
-            {t("subtitle")}{" "}
-            <span className="text-purple-600">{t("title")}</span>
+            {t("subtitle")} <span className="text-slate-600">{t("title")}</span>
           </h2>
-          <div className="w-12 md:w-16 h-1 bg-purple-600 rounded"></div>
+          <div className="w-12 md:w-16 h-1 bg-slate-600 rounded"></div>
         </div>
         <Link href={"/products"}>
           <Button
             variant={"outline"}
-            className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 text-sm"
+            className="text-slate-600 hover:text-slate-700 font-medium flex items-center gap-1 text-sm"
           >
             {t("viewAll")}
             <span>→</span>
@@ -158,9 +157,7 @@ export const SmartphoneDeals = () => {
                   >
                     <div
                       className={`bg-white p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer h-full flex flex-col mx-1 ${
-                        selectedProduct === index
-                          ? "ring-2 ring-purple-500"
-                          : ""
+                        selectedProduct === index ? "ring-2 ring-slate-500" : ""
                       }`}
                       onClick={() => handleProductClick(index, product)}
                     >
@@ -182,7 +179,7 @@ export const SmartphoneDeals = () => {
                               target.style.display = "none";
                               const parent = target.parentElement;
                               if (parent) {
-                                parent.className = `h-28 md:h-32 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center`;
+                                parent.className = `h-28 md:h-32 bg-gradient-to-br from-slate-400 to-pink-500 flex items-center justify-center`;
                                 parent.innerHTML = `<div class="text-white text-xs font-medium text-center p-1">${product.name}</div>`;
                               }
                             }}
@@ -194,7 +191,7 @@ export const SmartphoneDeals = () => {
                       <div className="p-2 md:p-3 flex-1 flex flex-col justify-between">
                         {/* Product Name - Compact */}
                         <div className="h-8 md:h-10 mb-2">
-                          <h3 className="font-medium text-gray-800 group-hover:text-purple-600 transition-colors text-xs md:text-sm leading-tight line-clamp-2">
+                          <h3 className="font-medium text-gray-800 group-hover:text-slate-600 transition-colors text-xs md:text-sm leading-tight line-clamp-2">
                             {product.name}
                           </h3>
                         </div>
